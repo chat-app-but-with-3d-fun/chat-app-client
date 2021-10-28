@@ -1,13 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './user/userSlice'
-import msgReducer from './messages/messagesSlice'
+import roomReducer from './messages/roomSlice'
 import { apiSlice } from './api/apiSlice'
 
 export default configureStore({
   reducer: {
     user: userReducer,
-    messages: msgReducer,
+    room: roomReducer,
     [apiSlice.reducerPath]: apiSlice.reducer
+  },
+  // Adding the api middleware enables caching, invalidation, polling,
+  // and other useful features of `rtk-query`
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat(apiSlice.middleware)
   },
   devTools: true
 })
