@@ -50,7 +50,7 @@ export const apiSlice = createApi({
       })
     }),
     inviteFriendToRoom: builder.mutation({
-      query: (friendId) => ({
+      query: (friendId, roomId) => ({
         url: `room/${roomId}/${friendId}`,
         method: 'POST'
       })
