@@ -1,11 +1,19 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { connect } from 'react-redux';
+//import { createSlice } from "@reduxjs/toolkit";
 
-export default function App() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
-  console.log(errors);
-  
+
+// export default function () {
+const Register = (props) => {
+
+   const { register, handleSubmit, formState: { errors } } = useForm();
+   const onSubmit = data => console.log(data);
+   //props.updateAction(data);
+  //  console.log(data);
+   console.log(errors);
+
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input type="text" placeholder="First name" {...register("First name", {required: true, maxLength: 80})} />
@@ -18,3 +26,8 @@ export default function App() {
     </form>
   );
 }
+
+export default Register;
+
+// Connect your component with redux
+// connect(({ firstName, lastName }) => ({ firstName, lastName }), updateAction)(Register);
