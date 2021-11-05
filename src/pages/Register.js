@@ -1,33 +1,105 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
-//import { createSlice } from "@reduxjs/toolkit";
+import React, {useState, useEffect} from 'react'
+import {Redirect, useHistory} from 'react-router'
+import {useSelector} from 'react-redux'
+import SignupForm from '../components/SignupForm'
+import LoginForm from '../components/LoginForm'
+import {Stack, Container, Box, ButtonGroup, Button,Snackbar} from '@mui/material';
+import MuiAlert from '@mui/material/Alert'
 
+const Registration = () => {
+  const [formType, setFormType] = useState('signup')
+  // const [alert, setAlert] = useState({
+  //   msg: '',
+  //   code: '',
+  //   isOpen: false
+  // });
+  const user = useSelector(state => state.user)
 
-// export default function () {
-const Register = (props) => {
+  let history = useHistory()
 
-   const { register, handleSubmit, formState: { errors } } = useForm();
-   const onSubmit = data => console.log(data);
-   //props.updateAction(data);
-  //  console.log(data);
-   console.log(errors);
+  // const handleClose = (e, reason) => {
+  //   if (reason === 'clickaway') {
+  //     return;
+  //   }
+  //   setAlert({...alert, isOpen: false});
+  // };
 
+  const setSignupForm = () => {
+    setFormType('signup')
+    history.push('/sign-up')
+  }
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="text" placeholder="First name" {...register("First name", {required: true, maxLength: 80})} />
-      <input type="text" placeholder="Last name" {...register("Last name", {required: true, maxLength: 100})} />
-      <input type="text" placeholder="Email" {...register("Email", {required: true, pattern: /^\S+@\S+$/i})} />
-      <input type="text" placeholder="Password" {...register("Password", {})} />
-      <input type="text" placeholder="Confirm password" {...register("Confirm password", {})} />
+  const setLoginForm = () => {
+    setFormType('signin')
+    history.push('/sign-in')
+  }
 
-      <input type="submit" />
-    </form>
-  );
+  // const toastError = (message) => {
+  //   setAlert({
+  //     msg: message,
+  //     code: 'error',
+  //     isOpen: true
+  //   })
+  // }
+
+  useEffect(() => {
+    const {location: {pathname}} = history;
+    pathname === '/sign-up'
+    ? setFormType('signup')
+    : setFormType('signin')
+  }, [])
+
+  if (user.username) {
+    return <Redirect to='/dashboard' />
+  } else {
+    return (
+      <>
+        <Container component="main" maxWidth='xs'>
+          <Box
+            sx={{
+              marginTop: 12,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <ButtonGroup sx={{ display: 'flex', justifyContent: 'space-between'}} fullWidth disableElevation>
+              <Button
+                fullWidth
+                variant={`${formType === 'signup' ? 'contained' : 'outlined'}`}
+                onClick={setSignupForm}
+              >
+                Sign up
+              </Button>
+              <Button
+                fullWidth
+                variant={`${formType === 'signup' ? 'outlined' : 'contained'}`}
+                onClick={setLoginForm}
+              >
+                Sign In
+              </Button>
+            </ButtonGroup>
+            {
+              formType === 'signup'
+              ? <SignupForm />
+              : <LoginForm />
+            }
+          </Box>
+        </Container>
+        {/* <Snackbar
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+          open={alert.isOpen}
+          key={{vertical: 'top', horizontal: 'right'}}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          message={alert.msg}
+        /> */}
+      </>
+    )
+  }
 }
 
-export default Register;
-
-// Connect your component with redux
-// connect(({ firstName, lastName }) => ({ firstName, lastName }), updateAction)(Register);
+export default Registration
