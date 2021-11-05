@@ -2,7 +2,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/'}),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:5000/',
+    prepareHeaders(headers) {
+      return headers;
+    },
+    credentials: "include",
+  }),
   endpoints: builder => ({
     // user -----------
     signupUser: builder.mutation({
@@ -19,7 +25,7 @@ export const apiSlice = createApi({
         body: userData
       })
     }),
-    authenticateUser: builder.mutation({
+    authUser: builder.mutation({
       query: () => ({
         url: 'user/auth',
         method: 'POST',
@@ -29,14 +35,14 @@ export const apiSlice = createApi({
       query: () => 'user/logout'
     }),
     findFriend: builder.mutation({
-      query: (userId, input) => ({
+      query: ({userId, input}) => ({
         url: `user/${userId}/findfriend`,
         method: 'POST',
         body: input
       })
     }),
     addFriend: builder.mutation({
-      query: (userId, friendId) => ({
+      query: ({userId, friendId}) => ({
         url: `user/${userId}/addfriend`,
         method: 'POST',
         body: friendId
@@ -49,11 +55,10 @@ export const apiSlice = createApi({
         method: 'POST'
       })
     }),
-    inviteFriendToRoom: builder.mutation({
-      query: (friendId, roomId) => ({
-        url: `room/${roomId}/${friendId}`,
-        method: 'POST'
-      })
+    inviteFriendToRoom: builder.query({
+      query: ({friendId, roomId}) => (
+        `room/${roomId}/${friendId}`
+      )
     }),
     // messages
     getMessages: builder.query({
@@ -72,6 +77,6 @@ export const apiSlice = createApi({
 export const {
   useSignupUserMutation,
   useLoginUserMutation,
-  useAuthenticateUserMutation,
+  useAuthUserMutation,
   useLogoutUserQuery
 } = apiSlice
