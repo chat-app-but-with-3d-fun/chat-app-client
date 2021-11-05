@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Dashboard from './pages/Dashboard';
 import Register from "./pages/Register";
 import "./sass/main.scss";
+import Sidebar from "./pages/sidebar";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
   return (
 
       <div className="App">
+      <Sidebar />
       <Switch>       
         <Route exact path="/" component={Home} />
         <Route exact path="/signup" component={Register} />
