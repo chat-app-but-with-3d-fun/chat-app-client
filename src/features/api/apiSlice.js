@@ -114,12 +114,7 @@ export const apiSlice = createApi({
 export const {
   useSignupUserMutation,
   useLoginUserMutation,
-<<<<<<< HEAD
   useAuthUserMutation,
-  useLogoutUserQuery
-=======
-  useAuthenticateUserMutation,
   useLogoutUserQuery,
   useGetConnectionQuery
->>>>>>> drawer
 } = apiSlice
