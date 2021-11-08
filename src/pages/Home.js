@@ -2,7 +2,7 @@ import React from "react";
 import { Canvas } from 'react-three-fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 
-
+import {useGetConnectionQuery} from '../features/api/apiSlice'
 
 function Box(){
   return (
@@ -23,12 +23,15 @@ function Plane(){
 }
 
 export default function App(){
+  
+  const { data, error, isLoading, isError, isSuccess } = useGetConnectionQuery('123')
+  
   return (
     <>
     <div>
       welcome to koko!
     </div>
-    <Canvas style={{width: '100vw' , height: '100vh' }}>
+    {/* <Canvas style={{width: '100vw' , height: '100vh' }}>
       <color attach='background' args={'black'}/>
       <OrbitControls />
       <Stars fade />
@@ -36,7 +39,7 @@ export default function App(){
       <spotLight position={[10, 15, 10]} angle={0.3} />
       <Box onClick={() => console.log('BOX CLICKED')}/>
       <Plane />
-    </Canvas>
+    </Canvas> */}
     </>
   )
 }

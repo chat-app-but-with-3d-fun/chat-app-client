@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { io } from "socket.io-client";
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -55,6 +56,42 @@ export const apiSlice = createApi({
         method: 'POST'
       })
     }),
+    //Get Connection
+    getConnection: builder.query({
+      query: () => `/`,
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
+        // create a websocket connection when the cache subscription starts
+        const socket = new io('http//localhost:5000')
+        try {
+          // wait for the initial query to resolve before proceeding
+          await cacheDataLoaded
+
+          // when data is received from the socket connection to the server,
+          // if it is a message and for the appropriate channel,
+          // update our query result with the received message
+          const listener = (event) => {
+            console.log(event)
+            // if (!isMessage(data) || data.channel !== arg) return
+
+            // updateCachedData((draft) => {
+            //   draft.push(data)
+            // })
+          }
+
+          socket.on('register', listener)
+        } catch {
+          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
+          // in which case `cacheDataLoaded` will throw
+        }
+        // cacheEntryRemoved will resolve when the cache subscription is no longer active
+        await cacheEntryRemoved
+        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
+        socket.close()
+      },
+    }),
     // messages
     getMessages: builder.query({
       query: (roomId) => `msg/${roomId}`
@@ -73,5 +110,6 @@ export const {
   useSignupUserMutation,
   useLoginUserMutation,
   useAuthenticateUserMutation,
-  useLogoutUserQuery
+  useLogoutUserQuery,
+  useGetConnectionQuery
 } = apiSlice

@@ -10,7 +10,7 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 export default function AccordionComponent(props) {
   
  const [expanded, setExpanded] = useState(props.expanded)
- const [badgeTotal, setBadgeTotal]  = useState(0) 
+
 
   return (
     <Accordion  expanded={expanded}>
@@ -20,9 +20,7 @@ export default function AccordionComponent(props) {
           id="panel1a-header"
           onClick={() => setExpanded(!expanded)}
         >
-          <Badge badgeContent={badgeTotal} color="primary"> 
-            <Typography >{props.headline}</Typography>
-          </Badge>
+         {props.head}
         </AccordionSummary>
         <AccordionDetails>
           {props.body}

@@ -8,15 +8,6 @@ export default function RoomList() {
 
   const rooms = [{room: 'Kitchen', unread: 0}, {room: "Lobby", unread: 2}, {room: 'School', unread: 5}, {room: 'private-xyz-xyz', unread: 1}]
 
-  const calculateUnreadTotal = () => {
-    const unreadTotal = rooms.reduce((acc, cur) => {
-      return acc + cur.unread}, 0
-      )
-    }
-
-  useEffect(() => {
-    calculateUnreadTotal()
-  }, [])
 
   return (
         <List>

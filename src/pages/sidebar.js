@@ -14,6 +14,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import AccordionComponent from '../Components/accordion';
 import RoomList from '../Components/RoomList';
+import { Badge } from '@mui/material';
 
 
 
@@ -24,7 +25,16 @@ const friends = ['Gerda', "Helga", 'Lucas', 'Aimee']
 
 export default function Sidebar() {
   
+  const rooms = [{room: 'Kitchen', unread: 0}, {room: "Lobby", unread: 2}, {room: 'School', unread: 5}, {room: 'private-xyz-xyz', unread: 1}]
   const [active, setActive] = useState(true)
+
+  const calculateUnreadTotal = () => {
+    const unreadTotal = rooms.reduce((acc, cur) => {
+      return acc + cur.unread}, 0
+      )
+    }
+  
+  
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -56,7 +66,14 @@ export default function Sidebar() {
        
         <Divider />
         {/* <Typography variant="subtitle1" sx={{marginTop: '10px'}} align="center">Rooms</Typography> */}
-        <AccordionComponent expanded={true} headline="Rooms" body={<RoomList />} />
+        <AccordionComponent 
+          expanded={true} 
+          headline={ 
+          <Badge badgeContent={calculateUnreadTotal()} color="primary"> 
+            <Typography >Rooms</Typography>
+          </Badge>
+          } 
+          body={<RoomList />} />
        
        <AccordionComponent expanded={false} headline="Friends" body={
           <List>
