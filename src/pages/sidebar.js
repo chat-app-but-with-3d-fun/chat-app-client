@@ -15,6 +15,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import AccordionComponent from '../Components/accordion';
 import RoomList from '../Components/RoomList';
 import { Badge } from '@mui/material';
+import {useGetConnectionQuery} from '../features/api/apiSlice'
 
 
 
@@ -24,6 +25,7 @@ const friends = ['Gerda', "Helga", 'Lucas', 'Aimee']
 
 
 export default function Sidebar() {
+  const { data, error, isLoading, isError, isSuccess } = useGetConnectionQuery()
   
   const rooms = [{room: 'Kitchen', unread: 0}, {room: "Lobby", unread: 2}, {room: 'School', unread: 5}, {room: 'private-xyz-xyz', unread: 1}]
   const [active, setActive] = useState(true)

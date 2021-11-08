@@ -69,7 +69,7 @@ export const apiSlice = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
         // create a websocket connection when the cache subscription starts
-        const socket = new io('http//localhost:5000')
+        const socket = new io('localhost:5000')
         try {
           // wait for the initial query to resolve before proceeding
           await cacheDataLoaded
