@@ -4,12 +4,14 @@ import Home from "./pages/Home";
 import Dashboard from './pages/Dashboard';
 import Register from "./pages/Register";
 import "./sass/main.scss";
+import Sidebar from "./pages/sidebar";
 
 const App = () => {
 
   return (
     <div className="App">
       <Router>
+      <Sidebar />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/sign-:form" component={Register} />
