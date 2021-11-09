@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { io } from "socket.io-client";
+import  socketIOClient from "socket.io-client";
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -63,38 +63,39 @@ export const apiSlice = createApi({
     }),
     //Get Connection
     getConnection: builder.query({
-      query: () => `/`,
+      query: (nr) => `user/test`,
       async onCacheEntryAdded(
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
         // create a websocket connection when the cache subscription starts
-        const socket = new io('localhost:5000')
+        console.log('new connection')
+        const socket = new socketIOClient('http://127.0.0.1:5000', {query: "userId=6183ad4539b3ca649db76100"})
+        console.log('SOCKET: ', socket)
         try {
-          // wait for the initial query to resolve before proceeding
           await cacheDataLoaded
-
-          // when data is received from the socket connection to the server,
-          // if it is a message and for the appropriate channel,
-          // update our query result with the received message
-          const listener = (event) => {
-            console.log(event)
-            // if (!isMessage(data) || data.channel !== arg) return
-
-            // updateCachedData((draft) => {
-            //   draft.push(data)
-            // })
+          console.log('CAHCE: ',cacheDataLoaded)
+          const handshake = (payload) => {
+            console.log('At least this shows up --> UserId', payload)
+            socket.emit('handshake', payload)
+          }
+          const newMsg = (message) => {
+            console.log('Message arrives: ', message)
+            updateCachedData((draft) => {
+              console.log("UPADTE: ", updateCachedData)
+              console.log('DRAFT: ', draft)
+              // draft.push(message)
+            })
+            
           }
 
-          socket.on('register', listener)
+
+
+          socket.on('register', handshake) 
+          socket.on('newMsg', newMsg)
         } catch {
-          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
-          // in which case `cacheDataLoaded` will throw
         }
-        // cacheEntryRemoved will resolve when the cache subscription is no longer active
-        await cacheEntryRemoved
-        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
-        socket.close()
+        
       },
     }),
     // messages

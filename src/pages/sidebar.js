@@ -25,8 +25,8 @@ const friends = ['Gerda', "Helga", 'Lucas', 'Aimee']
 
 
 export default function Sidebar() {
-  const { data, error, isLoading, isError, isSuccess } = useGetConnectionQuery()
-  
+  const { data, error, isLoading, isError, isSuccess, refetch } = useGetConnectionQuery(1)
+
   const rooms = [{room: 'Kitchen', unread: 0}, {room: "Lobby", unread: 2}, {room: 'School', unread: 5}, {room: 'private-xyz-xyz', unread: 1}]
   const [active, setActive] = useState(true)
 
@@ -36,8 +36,15 @@ export default function Sidebar() {
       )
     }
   
-  
 
+    const handleRefetch = (e) => {
+      e.preventDefault()
+      refetch()
+      console.log(data)
+    }
+
+  
+console.log('WHAT IS DATA: ', data)
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -45,11 +52,13 @@ export default function Sidebar() {
         position="fixed"
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, backgroundColor: "gray" }}
       >
+       
         <Toolbar>
           <Typography variant="h5" noWrap component="div">
             KoKo
               <Typography variant="subtitle1" noWrap component="span" sx={{marginLeft: '20px'}}>Kommunikations-Kombinat</Typography>
           </Typography>
+          <button onClick={handleRefetch}>refetch</button>
         </Toolbar>
       </AppBar>
       <Drawer
