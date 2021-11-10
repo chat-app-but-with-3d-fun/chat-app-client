@@ -24,7 +24,7 @@ const drawerWidth = 240;
 
 
 
-export default function Sidebar() {
+export default function Sidebar(props) {
 
   const rooms = [
     {room: 'Kitchen', private: false, unread: 0},
@@ -70,7 +70,7 @@ export default function Sidebar() {
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, backgroundColor: "gray" }}
       >
        
-        <Toolbar>
+        <Toolbar >
           <Typography variant="h5" noWrap component="div">
             KoKo
               <Typography variant="subtitle1" noWrap component="span" sx={{marginLeft: '20px'}}>Kommunikations-Kombinat</Typography>
@@ -115,7 +115,8 @@ export default function Sidebar() {
 
 
       </Drawer>
-     
+     {props.children}
+ 
     </Box>
   );
 }

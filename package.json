@@ -25,6 +25,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-three-fiber": "^6.0.13",
+    "react-window": "^1.8.6",
     "redux-devtools-extension": "^2.13.9",
     "socket.io-client": "^4.3.2",
     "three": "^0.134.0",
@@ -66,6 +67,5 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/chat-app-but-with-3d-fun/chat-app-client/issues"
-  },
-  "devDependencies": {}
+  }
 }

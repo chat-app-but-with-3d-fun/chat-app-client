@@ -5,19 +5,20 @@ import Dashboard from './pages/Dashboard';
 import Register from "./pages/Register";
 import "./sass/main.scss";
 import Sidebar from "./pages/Sidebar";
-import Chat from "./pages/Chat";
+import Room from "./pages/Room";
 
 const App = () => {
 
   return (
     <div className="App">
       <Router>
-      <Sidebar />
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Sidebar >
+            <Route exact path="/" component={Home} />
+            <Route path="/chat/" component={Room} />
+          </Sidebar>
           <Route path="/sign-:form" component={Register} />
           {/* <Route exact path="/dashboard" component={Dashboard} /> */}
-          <Route path="/chat/" component={Chat} />
         </Switch>
       </Router>
     </div>
