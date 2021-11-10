@@ -20,7 +20,7 @@ export default function AccordionComponent(props) {
           id="panel1a-header"
           onClick={() => setExpanded(!expanded)}
         >
-         {props.head}
+         {props.headline}
         </AccordionSummary>
         <AccordionDetails>
           {props.body}

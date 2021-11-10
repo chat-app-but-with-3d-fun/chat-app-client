@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -21,31 +21,48 @@ import {useGetConnectionQuery} from '../features/api/apiSlice'
 
 
 const drawerWidth = 240;
-const friends = ['Gerda', "Helga", 'Lucas', 'Aimee']
+
 
 
 export default function Sidebar() {
-  const { data, error, isLoading, isError, isSuccess, refetch } = useGetConnectionQuery(1)
 
-  const rooms = [{room: 'Kitchen', unread: 0}, {room: "Lobby", unread: 2}, {room: 'School', unread: 5}, {room: 'private-xyz-xyz', unread: 1}]
+  const rooms = [
+    {room: 'Kitchen', private: false, unread: 0},
+    {room: "Lobby", private: false, unread: 2},
+    {room: 'School', private: false, unread: 5},
+    {room: 'private-xyz-xyz', private: true, unread: 1}]
+  
+  const friends = [
+    {username: 'Gerda', _id: 12345, online: true},
+    {username: "Helga", _id: 12346, online: true},
+    {username: 'Lucas', _id: 12347, online: false},
+    {username: 'Aimee', _id: 12348, online: false}
+  ]
+  
+  const [unreadMsg, setUnreadMsg] = useState(null) 
+  const [unreadPri, setUnreadPri] = useState(null)
+  
   const [active, setActive] = useState(true)
 
   const calculateUnreadTotal = () => {
     const unreadTotal = rooms.reduce((acc, cur) => {
       return acc + cur.unread}, 0
       )
+      return unreadTotal
     }
   
 
-    const handleRefetch = (e) => {
-      e.preventDefault()
-      refetch()
-      console.log(data)
-    }
+  useEffect(( ) => {
+      const unread = calculateUnreadTotal()
+      setUnreadMsg(unread)
+    }, [rooms] )
 
-  
-console.log('WHAT IS DATA: ', data)
-  return (
+
+//Would be nice to shrink the drawer when a chat window opens, for this a global state about the current postion could be used
+//api fetch for rooms and friends
+//LISTENER register for status change so api fetch can be redone (e.g. friend gets online)
+
+ return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
@@ -58,7 +75,6 @@ console.log('WHAT IS DATA: ', data)
             KoKo
               <Typography variant="subtitle1" noWrap component="span" sx={{marginLeft: '20px'}}>Kommunikations-Kombinat</Typography>
           </Typography>
-          <button onClick={handleRefetch}>refetch</button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -76,21 +92,21 @@ console.log('WHAT IS DATA: ', data)
         <Toolbar />
        
         <Divider />
-        {/* <Typography variant="subtitle1" sx={{marginTop: '10px'}} align="center">Rooms</Typography> */}
         <AccordionComponent 
           expanded={true} 
-          headline={ 
-          <Badge badgeContent={calculateUnreadTotal()} color="primary"> 
-            <Typography >Rooms</Typography>
-          </Badge>
-          } 
-          body={<RoomList />} />
+          headline={
+            <Badge badgeContent={unreadMsg} color="primary"> 
+              <Typography>Rooms</Typography>
+            </Badge>}
+          
+          body={<RoomList />}
+        />
        
        <AccordionComponent expanded={false} headline="Friends" body={
           <List>
            {friends.map((el, index) => (
-             <ListItem button key={el}>
-                <ListItemText primary={el} />
+             <ListItem button key={el.username}>
+                <ListItemText primary={el.username} />
              </ListItem>
            ))}
          </List>

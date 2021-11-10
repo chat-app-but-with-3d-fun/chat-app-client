@@ -4,7 +4,8 @@ import Home from "./pages/Home";
 import Dashboard from './pages/Dashboard';
 import Register from "./pages/Register";
 import "./sass/main.scss";
-import Sidebar from "./pages/sidebar";
+import Sidebar from "./pages/Sidebar";
+import Chat from "./pages/Chat";
 
 const App = () => {
 
@@ -16,6 +17,7 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <Route path="/sign-:form" component={Register} />
           {/* <Route exact path="/dashboard" component={Dashboard} /> */}
+          <Route path="/chat/" component={Chat} />
         </Switch>
       </Router>
     </div>
