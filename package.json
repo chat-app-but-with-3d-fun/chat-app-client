@@ -16,6 +16,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "draft-js": "^0.11.7",
     "drei": "^2.2.21",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
