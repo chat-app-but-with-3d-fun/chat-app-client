@@ -1,0 +1,11 @@
+Model Information:
+* title:	Classic Bar
+* source:	https://sketchfab.com/3d-models/classic-bar-c598e2a864584a42b46b5e08a2ad316d
+* author:	nasser3 (https://sketchfab.com/nasser3)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Classic Bar" (https://sketchfab.com/3d-models/classic-bar-c598e2a864584a42b46b5e08a2ad316d) by nasser3 (https://sketchfab.com/nasser3) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

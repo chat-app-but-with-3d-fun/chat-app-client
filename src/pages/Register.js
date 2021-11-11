@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 //import { createSlice } from "@reduxjs/toolkit";
 
 

@@ -1,0 +1,11 @@
+Model Information:
+* title:	spiderbot-Roberto
+* source:	https://sketchfab.com/3d-models/spiderbot-roberto-976ee0a3e4a441e0a01de1fd977cd954
+* author:	DealwithTheDevil (https://sketchfab.com/DealwithTheDevil)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "spiderbot-Roberto" (https://sketchfab.com/3d-models/spiderbot-roberto-976ee0a3e4a441e0a01de1fd977cd954) by DealwithTheDevil (https://sketchfab.com/DealwithTheDevil) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
