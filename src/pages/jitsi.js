@@ -148,7 +148,7 @@ export default function Jitsi() {
         }
         else if (track.getType() === 'audio'){
             const newAudioTrack = createRef()
-            localAudioArr.current.push(newAudioTrack)
+            remoteAudioArr.current.push(newAudioTrack)
             setCountRemoteAudio([...countRemoteAudio, true])
             remoteAudioArr.current.at(-1).current.srcObject = track.stream
             //Add Event Listeners
