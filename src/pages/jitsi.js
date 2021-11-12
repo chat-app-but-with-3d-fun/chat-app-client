@@ -88,6 +88,7 @@ export default function Jitsi() {
                 deviceId =>
                     console.log(
                         `track audio output device was changed to ${deviceId}`));
+            
             //Creating DOM Elements
             if (localTracks.current[i].getType()  === 'video'){
                 const newVideoTrack = createRef()
@@ -172,22 +173,8 @@ export default function Jitsi() {
         }
     }
 
-
-
     
-     window.JitsiMeetJS.init({disableAudioLevels: true})
-     connection.current = new window.JitsiMeetJS.JitsiConnection(null, null, options);
-     
-     window.JitsiMeetJS.setLogLevel(window.JitsiMeetJS.logLevels.ERROR);
-    
-     connection.current.addEventListener(
-        window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
-        onConnectionSuccess);
-    connection.current.addEventListener(
-        window.JitsiMeetJS.events.connection.CONNECTION_FAILED,
-        onConnectionFailed);
-    
-        function disconnect() {
+    function disconnect() {
             console.log('disconnect!');
             connection.current.removeEventListener(
                 window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
@@ -206,6 +193,19 @@ useEffect(() => {
     remoteVideoArr.current = new Array(0)
     remoteAudioArr.current = new Array(0)
     isJoined.current = false
+    
+    window.JitsiMeetJS.init({disableAudioLevels: true})
+    
+    connection.current = new window.JitsiMeetJS.JitsiConnection(null, null, options);
+    
+    window.JitsiMeetJS.setLogLevel(window.JitsiMeetJS.logLevels.ERROR);
+   
+    connection.current.addEventListener(
+       window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
+       onConnectionSuccess);
+   connection.current.addEventListener(
+       window.JitsiMeetJS.events.connection.CONNECTION_FAILED,
+       onConnectionFailed);
 },[])
 
 
@@ -230,7 +230,7 @@ useEffect(() => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={localVideoArr.current[index]} autoPlay playsInline muted />
             })}
             {localAudioTracks?.map((element, index) => {
-                return <audio ref={localAudioArr.current[index]} muted="true" />
+                return <audio ref={localAudioArr.current[index]} muted={true} />
             })}
 
             <h3>Remote Videos</h3>
@@ -238,7 +238,7 @@ useEffect(() => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={remoteVideoArr.current[index]} autoPlay playsInline muted />
             })}
             {countRemoteAudio?.map((element, index) => {
-                return <audio ref={remoteAudioArr.current[index]} muted="true" />
+                return <audio ref={remoteAudioArr.current[index]} muted={true} />
             })}
         </div>
     )
