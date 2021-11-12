@@ -51,7 +51,7 @@ export default function Jitsi() {
     function onConnectionSuccess() {
         console.log('CONNECTED')
         room.current = connection.current.initJitsiConference('conference', confOptions);
-        console.log('ROOM', room.current)
+        
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_REMOVED, track => {
             console.log(`track removed!!!${track}`);
@@ -61,6 +61,8 @@ export default function Jitsi() {
             console.log('user join');
             remoteTracks.current[id] = [];
         });
+        room.current.join();
+        console.log('ROOM', room.current)
     }
     
     
@@ -195,7 +197,6 @@ useEffect(() => {
     isJoined.current = false
     
     window.JitsiMeetJS.init({disableAudioLevels: true})
-    
     connection.current = new window.JitsiMeetJS.JitsiConnection(null, null, options);
     
     window.JitsiMeetJS.setLogLevel(window.JitsiMeetJS.logLevels.ERROR);
@@ -206,6 +207,15 @@ useEffect(() => {
    connection.current.addEventListener(
        window.JitsiMeetJS.events.connection.CONNECTION_FAILED,
        onConnectionFailed);
+
+    if (window.JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('output')) {
+        window.JitsiMeetJS.mediaDevices.enumerateDevices(devices => {
+        console.log(devices)
+        });
+    }
+    
+
+
 },[])
 
 
