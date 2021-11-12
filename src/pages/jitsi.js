@@ -125,7 +125,7 @@ export default function Jitsi() {
         if (!remoteTracks.current[participant]) {
             remoteTracks.current[participant] = [];
         }
-        const idx = remoteTracks.curent[participant].push(track);
+        const idx = remoteTracks.current[participant].push(track);
         
         if (track.getType() === 'video') {
             const newVideoTrack = createRef()
