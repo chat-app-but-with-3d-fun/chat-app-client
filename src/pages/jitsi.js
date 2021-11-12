@@ -130,7 +130,7 @@ export default function Jitsi() {
         if (track.getType() === 'video') {
             const newVideoTrack = createRef()
             remoteVideoArr.current.push(newVideoTrack)
-            setCountRemoteVideo(...countRemoteVideo, true)
+            setCountRemoteVideo([...countRemoteVideo, true])
             remoteVideoArr.current.at(-1).current.srcObject = track.stream
             //Add Event Listeners
             remoteVideoArr.current.at(-1).current.addEventListener(
