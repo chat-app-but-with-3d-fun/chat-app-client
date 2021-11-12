@@ -248,7 +248,7 @@ useEffect(() => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={remoteVideoArr.current[index]} autoPlay playsInline muted />
             })}
             {countRemoteAudio?.map((element, index) => {
-                return <audio ref={remoteAudioArr.current[index]} muted={true} />
+                return <audio ref={remoteAudioArr.current[index]}  />
             })}
         </div>
     )
