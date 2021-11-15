@@ -1,4 +1,5 @@
 import React, {createRef, useRef, useState, useEffect} from 'react'
+import JitsiParticipant from '../Components/JitsiParticipant';
 
 
 
@@ -21,6 +22,9 @@ export default function Jitsi() {
     const remoteAudioArr   = useRef(null)
     const [countRemoteVideo, setCountRemoteVideo] = useState([])
     const [countRemoteAudio, setCountRemoteAudio] = useState([])
+
+    //Handling Participants
+    const [remotePart, setRemotePart] = useState([])
 
     const confOptions = {};
     
@@ -147,9 +151,12 @@ export default function Jitsi() {
         
         if (track.getType() === 'video') {
             const newVideoTrack = createRef()
+            console.log('BEFORE PUSH', remoteVideoArr.current)
             remoteVideoArr.current.push(newVideoTrack)
             console.log('video ref created and pushed: ', remoteVideoArr.current)
             setCountRemoteVideo([...countRemoteVideo, {participant: participant, track: track}])
+            
+            setRemotePart([...remotePart, {participant: participant, track: track}])
             //Add Event Listeners
             // remoteVideoArr.current.at(-1).current.addEventListener(
             //     window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
@@ -232,7 +239,7 @@ useEffect(() => {
     remoteVideoArr.current = new Array(0)
     remoteAudioArr.current = new Array(0)
     isJoined.current = false
-    
+    console.log('Here is the start: ', remoteVideoArr.current)
     window.JitsiMeetJS.init({disableAudioLevels: true})
     connection.current = new window.JitsiMeetJS.JitsiConnection(null, null, options);
     
@@ -260,7 +267,7 @@ useEffect(() => {
     if (countRemoteVideo?.length > 0){
         console.log('HEY Video WHATS GOING ON?? ', countRemoteVideo.at(-1).track.stream)
         console.log('HEY vid REF whats going on? :', remoteVideoArr.current)
-        // remoteVideoArr.current.at(-1).current.srcObject = countRemoteVideo.at(-1).track.stream
+        remoteVideoArr.current.at(-1).current.srcObject = countRemoteVideo.at(-1).track.stream
     }
 
 }, [countRemoteVideo])
@@ -270,7 +277,7 @@ useEffect(() => {
     if (countRemoteAudio?.length > 0){
         console.log('HEY AUDIO WHATS GOING ON?? ', countRemoteAudio.at(-1).track.stream)
         console.log('HEY REF whats going on? :', remoteAudioArr.current)
-        remoteAudioArr.current.at(-1).current.srcObject = countRemoteAudio.at(-1).track.stream
+        // remoteAudioArr.current.at(-1).current.srcObject = countRemoteAudio.at(-1).track.stream
     }
 
 }, [countRemoteAudio])
@@ -303,7 +310,9 @@ const consoleRoom = () => {
             {countRemoteAudio?.map((element, index) => {
                 return <audio ref={remoteAudioArr.current[index]}  />
             })}
-
+            {/* {remotePart.length >0 && remotePart?.map((element) => {
+                return <JitsiParticipant payload={element}/>
+            })} */}
             <button onClick={consoleRoom}>Print room</button>
         </div>
     )
