@@ -251,15 +251,15 @@ useEffect(() => {
 
 },[])
 
-// useEffect(() => {
-//     console.log('useEffect Video runs')
-//     if (countRemoteVideo?.length > 0){
-//         console.log('HEY Video WHATS GOING ON?? ', countRemoteVideo.at(-1).track.stream)
-//         console.log('HEY vid REF whats going on? :', remoteVideoArr.current)
-//         remoteVideoArr.current.at(-1).current.srcObject = countRemoteVideo.at(-1).track.stream
-//     }
+useEffect(() => {
+    console.log('useEffect Video runs')
+    if (countRemoteVideo?.length > 0){
+        console.log('HEY Video WHATS GOING ON?? ', countRemoteVideo.at(-1).track.stream)
+        console.log('HEY vid REF whats going on? :', remoteVideoArr.current)
+        remoteVideoArr.current.at(-1).current.srcObject = countRemoteVideo.at(-1).track.stream
+    }
 
-// }, [countRemoteVideo])
+}, [countRemoteVideo])
 
 useEffect(() => {
     console.log('useEffect audio runs')
