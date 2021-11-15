@@ -134,15 +134,14 @@ export default function Jitsi() {
             remoteTracks.current[participant] = [];
         }
         console.log('PARTICIPANT: ', participant)
-        
         const idx = remoteTracks.current[participant].push(track);
         
         if (track.getType() === 'video') {
             const newVideoTrack = createRef()
             remoteVideoArr.current.push(newVideoTrack)
-            setCountRemoteVideo([...countRemoteVideo, participant], () => {
-                remoteVideoArr.current.at(-1).current.srcObject = track.stream
-            })
+            setCountRemoteVideo(
+                [...countRemoteVideo, {participant: participant, track: track}]
+            )
             
             //Add Event Listeners
             // remoteVideoArr.current.at(-1).current.addEventListener(
@@ -161,21 +160,21 @@ export default function Jitsi() {
         else if (track.getType() === 'audio'){
             const newAudioTrack = createRef()
             remoteAudioArr.current.push(newAudioTrack)
-            setCountRemoteAudio([...countRemoteAudio, true])
-            remoteAudioArr.current.at(-1).current.srcObject = track.stream
+            setCountRemoteAudio([...countRemoteAudio,{participant: participant, track: track}])
+
             //Add Event Listeners
-            remoteAudioArr.current.at(-1).current.addEventListener(
-                window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
-                audioLevel => console.log(`Audio Level remote: ${audioLevel}`));
-            remoteAudioArr.current.at(-1).current.addEventListener(
-                window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
-                () => console.log('remote track muted'));
-            remoteAudioArr.current.at(-1).current.addEventListener(
-                window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
-                () => console.log('remote track stoped'));
-            remoteAudioArr.current.at(-1).current.addEventListener(
-                window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
-                deviceId => console.log(`track audio output device was changed to ${deviceId}`));
+            // remoteAudioArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
+            //     audioLevel => console.log(`Audio Level remote: ${audioLevel}`));
+            // remoteAudioArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
+            //     () => console.log('remote track muted'));
+            // remoteAudioArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
+            //     () => console.log('remote track stoped'));
+            // remoteAudioArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
+            //     deviceId => console.log(`track audio output device was changed to ${deviceId}`));
         }
     }
 
@@ -240,6 +239,20 @@ useEffect(() => {
 
 
 },[])
+
+useEffect(() => {
+    if (countRemoteVideo?.length > 0){
+        remoteVideoArr.current.at(-1).current.srcObject = countRemoteVideo.at(-1).track.stream
+    }
+
+}, [countRemoteVideo])
+
+useEffect(() => {
+    if (countRemoteAudio?.length > 0){
+        remoteAudioArr.current.at(-1).current.srcObject = countRemoteAudio.at(-1).track.stream
+    }
+
+}, [countRemoteAudio])
 
 
     return (
