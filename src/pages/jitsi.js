@@ -260,7 +260,7 @@ useEffect(() => {
     if (countRemoteVideo?.length > 0){
         console.log('HEY Video WHATS GOING ON?? ', countRemoteVideo.at(-1).track.stream)
         console.log('HEY vid REF whats going on? :', remoteVideoArr.current)
-        remoteVideoArr.current.at(-1).current.srcObject = countRemoteVideo.at(-1).track.stream
+        // remoteVideoArr.current.at(-1).current.srcObject = countRemoteVideo.at(-1).track.stream
     }
 
 }, [countRemoteVideo])
