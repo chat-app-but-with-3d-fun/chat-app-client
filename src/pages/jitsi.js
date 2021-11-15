@@ -142,10 +142,10 @@ export default function Jitsi() {
         const idx = remoteTracks.current[participant].push(track);
         
         if (track.getType() === 'video') {
-            // const newVideoTrack = createRef()
-            // remoteVideoArr.current.push(newVideoTrack)
-            // console.log('video ref created and pushed: ', remoteVideoArr.current)
-            // setCountRemoteVideo([...countRemoteVideo, {participant: participant, track: track}])
+            const newVideoTrack = createRef()
+            remoteVideoArr.current.push(newVideoTrack)
+            console.log('video ref created and pushed: ', remoteVideoArr.current)
+            setCountRemoteVideo([...countRemoteVideo, {participant: participant, track: track}])
             //Add Event Listeners
             // remoteVideoArr.current.at(-1).current.addEventListener(
             //     window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
@@ -161,10 +161,10 @@ export default function Jitsi() {
             //     deviceId => console.log(`track audio output device was changed to ${deviceId}`));
         }
         else if (track.getType() === 'audio'){
-            const newAudioTrack = createRef()
-            remoteAudioArr.current.push(newAudioTrack)
-            console.log('audio ref created and pushed: ', remoteAudioArr.current)
-            setCountRemoteAudio([...countRemoteAudio,{participant: participant, track: track}])
+            // const newAudioTrack = createRef()
+            // remoteAudioArr.current.push(newAudioTrack)
+            // console.log('audio ref created and pushed: ', remoteAudioArr.current)
+            // setCountRemoteAudio([...countRemoteAudio,{participant: participant, track: track}])
             // setTimeout(function() {remoteAudioArr.current.at(-1).current.srcObject = countRemoteAudio.at(-1).track.stream}, 1000)
             //Add Event Listeners
             // remoteAudioArr.current.at(-1).current.addEventListener(
