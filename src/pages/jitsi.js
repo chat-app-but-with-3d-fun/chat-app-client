@@ -60,20 +60,7 @@ export default function Jitsi() {
                         throw error;
                     });
 
-        console.log('CONNECTED with user id: ', room.current.myUserId())
-        room.current.on(window.JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
-        room.current.on(window.JitsiMeetJS.events.conference.TRACK_REMOVED, track => {
-            console.log(`track removed!!!${track}`);
-        });
-        room.current.on(window.JitsiMeetJS.events.conference.CONFERENCE_JOINED, onConferenceJoined);
-        room.current.on(window.JitsiMeetJS.events.conference.USER_JOINED, id => {
-            console.log('other user joined', id);
-            remoteTracks.current[id] = [];
-        });
-        room.current.on(window.JitsiMeetJS.events.conference.USER_LEFT, onUserLeft);
         
-        room.current.join();
-        console.log('ROOM', room.current)
     }
     
     
@@ -118,12 +105,29 @@ export default function Jitsi() {
                 setCountLocalAudio([...countLocalAudio, true])
                 localAudioArr.current.at(-1).current.srcObject = tracks[i].stream
             }
-            if (isJoined.current) {
-                room.current.addTrack(localTracks.current[i]);
-            }
+            // if (isJoined.current) {
+            //     room.current.addTrack(localTracks.current[i]);
+            // }
+            room.current.addTrack(localTracks.current[i])
+            console.log('TRACK added to rooom', room.current)
         }
       
+        console.log('CONNECTED with user id: ', room.current.myUserId())
+        room.current.on(window.JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
+        room.current.on(window.JitsiMeetJS.events.conference.TRACK_REMOVED, track => {
+            console.log(`track removed!!!${track}`);
+        });
+        room.current.on(window.JitsiMeetJS.events.conference.CONFERENCE_JOINED, onConferenceJoined);
+        room.current.on(window.JitsiMeetJS.events.conference.USER_JOINED, id => {
+            console.log('other user joined', id);
+            remoteTracks.current[id] = [];
+        });
+        room.current.on(window.JitsiMeetJS.events.conference.USER_LEFT, onUserLeft);
+        
+        room.current.join();
 
+
+        console.log('ROOM', room.current)
         console.log('AUDIO: ',localAudioArr)
         console.log('VIDEO: ',localVideoArr)
     }
@@ -184,10 +188,10 @@ export default function Jitsi() {
 
     function onConferenceJoined() {
         console.log('conference joined!');
-        isJoined.current = true;
-        for (let i = 0; i < localTracks.current.length; i++) {
-            room.current.addTrack(localTracks.current[i]);
-        }
+        // isJoined.current = true;
+        // for (let i = 0; i < localTracks.current.length; i++) {
+        //     room.current.addTrack(localTracks.current[i]);
+        // }
     }
 
    function onUserLeft(id){
