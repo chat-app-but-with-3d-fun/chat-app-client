@@ -54,6 +54,12 @@ export default function Jitsi() {
     function onConnectionSuccess() {
         room.current = connection.current.initJitsiConference('conference', confOptions);
         
+        window.JitsiMeetJS.createLocalTracks({ devices: [ 'audio', 'video' ] })
+                    .then(onLocalTracks)
+                    .catch(error => {
+                        throw error;
+                    });
+
         console.log('CONNECTED with user id: ', room.current.myUserId())
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_REMOVED, track => {
@@ -274,11 +280,7 @@ const consoleRoom = () => {
         <div style={{marginTop: "100px"}}>
             <button onClick={async() => {
                 connection.current.connect()
-                window.JitsiMeetJS.createLocalTracks({ devices: [ 'audio', 'video' ] })
-                    .then(onLocalTracks)
-                    .catch(error => {
-                        throw error;
-                    });
+                
                 }}>Connect</button>
             <button onClick={() => {disconnect()}}>Disconnect</button>
             
