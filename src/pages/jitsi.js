@@ -13,6 +13,9 @@ export default function Jitsi() {
 
     const localVideoArr    = useRef(null)
     const localAudioArr    = useRef(null)
+    
+    const [countLocalVideo, setCountLocalVideo] = useState([])
+    const [countLocalAudio, setCountLocalAudio]  = useState([])
     const [localVideoTracks, setLocalVideoTracks]   = useState([])
     const [localAudioTracks, setLocalAudioTracks]   = useState([])
 
@@ -97,14 +100,16 @@ export default function Jitsi() {
                 //Add the Video to the List of VideoRefs
                 localVideoArr.current.push(newVideoTrack)
                 //create a new <video> element connected with this ref
-                setLocalVideoTracks([...localVideoTracks, true])
+                // setLocalVideoTracks([...localVideoTracks, true])
+                setCountLocalVideo([...countLocalVideo, true])
                 //add the stream to this video element
                 localVideoArr.current.at(-1).current.srcObject = tracks[i].stream
             }
             else if (localTracks.current[i].getType()  === 'audio'){
                 const newAudioTrack = createRef()
                 localAudioArr.current.push(newAudioTrack)
-                setLocalAudioTracks([...localAudioTracks, true])
+                // setLocalAudioTracks([...localAudioTracks, true])
+                setCountLocalAudio([...countLocalAudio, true])
                 localAudioArr.current.at(-1).current.srcObject = tracks[i].stream
             }
             if (isJoined.current) {
@@ -236,12 +241,18 @@ useEffect(() => {
             })} */}
            {/* <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={localVideoRef} autoPlay playsInline muted /> */}
 
-           {localVideoTracks?.map((element, index) => {
+           {/* {localVideoTracks?.map((element, index) => {
+                return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={localVideoArr.current[index]} autoPlay playsInline muted />
+            })} */}
+            {countLocalVideo?.map((element, index) => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={localVideoArr.current[index]} autoPlay playsInline muted />
             })}
-            {localAudioTracks?.map((element, index) => {
+            {countLocalAudio?.map((element, index) => {
                 return <audio ref={localAudioArr.current[index]} muted={true} />
             })}
+            {/* {localAudioTracks?.map((element, index) => {
+                return <audio ref={localAudioArr.current[index]} muted={true} />
+            })} */}
 
             <h3>Remote Videos</h3>
             {countRemoteVideo?.map((element, index) => {
