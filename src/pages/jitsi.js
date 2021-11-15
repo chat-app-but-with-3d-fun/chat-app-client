@@ -10,15 +10,13 @@ export default function Jitsi() {
     const localTracks      = useRef(null)
     const remoteTracks     = useRef(null);
     
-
+    //Handling the Local tracks
     const localVideoArr    = useRef(null)
     const localAudioArr    = useRef(null)
-    
     const [countLocalVideo, setCountLocalVideo] = useState([])
     const [countLocalAudio, setCountLocalAudio]  = useState([])
-    const [localVideoTracks, setLocalVideoTracks]   = useState([])
-    const [localAudioTracks, setLocalAudioTracks]   = useState([])
 
+    //Handling remote Tracks
     const remoteVideoArr   = useRef(null)
     const remoteAudioArr   = useRef(null)
     const [countRemoteVideo, setCountRemoteVideo] = useState([])
@@ -48,11 +46,14 @@ export default function Jitsi() {
         clientNode: 'http://jitsi.org/jitsimeet', 
     };
     
+   
     function onConnectionFailed() {
         console.log('Connection Failed!');
     }
+   
     function onConnectionSuccess() {
         console.log('CONNECTED')
+        
         room.current = connection.current.initJitsiConference('conference', confOptions);
         
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
@@ -64,6 +65,8 @@ export default function Jitsi() {
             console.log('user join');
             remoteTracks.current[id] = [];
         });
+        room.current.on(window.JitsiMeetJS.events.conference.USER_LEFT, onUserLeft);
+
         room.current.join();
         console.log('ROOM', room.current)
     }
@@ -100,15 +103,13 @@ export default function Jitsi() {
                 //Add the Video to the List of VideoRefs
                 localVideoArr.current.push(newVideoTrack)
                 //create a new <video> element connected with this ref
-                // setLocalVideoTracks([...localVideoTracks, true])
-                setCountLocalVideo([...countLocalVideo, true])
+                 setCountLocalVideo([...countLocalVideo, true])
                 //add the stream to this video element
                 localVideoArr.current.at(-1).current.srcObject = tracks[i].stream
             }
             else if (localTracks.current[i].getType()  === 'audio'){
                 const newAudioTrack = createRef()
                 localAudioArr.current.push(newAudioTrack)
-                // setLocalAudioTracks([...localAudioTracks, true])
                 setCountLocalAudio([...countLocalAudio, true])
                 localAudioArr.current.at(-1).current.srcObject = tracks[i].stream
             }
@@ -116,13 +117,14 @@ export default function Jitsi() {
                 room.current.addTrack(localTracks.current[i]);
             }
         }
-        //add eventlisteners on every element
+      
 
         console.log('AUDIO: ',localAudioArr)
         console.log('VIDEO: ',localVideoArr)
     }
     
     function onRemoteTrack(track) {
+        console.log("NEW REMOTE TRACK: " , track)
         if (track.isLocal()) {
             return;
         }
@@ -130,26 +132,30 @@ export default function Jitsi() {
         if (!remoteTracks.current[participant]) {
             remoteTracks.current[participant] = [];
         }
+        
+
         const idx = remoteTracks.current[participant].push(track);
         
         if (track.getType() === 'video') {
             const newVideoTrack = createRef()
             remoteVideoArr.current.push(newVideoTrack)
-            setCountRemoteVideo([...countRemoteVideo, true])
-            remoteVideoArr.current.at(-1).current.srcObject = track.stream
+            setCountRemoteVideo([...countRemoteVideo, `<video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={remoteVideoArr.current[index]} autoPlay playsInline muted></video>`], () => {
+                remoteVideoArr.current.at(-1).current.srcObject = track.stream
+            })
+            
             //Add Event Listeners
-            remoteVideoArr.current.at(-1).current.addEventListener(
-                window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
-                audioLevel => console.log(`Audio Level remote: ${audioLevel}`));
-            remoteVideoArr.current.at(-1).current.addEventListener(
-                window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
-                () => console.log('remote track muted'));
-            remoteVideoArr.current.at(-1).current.addEventListener(
-                window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
-                () => console.log('remote track stoped'));
-            remoteVideoArr.current.at(-1).current.addEventListener(
-                window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
-                deviceId => console.log(`track audio output device was changed to ${deviceId}`));
+            // remoteVideoArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
+            //     audioLevel => console.log(`Audio Level remote: ${audioLevel}`));
+            // remoteVideoArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
+            //     () => console.log('remote track muted'));
+            // remoteVideoArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
+            //     () => console.log('remote track stoped'));
+            // remoteVideoArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
+            //     deviceId => console.log(`track audio output device was changed to ${deviceId}`));
         }
         else if (track.getType() === 'audio'){
             const newAudioTrack = createRef()
@@ -180,6 +186,17 @@ export default function Jitsi() {
         }
     }
 
+   function onUserLeft(id){
+       console.log({
+           message: 'USER LEFT',
+           id:  id,
+           remoteTr: remoteTracks.current,
+           remoteArr: remoteVideoArr.current,
+           remoteAArr: remoteAudioArr.current,
+           countRemVid: countRemoteVideo
+           }    )
+
+   }
     
     function disconnect() {
             console.log('disconnect!');
@@ -236,27 +253,19 @@ useEffect(() => {
                 }}>Connect</button>
             <button onClick={() => {disconnect()}}>Disconnect</button>
             
-            {/* {localVideoTracks?.map((element, index) => {
-                return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={localVideoRef} autoPlay playsInline muted />
-            })} */}
-           {/* <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={localVideoRef} autoPlay playsInline muted /> */}
-
-           {/* {localVideoTracks?.map((element, index) => {
-                return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={localVideoArr.current[index]} autoPlay playsInline muted />
-            })} */}
             {countLocalVideo?.map((element, index) => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={localVideoArr.current[index]} autoPlay playsInline muted />
             })}
             {countLocalAudio?.map((element, index) => {
                 return <audio ref={localAudioArr.current[index]} muted={true} />
             })}
-            {/* {localAudioTracks?.map((element, index) => {
-                return <audio ref={localAudioArr.current[index]} muted={true} />
-            })} */}
 
             <h3>Remote Videos</h3>
-            {countRemoteVideo?.map((element, index) => {
+            {/* {countRemoteVideo?.map((element, index) => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={remoteVideoArr.current[index]} autoPlay playsInline muted />
+            })} */}
+                        {countRemoteVideo?.map((element, index) => {
+                return element
             })}
             {countRemoteAudio?.map((element, index) => {
                 return <audio ref={remoteAudioArr.current[index]}  />
