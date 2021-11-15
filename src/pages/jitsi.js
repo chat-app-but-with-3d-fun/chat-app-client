@@ -52,9 +52,9 @@ export default function Jitsi() {
     }
    
     function onConnectionSuccess() {
-        console.log('CONNECTED')
-        
         room.current = connection.current.initJitsiConference('conference', confOptions);
+        
+        console.log('CONNECTED with user id: ', room.current.myUserId())
         
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_REMOVED, track => {
@@ -62,7 +62,7 @@ export default function Jitsi() {
         });
         room.current.on(window.JitsiMeetJS.events.conference.CONFERENCE_JOINED, onConferenceJoined);
         room.current.on(window.JitsiMeetJS.events.conference.USER_JOINED, id => {
-            console.log('user join');
+            console.log('other user joined', id);
             remoteTracks.current[id] = [];
         });
         room.current.on(window.JitsiMeetJS.events.conference.USER_LEFT, onUserLeft);
@@ -124,22 +124,23 @@ export default function Jitsi() {
     }
     
     function onRemoteTrack(track) {
-        console.log("NEW REMOTE TRACK: " , track)
+        
         if (track.isLocal()) {
             return;
         }
+        console.log("NEW REMOTE TRACK: " , track)
         const participant = track.getParticipantId();
         if (!remoteTracks.current[participant]) {
             remoteTracks.current[participant] = [];
         }
+        console.log('PARTICIPANT: ', participant)
         
-
         const idx = remoteTracks.current[participant].push(track);
         
         if (track.getType() === 'video') {
             const newVideoTrack = createRef()
             remoteVideoArr.current.push(newVideoTrack)
-            setCountRemoteVideo([...countRemoteVideo, `<video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={remoteVideoArr.current[index]} autoPlay playsInline muted></video>`], () => {
+            setCountRemoteVideo([...countRemoteVideo, participant], () => {
                 remoteVideoArr.current.at(-1).current.srcObject = track.stream
             })
             
@@ -261,12 +262,10 @@ useEffect(() => {
             })}
 
             <h3>Remote Videos</h3>
-            {/* {countRemoteVideo?.map((element, index) => {
+            {countRemoteVideo?.map((element, index) => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} ref={remoteVideoArr.current[index]} autoPlay playsInline muted />
-            })} */}
-                        {countRemoteVideo?.map((element, index) => {
-                return element
             })}
+
             {countRemoteAudio?.map((element, index) => {
                 return <audio ref={remoteAudioArr.current[index]}  />
             })}
