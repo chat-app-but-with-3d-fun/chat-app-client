@@ -200,6 +200,12 @@ export default function Jitsi() {
     
     function disconnect() {
             console.log('disconnect!');
+            for (let i = 0; i < localTracks.current.length; i++) {
+                localTracks.current[i].dispose();
+            }
+            room.current.leave();
+            
+            
             connection.current.removeEventListener(
                 window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
                 onConnectionSuccess);
@@ -209,6 +215,7 @@ export default function Jitsi() {
             connection.current.removeEventListener(
                 window.JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED,
                 disconnect);
+            connection.current.disconnect();
         }
     
 
@@ -255,6 +262,10 @@ useEffect(() => {
 }, [countRemoteAudio])
 
 
+const consoleRoom = () => {
+    console.log('WHAT THE ROOM: ', room.current)
+}
+
     return (
         <div style={{marginTop: "100px"}}>
             <button onClick={async() => {
@@ -282,6 +293,8 @@ useEffect(() => {
             {countRemoteAudio?.map((element, index) => {
                 return <audio ref={remoteAudioArr.current[index]}  />
             })}
+
+            <button onClick={consoleRoom}>Print room</button>
         </div>
     )
 }
