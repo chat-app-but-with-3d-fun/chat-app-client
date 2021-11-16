@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import  socketIOClient from "socket.io-client";
+import socketIOClient from 'socket.io-client'
+import { userSlice } from '../user/userSlice'
+
+let socket;
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -24,16 +27,48 @@ export const apiSlice = createApi({
         url: 'user/login',
         method: 'POST',
         body: userData
-      })
+      }),
+      async onQueryStarted(userData, { dispatch, queryFulfilled }) {
+        try {
+          const { data: { userId } } = await queryFulfilled
+          socket = new socketIOClient('http://127.0.0.1:5000', {query: `userId=${userId}`})
+          console.log(`new connection with userId => `, userId)
+          // dispatch(
+          //   apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
+          //     draft.messages.push(message)
+          //   })
+          // )
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      },
     }),
     authUser: builder.mutation({
       query: () => ({
         url: 'user/auth',
         method: 'POST',
-      })
+      }),
+      async onQueryStarted(userData, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          socket = new socketIOClient('http://127.0.0.1:5000', {query: `userId=${data._id}`})
+          console.log(`new connection with id => `, data._id)
+          dispatch(
+            userSlice.actions.setUser(data)
+          )
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      },
     }),
     logoutUser: builder.query({
-      query: () => 'user/logout'
+      query: () => 'user/logout',
+      async onCacheEntryAdded(
+        args,
+        { cacheEntryRemoved }
+      ) {
+        await cacheEntryRemoved
+      }
     }),
     findFriend: builder.mutation({
       query: ({userId, input}) => ({
@@ -61,54 +96,50 @@ export const apiSlice = createApi({
         `room/${roomId}/${friendId}`
       )
     }),
-    //Get Connection
-    getConnection: builder.query({
-      query: (nr) => `user/test`,
-      async onCacheEntryAdded(
-        arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
-        // create a websocket connection when the cache subscription starts
-        console.log('new connection')
-        const socket = new socketIOClient('http://127.0.0.1:5000', {query: "userId=6183ad4539b3ca649db76100"})
-        console.log('SOCKET: ', socket)
-        try {
-          await cacheDataLoaded
-          console.log('CAHCE: ',cacheDataLoaded)
-          const handshake = (payload) => {
-            console.log('At least this shows up --> UserId', payload)
-            socket.emit('handshake', payload)
-          }
-          const newMsg = (message) => {
-            console.log('Message arrives: ', message)
-            updateCachedData((draft) => {
-              console.log("UPADTE: ", updateCachedData)
-              console.log('DRAFT: ', draft)
-              // draft.push(message)
-            })
-            
-          }
-
-
-
-          socket.on('register', handshake) 
-          socket.on('newMsg', newMsg)
-        } catch {
-        }
-        
-      },
-    }),
     // messages
     getMessages: builder.query({
-      query: (roomId) => `msg/${roomId}`
+      query: (roomId) => `msg/${roomId}`,
+      async onCacheEntryAdded(
+        roomId,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
+        await cacheDataLoaded
+        const handshake = (message) => {
+          try {
+            if (message) updateCachedData(
+              (draft) => {
+                draft.messages.push(message)
+              }
+            )
+          } catch (error) {
+            console.log('[ERROR]', error)
+          }
+        }
+        socket.on('newMsg', handshake)
+        await cacheEntryRemoved
+        // cacheEntryRemoved will resolve when the cache subscription is no longer active
+        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
+      },
     }),
     sendMessage: builder.mutation({
       query: (message) => ({
         url: `msg/newmsg`,
         method: 'POST',
-        body: message // => { roomId: xxx, msg: text }
-      })
-    })
+        body: message // => { roomId: xxx, message: text, sender: userId, type: 'chat' }
+      }),
+      async onQueryStarted(message, { dispatch, queryFulfilled }) {
+        try {
+          const { data: newMsg } = await queryFulfilled
+          dispatch(
+            apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
+              draft.messages.push(message)
+            })
+          )
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      },
+    }),
   })
 })
 
@@ -117,5 +148,6 @@ export const {
   useLoginUserMutation,
   useAuthUserMutation,
   useLogoutUserQuery,
-  useGetConnectionQuery
+  useGetMessagesQuery,
+  useSendMessageMutation
 } = apiSlice

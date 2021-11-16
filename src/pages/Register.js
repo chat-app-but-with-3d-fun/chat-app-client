@@ -5,6 +5,7 @@ import SignupForm from '../components/SignupForm'
 import LoginForm from '../components/LoginForm'
 import {Stack, Container, Box, ButtonGroup, Button,Snackbar} from '@mui/material';
 import MuiAlert from '@mui/material/Alert'
+import { selectUserId } from '../features/user/userSlice'
 
 const Registration = () => {
   const [formType, setFormType] = useState('signup')
@@ -13,7 +14,7 @@ const Registration = () => {
   //   code: '',
   //   isOpen: false
   // });
-  const user = useSelector(state => state.user)
+  const userId = useSelector(selectUserId)
 
   let history = useHistory()
 
@@ -49,7 +50,7 @@ const Registration = () => {
     : setFormType('signin')
   }, [])
 
-  if (user.username) {
+  if (userId) {
     return <Redirect to='/dashboard' />
   } else {
     return (

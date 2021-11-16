@@ -1,21 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Box, Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
 import { deepPurple } from '@mui/material/colors';
 import { FixedSizeList } from 'react-window';
+import { useGetMessagesQuery, useSendMessageMutation } from "../features/api/apiSlice"
+import { useSelector } from 'react-redux';
+import { selectUserId } from '../features/user/userSlice';
 
 
 export default function ChatBox(props) {
-    
-    const {messageList, user, room} = props
+    const [ message, setMessage ] = useState('')
+    const [ sendMessage, { isLoading } ] = useSendMessageMutation()
+    const {messageList, room} = props
+    const userId = useSelector(selectUserId)
     
     const decideSide = (otherId) => {
-        if (user._id === otherId){
+        if (userId === otherId){
             return 'flex-end'
         } else {
             return 'flex-start'
         }
      }
+
+     const sendMessageHandler = () => {
+        console.log('sending =>', message)
+        sendMessage({
+          sender: userId,
+          roomId: '618a4c50a886683b026cfb54',
+          type: 'chat',
+          message: message
+        })
+        setMessage('')
+      }
      
      const getDate = (dateInput) => {
         const dateNow   = new Date() 
@@ -78,7 +94,7 @@ export default function ChatBox(props) {
                         <TextField id="outlined-basic-email" label="Type Something" fullWidth />
                     </Grid>
                     <Grid xs={1} align="right">
-                        <Fab color="primary" aria-label="add"><SendIcon /></Fab>
+                        <Fab color="primary" aria-label="add" onClick={sendMessageHandler}><SendIcon /></Fab>
                     </Grid>
                 </Grid>
             </Grid>
