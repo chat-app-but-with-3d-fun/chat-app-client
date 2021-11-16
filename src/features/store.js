@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './user/userSlice'
-import roomReducer from './messages/roomSlice'
+import roomReducer from './room/roomSlice'
 import { apiSlice } from './api/apiSlice'
 
 export default configureStore({

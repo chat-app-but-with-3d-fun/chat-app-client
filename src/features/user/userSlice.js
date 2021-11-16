@@ -16,7 +16,9 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, { payload }) => {
       for (let key in payload) {
-        state[key] = payload[key]
+        key === '_id'
+        ? state.userId = payload[key]
+        : state[key] = payload[key]
       }
     },
     userLogout: (state, action) => {
@@ -24,6 +26,8 @@ export const userSlice = createSlice({
     }
   }
 })
+
+export const selectUserId = state => state.user.userId
 
 export const { setUser, userLogout } = userSlice.actions
 
