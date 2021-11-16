@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import socketIOClient from 'socket.io-client'
+import { userSlice } from '../user/userSlice'
 
-const socket = new socketIOClient('http://127.0.0.1:5000', {query: "userId=618a4b43a886683b026cfb4e"})
+let socket
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -26,16 +27,48 @@ export const apiSlice = createApi({
         url: 'user/login',
         method: 'POST',
         body: userData
-      })
+      }),
+      async onQueryStarted(userData, { dispatch, queryFulfilled }) {
+        try {
+          const { data: { userId } } = await queryFulfilled
+          socket = new socketIOClient('http://127.0.0.1:5000', {query: `userId=${userId}`})
+          console.log(`new connection with userId => `, userId)
+          // dispatch(
+          //   apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
+          //     draft.messages.push(message)
+          //   })
+          // )
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      },
     }),
     authUser: builder.mutation({
       query: () => ({
         url: 'user/auth',
         method: 'POST',
-      })
+      }),
+      async onQueryStarted(userData, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          socket = new socketIOClient('http://127.0.0.1:5000', {query: `userId=${data._id}`})
+          console.log(`new connection with id => `, data._id)
+          dispatch(
+            userSlice.actions.setUser(data)
+          )
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      },
     }),
     logoutUser: builder.query({
-      query: () => 'user/logout'
+      query: () => 'user/logout',
+      async onCacheEntryAdded(
+        args,
+        { cacheEntryRemoved }
+      ) {
+        await cacheEntryRemoved
+      }
     }),
     findFriend: builder.mutation({
       query: ({userId, input}) => ({
