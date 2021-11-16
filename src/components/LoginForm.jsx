@@ -33,7 +33,7 @@ const LoginForm = () => {
     await loginUser(inputs)
   }
 
-  if (isError) console.log('ERROR =>', error.data.error.message)
+  if (isError) console.log('ERROR =>', error)
   if (isSuccess) {
     console.log(`Welcome, ${data.username}`)
     dispatch(setUser(data))

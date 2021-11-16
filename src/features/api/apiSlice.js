@@ -7,7 +7,7 @@ let socket;
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/',
+    baseUrl: 'https://mysterious-basin-77886.herokuapp.com/',
     prepareHeaders(headers) {
       return headers;
     },
@@ -31,7 +31,7 @@ export const apiSlice = createApi({
       async onQueryStarted(userData, { dispatch, queryFulfilled }) {
         try {
           const { data: { userId } } = await queryFulfilled
-          socket = new socketIOClient('http://127.0.0.1:5000', {query: `userId=${userId}`})
+          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userId}`})
           console.log(`new connection with userId => `, userId)
           // dispatch(
           //   apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
@@ -51,7 +51,7 @@ export const apiSlice = createApi({
       async onQueryStarted(userData, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
-          socket = new socketIOClient('http://127.0.0.1:5000', {query: `userId=${data._id}`})
+          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${data._id}`})
           console.log(`new connection with id => `, data._id)
           dispatch(
             userSlice.actions.setUser(data)

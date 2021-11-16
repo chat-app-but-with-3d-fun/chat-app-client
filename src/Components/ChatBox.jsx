@@ -20,9 +20,13 @@ export default function ChatBox(props) {
         } else {
             return 'flex-start'
         }
-     }
+    }
 
-     const sendMessageHandler = () => {
+    const inputHandler = (e) => {
+        setMessage(e.target.value)
+    }
+
+    const sendMessageHandler = () => {
         console.log('sending =>', message)
         sendMessage({
           sender: userId,
@@ -31,7 +35,7 @@ export default function ChatBox(props) {
           message: message
         })
         setMessage('')
-      }
+    }
      
      const getDate = (dateInput) => {
         const dateNow   = new Date() 
@@ -57,7 +61,7 @@ export default function ChatBox(props) {
                     }}
                 >
                 <List>
-                    {messageList.map((element, index) => {
+                    {messageList?.map((element, index) => {
                     return(
                     <ListItem key={index}>
                        <Grid container 
@@ -91,7 +95,7 @@ export default function ChatBox(props) {
                 <Divider />
                 <Grid container style={{padding: '20px'}}>
                     <Grid item xs={11}>
-                        <TextField id="outlined-basic-email" label="Type Something" fullWidth />
+                        <TextField id="outlined-basic-email" label="Type Something" onChange={(inputHandler)} fullWidth />
                     </Grid>
                     <Grid xs={1} align="right">
                         <Fab color="primary" aria-label="add" onClick={sendMessageHandler}><SendIcon /></Fab>
