@@ -17,7 +17,7 @@ const initialState = {
 const LoginForm = () => {
   const [inputs, setInputs] = useState(initialState)
 
-  const [loginUser, {data: userData, error, isLoading, isSuccess, isError }] = useLoginUserMutation()
+  const [loginUser, { data, error, isLoading, isSuccess, isError }] = useLoginUserMutation()
 
   const dispatch = useDispatch()
 
@@ -35,10 +35,8 @@ const LoginForm = () => {
 
   if (isError) console.log('ERROR =>', error.data.error.message)
   if (isSuccess) {
-    console.log(`Welcome, ${userData.username}`)
-    dispatch(
-      setUser(userData)
-    )
+    console.log(`Welcome, ${data.username}`)
+    dispatch(setUser(data))
   }
 
   return (
@@ -49,8 +47,8 @@ const LoginForm = () => {
             required
             fullWidth
             variant='outlined'
-            name="email"
-            label='Email'
+            name="username"
+            label='Username'
             size='small'
             onChange={handleInput}
           />
