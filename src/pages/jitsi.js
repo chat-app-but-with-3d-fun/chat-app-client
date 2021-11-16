@@ -14,8 +14,6 @@ export default function Jitsi() {
 
 
     //Handling the Local tracks
-    const localVideoArr    = useRef(null)
-    const localAudioArr    = useRef(null)
     const [countLocalVideo, setCountLocalVideo] = useState(null)
     const [countLocalAudio, setCountLocalAudio]  = useState(null)
 
@@ -25,10 +23,8 @@ export default function Jitsi() {
     const [countRemoteVideo, setCountRemoteVideo] = useState([])
     const [countRemoteAudio, setCountRemoteAudio] = useState([])
 
-    let newTrack = null
 
-    //Handling Participants
-    const [remotePart, setRemotePart] = useState([])
+    //Handling Talk
     const [isMuted, setIsMuted]       = useState(true)
 
     const confOptions = {};
@@ -96,7 +92,7 @@ export default function Jitsi() {
             //Preparing the Ref
             const newTrack = createRef()
             const tmpObject = {ref: newTrack, media: localTracks.current[i] }
-                
+            
 
             //Creating DOM Elements
             if (localTracks.current[i].getType()  === 'video'){
@@ -106,9 +102,7 @@ export default function Jitsi() {
                 tmpObject.media.mute()
                 setCountLocalAudio(tmpObject)
             }
-           
-            room.current.addTrack(localTracks.current[i])
-            console.log('TRACK added to rooom', room.current)
+            room.current.addTrack(localTracks.current[i])   
         }
       
         console.log('CONNECTED with user id: ', room.current.myUserId())
@@ -176,32 +170,39 @@ export default function Jitsi() {
        console.log({
            message: 'USER LEFT',
            id:  id,
-           remoteTr: remoteTracks.current,
-           remoteArr: remoteVideoArr.current,
-           remoteAArr: remoteAudioArr.current,
            countRemVid: countRemoteVideo
            }    )
 
    }
     
-    function disconnect() {
-            console.log('disconnect!');
-            for (let i = 0; i < localTracks.current.length; i++) {
-                localTracks.current[i].dispose();
+    async function disconnect() {
+            console.log('disconnect!', countLocalAudio.media, countLocalVideo.media);
+            try {
+                const resultAudio = await countLocalAudio.media.dispose()
+                const resultVideo = await countLocalVideo.media.dispose()
+                console.log('WHAT IS HERE??', resultAudio, resultVideo)
+                if (resultAudio && resultVideo){
+                    const resultExit = await room.current.leave();
+                    console.log('ROOM LEFT: ', resultExit)
+                    if (resultExit) {
+                        connection.current.removeEventListener(
+                            window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
+                            onConnectionSuccess);
+                        connection.current.removeEventListener(
+                            window.JitsiMeetJS.events.connection.CONNECTION_FAILED,
+                            onConnectionFailed);
+                        connection.current.removeEventListener(
+                            window.JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED,
+                            disconnect);
+                        connection.current.disconnect();
+                    }
+                }
             }
-            room.current.leave();
+            catch(error){
+                console.error('SOMETHING WRONG: ',error)
+            }
             
-            
-            connection.current.removeEventListener(
-                window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
-                onConnectionSuccess);
-            connection.current.removeEventListener(
-                window.JitsiMeetJS.events.connection.CONNECTION_FAILED,
-                onConnectionFailed);
-            connection.current.removeEventListener(
-                window.JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED,
-                disconnect);
-            connection.current.disconnect();
+
 
         }
     
@@ -306,9 +307,7 @@ const handleMute = () => {
             {countRemoteAudio?.map((element, index) => {
                 return <audio ref={element.ref} key={`remoteAudio${index}`} autoPlay/>
             })}
-            {/* {remotePart.length >0 && remotePart?.map((element) => {
-                return <JitsiParticipant payload={element}/>
-            })} */}
+
             <button onClick={consoleRoom}>Print room</button>
             
             <button onClick={handleMute}>{isMuted  ?  'Speak' : "Pssstt"}</button>
