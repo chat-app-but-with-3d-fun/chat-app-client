@@ -175,18 +175,18 @@ export default function Jitsi() {
             const tmpObject = {ref: newAudioTrack, media: track}
             setCountRemoteAudio([...countRemoteAudio,tmpObject])
             //Add Event Listeners
-        //     remoteAudioArr.current.at(-1).current.addEventListener(
-        //         window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
-        //         audioLevel => console.log(`Audio Level remote: ${audioLevel}`));
-        //     remoteAudioArr.current.at(-1).current.addEventListener(
-        //         window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
-        //         () => console.log('remote track muted'));
-        //     remoteAudioArr.current.at(-1).current.addEventListener(
-        //         window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
-        //         () => console.log('remote track stoped'));
-        //     remoteAudioArr.current.at(-1).current.addEventListener(
-        //         window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
-        //         deviceId => console.log(`track audio output device was changed to ${deviceId}`));
+            // remoteAudioArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
+            //     audioLevel => console.log(`Audio Level remote: ${audioLevel}`));
+            // remoteAudioArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
+            //     () => console.log('remote track muted'));
+            // remoteAudioArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
+            //     () => console.log('remote track stoped'));
+            // remoteAudioArr.current.at(-1).current.addEventListener(
+            //     window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
+            //     deviceId => console.log(`track audio output device was changed to ${deviceId}`));
          }
     }
 
