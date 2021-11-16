@@ -296,7 +296,7 @@ const consoleRoom = () => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} key={`localVideo${index}`} ref={localVideoArr.current[index]} autoPlay playsInline muted />
             })}
             {countLocalAudio?.map((element, index) => {
-                return <audio ref={localAudioArr.current[index]} key={`localAudio${index}`} autoPlay/>
+                return <audio ref={localAudioArr.current[index]} key={`localAudio${index}`} autoPlay muted/>
             })}
 
             <h3>Remote Videos</h3>
