@@ -63,10 +63,7 @@ export default function Jitsi() {
                     .catch(error => {
                         throw error;
                     });
-
-        
     }
-    
     
     function onLocalTracks(tracks) {
         const tmpVideoArr     = []
@@ -90,8 +87,7 @@ export default function Jitsi() {
             localTracks.current[i].addEventListener(
                 window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
                 deviceId =>
-                    console.log(
-                        `track audio output device was changed to ${deviceId}`));
+                    console.log(`track audio output device was changed to ${deviceId}`));
             
             //Creating DOM Elements
             if (localTracks.current[i].getType()  === 'video'){
@@ -155,7 +151,6 @@ export default function Jitsi() {
             remoteVideoArr.current.push(newVideoTrack)
             console.log('video ref created and pushed: ', remoteVideoArr.current)
             setCountRemoteVideo([...countRemoteVideo, {participant: participant, track: track}])
-            
             setRemotePart([...remotePart, {participant: participant, track: track}])
             //Add Event Listeners
             // remoteVideoArr.current.at(-1).current.addEventListener(
@@ -172,11 +167,10 @@ export default function Jitsi() {
             //     deviceId => console.log(`track audio output device was changed to ${deviceId}`));
         }
         else if (track.getType() === 'audio'){
-            // const newAudioTrack = createRef()
-            // remoteAudioArr.current.push(newAudioTrack)
-            // console.log('audio ref created and pushed: ', remoteAudioArr.current)
-            // setCountRemoteAudio([...countRemoteAudio,{participant: participant, track: track}])
-            // setTimeout(function() {remoteAudioArr.current.at(-1).current.srcObject = countRemoteAudio.at(-1).track.stream}, 1000)
+            const newAudioTrack = createRef()
+            remoteAudioArr.current.push(newAudioTrack)
+            console.log('audio ref created and pushed: ', remoteAudioArr.current)
+            setCountRemoteAudio([...countRemoteAudio,{participant: participant, track: track}])
             //Add Event Listeners
             // remoteAudioArr.current.at(-1).current.addEventListener(
             //     window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
@@ -277,7 +271,7 @@ useEffect(() => {
     if (countRemoteAudio?.length > 0){
         console.log('HEY AUDIO WHATS GOING ON?? ', countRemoteAudio.at(-1).track.stream)
         console.log('HEY REF whats going on? :', remoteAudioArr.current)
-        // remoteAudioArr.current.at(-1).current.srcObject = countRemoteAudio.at(-1).track.stream
+        remoteAudioArr.current.at(-1).current.srcObject = countRemoteAudio.at(-1).track.stream
     }
 
 }, [countRemoteAudio])
