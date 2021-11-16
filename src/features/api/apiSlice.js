@@ -1,4 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import socketIOClient from 'socket.io-client'
+
+const socket = new socketIOClient('http://127.0.0.1:5000', {query: "userId=618a4b43a886683b026cfb4e"})
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -62,15 +65,48 @@ export const apiSlice = createApi({
     }),
     // messages
     getMessages: builder.query({
-      query: (roomId) => `msg/${roomId}`
+      query: (roomId) => `msg/${roomId}`,
+      async onCacheEntryAdded(
+        roomId,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
+        await cacheDataLoaded
+        const handshake = (message) => {
+          try {
+            if (message) updateCachedData(
+              (draft) => {
+                draft.messages.push(message)
+              }
+            )
+          } catch (error) {
+            console.log('[ERROR]', error)
+          }
+        }
+        socket.on('newMsg', handshake)
+        await cacheEntryRemoved
+        // cacheEntryRemoved will resolve when the cache subscription is no longer active
+        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
+      },
     }),
     sendMessage: builder.mutation({
       query: (message) => ({
         url: `msg/newmsg`,
         method: 'POST',
-        body: message // => { roomId: xxx, msg: text }
-      })
-    })
+        body: message // => { roomId: xxx, message: text, sender: userId, type: 'chat' }
+      }),
+      async onQueryStarted(message, { dispatch, queryFulfilled }) {
+        try {
+          const { data: newMsg } = await queryFulfilled
+          dispatch(
+            apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
+              draft.messages.push(message)
+            })
+          )
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      },
+    }),
   })
 })
 
@@ -78,5 +114,7 @@ export const {
   useSignupUserMutation,
   useLoginUserMutation,
   useAuthUserMutation,
-  useLogoutUserQuery
+  useLogoutUserQuery,
+  useGetMessagesQuery,
+  useSendMessageMutation
 } = apiSlice
