@@ -4,7 +4,7 @@ import  socketIOClient from "socket.io-client";
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/',
+    baseUrl: 'https://mysterious-basin-77886.herokuapp.com/',
     prepareHeaders(headers) {
       return headers;
     },

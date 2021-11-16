@@ -14,12 +14,13 @@ const App = () => {
     <div className="App">
       <Router>
         <Switch>
+        <Route exact path="/sign-:form" component={Register} />
           <Sidebar >
             <Route exact path="/" component={Home} />
             <Route path="/chat/" component={Room} />
             <Route path='/jitsi' component={Jitsi} />
           </Sidebar>
-          <Route path="/sign-:form" component={Register} />
+         
           {/* <Route exact path="/dashboard" component={Dashboard} /> */}
         </Switch>
       </Router>
