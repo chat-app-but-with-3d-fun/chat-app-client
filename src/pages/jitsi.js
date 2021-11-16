@@ -296,7 +296,7 @@ const consoleRoom = () => {
                 return <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} key={`localVideo${index}`} ref={localVideoArr.current[index]} autoPlay playsInline muted />
             })}
             {countLocalAudio?.map((element, index) => {
-                return <audio ref={localAudioArr.current[index]} key={`localAudio${index}`} muted={false} />
+                return <audio ref={localAudioArr.current[index]} key={`localAudio${index}`} autoplay={true}/>
             })}
 
             <h3>Remote Videos</h3>
@@ -305,7 +305,7 @@ const consoleRoom = () => {
             })}
 
             {countRemoteAudio?.map((element, index) => {
-                return <audio ref={remoteAudioArr.current[index]} key={`remoteAudio${index}`} />
+                return <audio ref={remoteAudioArr.current[index]} key={`remoteAudio${index}`} autoplay={true}/>
             })}
             {/* {remotePart.length >0 && remotePart?.map((element) => {
                 return <JitsiParticipant payload={element}/>
