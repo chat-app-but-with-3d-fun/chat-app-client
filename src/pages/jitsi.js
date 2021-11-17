@@ -1,3 +1,4 @@
+import { cleanup } from '@testing-library/react';
 import React, {createRef, useRef, useState, useEffect} from 'react'
 import JitsiParticipant from '../Components/JitsiParticipant';
 
@@ -58,7 +59,6 @@ export default function Jitsi() {
    
     function onConnectionSuccess() {
         room.current = connection.current.initJitsiConference('conference', confOptions);
-        
         window.JitsiMeetJS.createLocalTracks({ devices: [ 'audio', 'video' ] })
                     .then(onLocalTracks)
                     .catch(error => {
@@ -66,6 +66,56 @@ export default function Jitsi() {
                     });
     }
     
+    function leaveConference(track) {
+     if (track.ownerEndpointId){
+        if (track.type === 'audio'){
+           console.log('Remote audio left - schould follow mystreams...') 
+           console.log(countRemoteAudio)
+           console.log(countRemoteVideo)
+         }
+         if (track.type === 'video'){
+            console.log('Remote video left - schould follow mystreams...') 
+            console.log(countRemoteAudio)
+            console.log(countRemoteVideo)
+          }
+       }
+       else {
+        const checkLocalAlive = room.current.getLocalTracks()
+        if (checkLocalAlive === 0){
+             console.log('all the tracks disposed')
+             setCountLocalVideo(null)
+             setCountLocalAudio(null)
+             setCountRemoteVideo(null)
+             setCountRemoteAudio(null)
+             room.current.leave();
+        }
+       }
+       
+
+
+    }
+
+    function cleanUp(){
+        console.log('ROOM closed, conference will be disconnected')
+        connection.current.removeEventListener(
+            window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
+            onConnectionSuccess);
+        connection.current.removeEventListener(
+            window.JitsiMeetJS.events.connection.CONNECTION_FAILED,
+            onConnectionFailed);
+        connection.current.removeEventListener(
+            window.JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED,
+            disconnect);
+        connection.current.disconnect();
+    }
+    
+    async function disconnect() {
+        console.log('start to disconnect!');
+        countLocalAudio?.media.dispose()
+        countLocalVideo?.media.dispose()
+}
+
+
     function onLocalTracks(tracks) {
         localTracks.current = tracks
 
@@ -80,7 +130,7 @@ export default function Jitsi() {
                 () => console.log('local track muted'));
             localTracks.current[i].addEventListener(
                 window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
-                () => console.log('local track stoped'));
+                () => console.log('local track should be removed'))
             localTracks.current[i].addEventListener(
                 window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
                 deviceId =>
@@ -103,22 +153,22 @@ export default function Jitsi() {
             room.current.addTrack(localTracks.current[i])   
         }
       
-        console.log('CONNECTED with user id: ', room.current.myUserId())
+        
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
         room.current.on(window.JitsiMeetJS.events.conference.TRACK_REMOVED, track => {
-            console.log(`track removed!!!${track}`);
+            leaveConference(track);
         });
-        room.current.on(window.JitsiMeetJS.events.conference.CONFERENCE_JOINED, onConferenceJoined);
+        room.current.on(window.JitsiMeetJS.events.conference.CONFERENCE_JOINED, 
+            () => console.log('CONNECTED with user id: ', room.current.myUserId()));
+        room.current.on(window.JitsiMeetJS.events.conference.CONFERENCE_LEFT,  cleanUp)
         room.current.on(window.JitsiMeetJS.events.conference.USER_JOINED, id => {
             console.log('other user joined', id);
-            // remoteTracks.current[id] = [];
         });
         room.current.on(window.JitsiMeetJS.events.conference.USER_LEFT, onUserLeft);
         
+
         room.current.join();
 
-
-        console.log('ROOM', room.current)
     }
     
     function onRemoteTrack(track) {
@@ -128,11 +178,7 @@ export default function Jitsi() {
 
         console.log("NEW REMOTE TRACK: " , track)
         const participant = track.getParticipantId();
-        // if (!remoteTracks.current[participant]) {
-        //     remoteTracks.current[participant] = [];
-        // }
         console.log('PARTICIPANT: ', participant)
-        // const idx = remoteTracks.current[participant].push(track);
         
         //Add Event Listener
         track.addEventListener(
@@ -160,66 +206,29 @@ export default function Jitsi() {
     }
 
 
-    function onConferenceJoined() {
-        console.log('conference joined!');
-    }
-
    function onUserLeft(id){
        console.log({
            message: 'USER LEFT',
            id:  id,
            countRemVid: countRemoteVideo
            }    )
+        countRemoteVideo.filter(element => {})
 
    }
     
-    async function disconnect() {
-            console.log('disconnect!', countLocalAudio.media, countLocalVideo.media);
-            try {
-                const resultAudio = await countLocalAudio.media.dispose()
-                const resultVideo = await countLocalVideo.media.dispose()
-                console.log('WHAT IS HERE??', resultAudio, resultVideo)
-                if (resultAudio && resultVideo){
-                    const resultExit = await room.current.leave();
-                    console.log('ROOM LEFT: ', resultExit)
-                    if (resultExit) {
-                        connection.current.removeEventListener(
-                            window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
-                            onConnectionSuccess);
-                        connection.current.removeEventListener(
-                            window.JitsiMeetJS.events.connection.CONNECTION_FAILED,
-                            onConnectionFailed);
-                        connection.current.removeEventListener(
-                            window.JitsiMeetJS.events.connection.CONNECTION_DISCONNECTED,
-                            disconnect);
-                        connection.current.disconnect();
-                    }
-                }
-            }
-            catch(error){
-                console.error('SOMETHING WRONG: ',error)
-            }
-            
 
-
-        }
     
 
 useEffect(() => {
-    // remoteTracks.current= {}
-    // remoteVideoArr.current = new Array(0)
-    // remoteAudioArr.current = new Array(0)
     isJoined.current = false
-    // console.log('Here is the start: ', remoteVideoArr.current)
     window.JitsiMeetJS.init({disableAudioLevels: true})
-    connection.current = new window.JitsiMeetJS.JitsiConnection(null, null, options);
-    
     window.JitsiMeetJS.setLogLevel(window.JitsiMeetJS.logLevels.ERROR);
-   
+
+    connection.current = new window.JitsiMeetJS.JitsiConnection(null, null, options);
     connection.current.addEventListener(
        window.JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED,
        onConnectionSuccess);
-   connection.current.addEventListener(
+    connection.current.addEventListener(
        window.JitsiMeetJS.events.connection.CONNECTION_FAILED,
        onConnectionFailed);
 
@@ -253,16 +262,23 @@ useEffect(() => {
 useEffect(() => {
     console.log('useEffect Video runs')
     if (countRemoteVideo?.length > 0){
+        countRemoteVideo.map((element,index) => {
+            if (!element.ref.current.srcObject) {
+                element.ref.current.srcObject = element.media.stream 
+            } 
+        })
         console.log('HEY Video WHATS GOING ON?? ', countRemoteVideo.at(-1))
-        countRemoteVideo.at(-1).ref.current.srcObject = countRemoteVideo.at(-1).media.stream
+        // countRemoteVideo.at(-1).ref.current.srcObject = countRemoteVideo.at(-1).media.stream
     }
 }, [countRemoteVideo])
 
 useEffect(() => {
     console.log('useEffect audio runs')
     if (countRemoteAudio?.length > 0){
+        countRemoteAudio.map((element, index) => {
+            element.ref.current.srcObject = element.media.stream
+        })
         console.log('HEY AUDIO WHATS GOING ON?? ', countRemoteAudio.at(-1).media.stream)
-        countRemoteAudio.at(-1).ref.current.srcObject = countRemoteAudio.at(-1).media.stream
     }
 }, [countRemoteAudio])
 
