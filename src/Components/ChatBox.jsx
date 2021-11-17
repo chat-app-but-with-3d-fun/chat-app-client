@@ -11,7 +11,7 @@ import { selectUserId } from '../features/user/userSlice';
 export default function ChatBox(props) {
     const [ message, setMessage ] = useState('')
     const [ sendMessage, { isLoading } ] = useSendMessageMutation()
-    const {messageList, room} = props
+    const { messageList, room} = props
     const userId = useSelector(selectUserId)
     
     const decideSide = (otherId) => {
@@ -30,19 +30,19 @@ export default function ChatBox(props) {
         console.log('sending =>', message)
         sendMessage({
           sender: userId,
-          roomId: '618a4c50a886683b026cfb54',
+          roomId: '6193c7b9f22b07537058e75f',
           type: 'chat',
           message: message
         })
         setMessage('')
     }
      
-     const getDate = (dateInput) => {
+    const getDate = (dateInput) => {
         const dateNow   = new Date() 
         const tmpDate   = new Date(dateInput)
         const timePast  = (dateNow-tmpDate)/1000/60/60/24
-         return `${Math.floor(timePast)} days ago`
-     }
+        return `${Math.floor(timePast)} days ago`
+    }
 
     return (
       
@@ -61,41 +61,46 @@ export default function ChatBox(props) {
                     }}
                 >
                 <List>
-                    {messageList?.map((element, index) => {
-                    return(
-                    <ListItem key={index}>
-                       <Grid container 
-                        direction='row'
-                        justifyContent={decideSide(element.sender)}
-                        spacing={2}
-                        >
-                           {decideSide(element.sender) === 'flex-start' &&
-                                <Grid item>
-                                    <Avatar>{`${element.sender[0]}`}</Avatar>
-                                </Grid>}
-                           <Grid item direction='column'>
-                           <Paper elevation='10' sx={{borderRadius: '10%', padding: "10px"}}>
-                           <Grid item >
-                                <ListItemText   primary={element.message}></ListItemText>
-                           </Grid>
-                           <Grid item >
-                               <ListItemText secondary={getDate(element.createdAt)}></ListItemText>
-                           </Grid>
-                           </Paper>
-                           </Grid>
-                           {decideSide(element.sender) === 'flex-end' && 
-                                <Grid item>
-                                    <Avatar sx={{ bgcolor: deepPurple[500] }}>me</Avatar>
-                                </Grid>} 
-                       </Grid>
-                    </ListItem> 
-                     )})}
+                    {messageList?.messages?.map((element, index) => {
+                        return (
+                            <ListItem key={index}>
+                                <Grid container 
+                                    direction='row'
+                                    justifyContent={decideSide(element.sender)}
+                                    spacing={2}
+                                >
+                                    {
+                                        decideSide(element.sender) === 'flex-start' &&
+                                        <Grid item>
+                                            <Avatar>{`${element.sender[0]}`}</Avatar>
+                                        </Grid>
+                                    }
+                                    <Grid item direction='column'>
+                                    <Paper elevation='10' sx={{borderRadius: '10%', padding: "10px"}}>
+                                    <Grid item >
+                                            <ListItemText   primary={element.message}></ListItemText>
+                                    </Grid>
+                                    <Grid item >
+                                        <ListItemText secondary={getDate(element.createdAt)}></ListItemText>
+                                    </Grid>
+                                    </Paper>
+                                    </Grid>
+                                    {
+                                        decideSide(element.sender) === 'flex-end' && 
+                                        <Grid item>
+                                            <Avatar sx={{ bgcolor: deepPurple[500] }}>me</Avatar>
+                                        </Grid>
+                                    }
+                                </Grid>
+                            </ListItem> 
+                        )
+                    })}
                 </List>
                 </Box>
                 <Divider />
                 <Grid container style={{padding: '20px'}}>
                     <Grid item xs={11}>
-                        <TextField id="outlined-basic-email" label="Type Something" onChange={(inputHandler)} fullWidth />
+                        <TextField id="outlined-basic-email" label="Type Something" onChange={inputHandler} fullWidth />
                     </Grid>
                     <Grid xs={1} align="right">
                         <Fab color="primary" aria-label="add" onClick={sendMessageHandler}><SendIcon /></Fab>

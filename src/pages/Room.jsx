@@ -73,7 +73,7 @@ export default function Room({location}) {
     const {roomId, type, roomName } = state
     const [tab, setTab] = useState('chat')
 
-    const { data: messageList, error, isError, isSuccess } = useGetMessagesQuery('618a4c50a886683b026cfb54', { refetchOnMountOrArgChange: true })
+    const { data: messageList, error, isError, isSuccess } = useGetMessagesQuery('6193c7b9f22b07537058e75f', { refetchOnMountOrArgChange: true })
     
     
     const changeTab = (e, newTab) => {
