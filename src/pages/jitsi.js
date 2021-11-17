@@ -9,7 +9,7 @@ export default function Jitsi() {
     const connection       = useRef(null)
     const room             = useRef(null);
     const localTracks      = useRef(null)
-    const remoteTracks     = useRef(null);
+    // const remoteTracks     = useRef(null);
     const isVideo          = useRef(null)
 
 
@@ -18,8 +18,6 @@ export default function Jitsi() {
     const [countLocalAudio, setCountLocalAudio]  = useState(null)
 
     //Handling remote Tracks
-    const remoteVideoArr   = useRef(null)
-    const remoteAudioArr   = useRef(null)
     const [countRemoteVideo, setCountRemoteVideo] = useState([])
     const [countRemoteAudio, setCountRemoteAudio] = useState([])
 
@@ -113,7 +111,7 @@ export default function Jitsi() {
         room.current.on(window.JitsiMeetJS.events.conference.CONFERENCE_JOINED, onConferenceJoined);
         room.current.on(window.JitsiMeetJS.events.conference.USER_JOINED, id => {
             console.log('other user joined', id);
-            remoteTracks.current[id] = [];
+            // remoteTracks.current[id] = [];
         });
         room.current.on(window.JitsiMeetJS.events.conference.USER_LEFT, onUserLeft);
         
@@ -126,15 +124,15 @@ export default function Jitsi() {
     function onRemoteTrack(track) {
         
         if (track.isLocal()) {
-            return;
-        }
+            return;}
+
         console.log("NEW REMOTE TRACK: " , track)
         const participant = track.getParticipantId();
-        if (!remoteTracks.current[participant]) {
-            remoteTracks.current[participant] = [];
-        }
+        // if (!remoteTracks.current[participant]) {
+        //     remoteTracks.current[participant] = [];
+        // }
         console.log('PARTICIPANT: ', participant)
-        const idx = remoteTracks.current[participant].push(track);
+        // const idx = remoteTracks.current[participant].push(track);
         
         //Add Event Listener
         track.addEventListener(
@@ -208,11 +206,11 @@ export default function Jitsi() {
     
 
 useEffect(() => {
-    remoteTracks.current= {}
-    remoteVideoArr.current = new Array(0)
-    remoteAudioArr.current = new Array(0)
+    // remoteTracks.current= {}
+    // remoteVideoArr.current = new Array(0)
+    // remoteAudioArr.current = new Array(0)
     isJoined.current = false
-    console.log('Here is the start: ', remoteVideoArr.current)
+    // console.log('Here is the start: ', remoteVideoArr.current)
     window.JitsiMeetJS.init({disableAudioLevels: true})
     connection.current = new window.JitsiMeetJS.JitsiConnection(null, null, options);
     
