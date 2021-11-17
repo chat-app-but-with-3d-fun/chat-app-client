@@ -67,21 +67,19 @@ export default function Jitsi() {
     }
     
     function leaveConference(track) {
+     console.log('TRAKC Removed Listener triggered, with ', track)
      if (track.ownerEndpointId){
-        if (track.type === 'audio'){
-           console.log('Remote audio left - schould follow mystreams...') 
-           console.log(countRemoteAudio)
-           console.log(countRemoteVideo)
-         }
-         if (track.type === 'video'){
-            console.log('Remote video left - schould follow mystreams...') 
-            console.log(countRemoteAudio)
-            console.log(countRemoteVideo)
-          }
-       }
-       else {
+        if (countRemoteAudio.length === 0 && countRemoteVideo.length === 0)
+        {
+            console.log('User is gone')
+            setCountRemoteAudio(countRemoteAudio)
+            setCountRemoteVideo(countRemoteVideo)
+            
+        }
+       } else {
         const checkLocalAlive = room.current.getLocalTracks()
-        if (checkLocalAlive === 0){
+        console.log('local ALIVE? ', checkLocalAlive)
+        if (checkLocalAlive.length === 0){
              console.log('all the tracks disposed')
              setCountLocalVideo(null)
              setCountLocalAudio(null)
@@ -111,6 +109,8 @@ export default function Jitsi() {
     
     async function disconnect() {
         console.log('start to disconnect!');
+        console.log('LOCAL AUdio: ',countLocalAudio)
+        console.log('LOCAL VIDEO: ', countLocalVideo)
         countLocalAudio?.media.dispose()
         countLocalVideo?.media.dispose()
 }
