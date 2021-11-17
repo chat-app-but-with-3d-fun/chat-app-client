@@ -13,7 +13,6 @@ export default function Jitsi() {
     // const remoteTracks     = useRef(null);
     const isVideo          = useRef(null)
 
-
     //Handling the Local tracks
     const [countLocalVideo, setCountLocalVideo] = useState(null)
     const [countLocalAudio, setCountLocalAudio]  = useState(null)
@@ -25,6 +24,7 @@ export default function Jitsi() {
 
     //Handling Talk
     const [isMuted, setIsMuted]       = useState(true)
+    const [screenShare, setScreenShare] = useState(false)
 
     const confOptions = {};
     
@@ -291,12 +291,41 @@ const consoleRoom = () => {
 //Controll the streams
 const handleMute = () => {
     if (isMuted){
+        console.log('Should unmute')
         countLocalAudio.media.unmute()
     } else {
+        console.log('Should mute')
         countLocalAudio.media.mute()
     }
     console.log('Change Mute - unmute ', countLocalAudio.media)
     setIsMuted(() => !isMuted)
+}
+
+const handleShareScreen = () => {
+   
+        console.log('Should get disposed', countLocalVideo)
+        countLocalVideo?.media.dispose()
+        console.log('AND NOW: ', countLocalVideo)
+        window.JitsiMeetJS.createLocalTracks({ devices: [ screenShare ? 'video' : 'desktop' ] })
+                    .then(tracks => {
+                        tracks[0].addEventListener(
+                            window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
+                            () => console.log('local track muted'));
+                        tracks[0].addEventListener(
+                            window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
+                            () => console.log('local track stoped'));
+
+                        setCountLocalVideo({
+                            ...countLocalVideo,
+                            media: tracks[0]
+                        })
+                        room.current.addTrack(tracks[0]);
+                        setScreenShare(() => !screenShare)
+                    })
+                    .catch(error => {
+                        throw error;
+                    });
+    
 }
 
     return (
@@ -324,7 +353,7 @@ const handleMute = () => {
 
             <button onClick={consoleRoom}>Print room</button>
             
-            <button onClick={handleMute}>{isMuted  ?  'Speak' : "Pssstt"}</button>
+            <button onClick={handleMute}>{isMuted  ?  'Speak' : "Pssstt"}</button><button onClick={handleShareScreen}>Share Screen</button>
         </div>
     )
 }
