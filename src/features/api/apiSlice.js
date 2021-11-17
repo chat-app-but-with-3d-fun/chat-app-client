@@ -30,9 +30,12 @@ export const apiSlice = createApi({
       }),
       async onQueryStarted(userData, { dispatch, queryFulfilled }) {
         try {
-          const { data: { userId } } = await queryFulfilled
-          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userId}`})
-          console.log(`new connection with userId => `, userId)
+          const { data: userData } = await queryFulfilled
+          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
+          console.log(`new connection with userId => `, userData._id)
+          dispatch(
+            userSlice.actions.setUser(userData)
+          )
           // dispatch(
           //   apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
           //     draft.messages.push(message)
@@ -41,7 +44,7 @@ export const apiSlice = createApi({
         } catch (error) {
           console.log('[ERROR]', error)
         }
-      },
+      }
     }),
     authUser: builder.mutation({
       query: () => ({
@@ -50,11 +53,11 @@ export const apiSlice = createApi({
       }),
       async onQueryStarted(userData, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled
-          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${data._id}`})
-          console.log(`new connection with id => `, data._id)
+          const { data: userData } = await queryFulfilled
+          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
+          console.log(`new connection with userId => `, userData._id)
           dispatch(
-            userSlice.actions.setUser(data)
+            userSlice.actions.setUser(userData)
           )
         } catch (error) {
           console.log('[ERROR]', error)
