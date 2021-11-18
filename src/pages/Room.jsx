@@ -6,8 +6,9 @@ import Tab from '@mui/material/Tab';
 import NoteBox from '../Components/NoteBox';
 import { useSelector, useDispatch } from "react-redux"
 import { useGetMessagesQuery, useSendMessageMutation } from "../features/api/apiSlice"
-import { setMessages, selectMessages, selectRoomId } from "../features/room/roomSlice"
+import { setMessages, selectMessages, selectRoomId, selectRoomName } from "../features/room/roomSlice"
 import { selectUserId } from "../features/user/userSlice"
+import { useParams } from 'react-router';
 
  //Here api fetch messages with roomid 
  
@@ -69,28 +70,14 @@ import { selectUserId } from "../features/user/userSlice"
 
 export default function Room({location}) {
     //state from react-router-dom
-    const {state} = location    
-    const {roomId, type, roomName } = state
+    const { state: { roomId, type, roomName }} = location 
     const [tab, setTab] = useState('chat')
 
-    const { data: messageList, error, isError, isSuccess } = useGetMessagesQuery('6193c7b9f22b07537058e75f', { refetchOnMountOrArgChange: true })
-    
+    const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
     
     const changeTab = (e, newTab) => {
         setTab(newTab);
     }
-
-    // const sendMessageHandler = () => {
-    //   console.log('sending =>', message)
-    //   sendMessage({
-    //     sender: userId,
-    //     roomId: '618a4c50a886683b026cfb54',
-    //     type: 'chat',
-    //     message: message
-    //   })
-    //   setMessage('')
-    // }
-
 
     return(
     <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
@@ -124,8 +111,17 @@ export default function Room({location}) {
                 </Tabs>
                 
             </Box>
-            {tab === 'chat' && <ChatBox messageList={messageList} room={roomName} />}
-            {tab === 'notes' && <NoteBox room={roomName} />}
+            {
+                tab === 'chat' &&
+                <ChatBox
+                    messageList={messageList}
+                    room={roomName}
+                />
+            }
+            {
+                tab === 'notes' &&
+                <NoteBox room={roomName} />
+            }
         </Paper>
         </Grid>
     </Grid>
