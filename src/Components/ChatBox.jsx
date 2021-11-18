@@ -9,10 +9,8 @@ import { selectUserId } from '../features/user/userSlice';
 import moment from 'moment';
 import { socket } from '../features/api/apiSlice';
 
-
-export default function ChatBox(props) {
+const ChatBox = ({ messageList, room }) => {
     const [ message, setMessage ] = useState('')
-    const { messageList, room} = props
     const userId = useSelector(selectUserId)
     
     const decideSide = (otherId) => {
@@ -33,7 +31,7 @@ export default function ChatBox(props) {
         socket.emit('newMsg',
         {
             "type": "chat",
-            "room": "6193c7b9f22b07537058e75f",
+            "room": room.roomId,
             "message": message
         })
         setMessage('')
@@ -55,7 +53,7 @@ export default function ChatBox(props) {
             }}
         >
             <Typography variant='h5' align='center'>
-                Chat in {room}
+                Chat in {room.roomName}
             </Typography>
             <Box 
                 sx={{
@@ -85,7 +83,7 @@ export default function ChatBox(props) {
                                             <ListItemText primary={message.message}></ListItemText>
                                     </Grid>
                                     <Grid item >
-                                        <ListItemText secondary={moment().calendar()}></ListItemText>
+                                        <ListItemText secondary={moment(message.createdAt).calendar()}></ListItemText>
                                     </Grid>
                                     </Paper>
                                     </Grid>
@@ -113,3 +111,5 @@ export default function ChatBox(props) {
         </Grid>
     )
 }
+
+export default ChatBox

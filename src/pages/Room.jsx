@@ -68,7 +68,7 @@ import { useParams } from 'react-router';
 // ]
 
 
-export default function Room({location}) {
+const Room = ({location}) => {
     //state from react-router-dom
     const { state: { roomId, type, roomName }} = location 
     const [tab, setTab] = useState('chat')
@@ -115,7 +115,7 @@ export default function Room({location}) {
                 tab === 'chat' &&
                 <ChatBox
                     messageList={messageList}
-                    room={roomName}
+                    room={{ roomId, roomName}}
                 />
             }
             {
@@ -126,8 +126,7 @@ export default function Room({location}) {
         </Grid>
     </Grid>
     )
-
-
-
-
 }
+
+
+export default Room
