@@ -72,8 +72,8 @@ export default function Jitsi() {
      if (track.ownerEndpointId){
         if (countRemoteAudio.length === 0 && countRemoteVideo.length === 0)
         {
-            console.log('User is gone')
-            setCountRemoteAudio(countRemoteAudio)
+            console.log('User is gone', countRemoteAudio)
+            // setCountRemoteAudio(countRemoteAudio)
             setCountRemoteVideo(countRemoteVideo)
             
         }
@@ -118,21 +118,21 @@ export default function Jitsi() {
 
 
     function onLocalTracks(tracks) {
-        localTracks.current = tracks
+        // localTracks.current = tracks
 
-        for (let i=0; i < localTracks.current.length; i++){
+        for (let i=0; i < tracks.length; i++){
             
             //add EventListeners:
-            localTracks.current[i].addEventListener(
+            tracks[i].addEventListener(
                 window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
                 audioLevel => console.log(`Audio Level local: ${audioLevel}`));
-            localTracks.current[i].addEventListener(
+                tracks[i].addEventListener(
                 window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
                 () => console.log('local track muted'));
-            localTracks.current[i].addEventListener(
+                tracks[i].addEventListener(
                 window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
                 () => console.log('local track should be removed'))
-            localTracks.current[i].addEventListener(
+                tracks[i].addEventListener(
                 window.JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
                 deviceId =>
                     console.log(`track audio output device was changed to ${deviceId}`));
@@ -140,18 +140,18 @@ export default function Jitsi() {
             
             //Preparing the Ref
             const newTrack = createRef()
-            const tmpObject = {ref: newTrack, media: localTracks.current[i] }
+            const tmpObject = {ref: newTrack, media: tracks[i] }
             
 
             //Creating DOM Elements
-            if (localTracks.current[i].getType()  === 'video'){
+            if (tracks[i].getType()  === 'video'){
                  setCountLocalVideo(tmpObject)
             }
-            else if (localTracks.current[i].getType()  === 'audio'){
+            else if (tracks[i].getType()  === 'audio'){
                 tmpObject.media.mute()
                 setCountLocalAudio(tmpObject)
             }
-            room.current.addTrack(localTracks.current[i])   
+            room.current.addTrack(tracks[i])   
         }
       
         
@@ -268,7 +268,7 @@ useEffect(() => {
                 element.ref.current.srcObject = element.media.stream 
             } 
         })
-        console.log('HEY Video WHATS GOING ON?? ', countRemoteVideo.at(-1))
+        console.log('HEY Video WHATS GOING ON?? ', countRemoteVideo)
         // countRemoteVideo.at(-1).ref.current.srcObject = countRemoteVideo.at(-1).media.stream
     }
 }, [countRemoteVideo])
@@ -279,7 +279,7 @@ useEffect(() => {
         countRemoteAudio.map((element, index) => {
             element.ref.current.srcObject = element.media.stream
         })
-        console.log('HEY AUDIO WHATS GOING ON?? ', countRemoteAudio.at(-1).media.stream)
+        console.log('HEY AUDIO WHATS GOING ON?? ', countRemoteAudio)
     }
 }, [countRemoteAudio])
 
@@ -314,6 +314,7 @@ const handleShareScreen = () => {
                 // setScreenShare(() => !screenShare)
 
                 .then(tracks => {
+                    
                     tracks[0].addEventListener(
                          window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
                          () => console.log('local track muted'));
@@ -341,7 +342,7 @@ const handleShareScreen = () => {
                 }}>Connect</button>
             <button onClick={() => {disconnect()}}>Disconnect</button>
             
-            {countLocalVideo && <video style={{height: '1000px', width: '1400px'}} key={`localVideo`} ref={countLocalVideo.ref} autoPlay playsInline muted />
+            {countLocalVideo && <video style={{height: '300px', width: '300px'}} key={`localVideo`} ref={countLocalVideo.ref} autoPlay playsInline muted />
             }
             
             {countLocalAudio && <audio ref={countLocalAudio.ref} key={`localAudio`} autoPlay muted/>
