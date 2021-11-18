@@ -6,11 +6,12 @@ import { FixedSizeList } from 'react-window';
 import { useGetMessagesQuery, useSendMessageMutation } from "../features/api/apiSlice"
 import { useSelector } from 'react-redux';
 import { selectUserId } from '../features/user/userSlice';
+import moment from 'moment';
+import { socket } from '../features/api/apiSlice';
 
 
 export default function ChatBox(props) {
     const [ message, setMessage ] = useState('')
-    const [ sendMessage, { isLoading } ] = useSendMessageMutation()
     const { messageList, room} = props
     const userId = useSelector(selectUserId)
     
@@ -28,21 +29,23 @@ export default function ChatBox(props) {
 
     const sendMessageHandler = () => {
         console.log('sending =>', message)
-        sendMessage({
-          sender: userId,
-          roomId: '6193c7b9f22b07537058e75f',
-          type: 'chat',
-          message: message
+        console.log('socket', socket)
+        socket.emit('newMsg',
+        {
+            "type": "chat",
+            "room": "6193c7b9f22b07537058e75f",
+            "message": message
         })
         setMessage('')
     }
      
-    const getDate = (dateInput) => {
-        const dateNow   = new Date() 
-        const tmpDate   = new Date(dateInput)
-        const timePast  = (dateNow-tmpDate)/1000/60/60/24
-        return `${Math.floor(timePast)} days ago`
-    }
+    // const getDate = (dateInput) => {
+    //     const dateNow   = new Date() 
+    //     const tmpDate   = new Date(dateInput)
+    //     const timePast  = (dateNow-tmpDate)/1000/60/60/24
+    //     return `${Math.floor(timePast)} days ago`
+    // }
+
 
     return (
       
@@ -61,32 +64,32 @@ export default function ChatBox(props) {
                     }}
                 >
                 <List>
-                    {messageList?.messages?.map((element, index) => {
+                    {messageList?.messages?.map((message, index) => {
                         return (
                             <ListItem key={index}>
                                 <Grid container 
                                     direction='row'
-                                    justifyContent={decideSide(element.sender)}
+                                    justifyContent={decideSide(message.sender)}
                                     spacing={2}
                                 >
                                     {
-                                        decideSide(element.sender) === 'flex-start' &&
+                                        decideSide(message.sender) === 'flex-start' &&
                                         <Grid item>
-                                            <Avatar>{`${element.sender[0]}`}</Avatar>
+                                            <Avatar>{`${message.sender[0]}`}</Avatar>
                                         </Grid>
                                     }
                                     <Grid item direction='column'>
                                     <Paper elevation='10' sx={{borderRadius: '10%', padding: "10px"}}>
                                     <Grid item >
-                                            <ListItemText   primary={element.message}></ListItemText>
+                                            <ListItemText primary={message.message}></ListItemText>
                                     </Grid>
                                     <Grid item >
-                                        <ListItemText secondary={getDate(element.createdAt)}></ListItemText>
+                                        <ListItemText secondary={moment().calendar()}></ListItemText>
                                     </Grid>
                                     </Paper>
                                     </Grid>
                                     {
-                                        decideSide(element.sender) === 'flex-end' && 
+                                        decideSide(message.sender) === 'flex-end' && 
                                         <Grid item>
                                             <Avatar sx={{ bgcolor: deepPurple[500] }}>me</Avatar>
                                         </Grid>
@@ -100,7 +103,7 @@ export default function ChatBox(props) {
                 <Divider />
                 <Grid container style={{padding: '20px'}}>
                     <Grid item xs={11}>
-                        <TextField id="outlined-basic-email" label="Type Something" onChange={inputHandler} fullWidth />
+                        <TextField id="outlined-basic-email" label="Type Something" value={message} onChange={inputHandler} fullWidth />
                     </Grid>
                     <Grid xs={1} align="right">
                         <Fab color="primary" aria-label="add" onClick={sendMessageHandler}><SendIcon /></Fab>

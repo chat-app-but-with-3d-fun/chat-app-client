@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import socketIOClient from 'socket.io-client'
 import { userSlice } from '../user/userSlice'
 
-let socket;
+export let socket;
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -103,7 +103,7 @@ export const apiSlice = createApi({
     getMessages: builder.query({
       query: (roomId) => `msg/${roomId}`,
       async onCacheEntryAdded(
-        roomId,
+        getMessages,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
         await cacheDataLoaded
@@ -119,30 +119,52 @@ export const apiSlice = createApi({
           }
         }
         socket.on('newMsg', handshake)
-        await cacheEntryRemoved
+        // await cacheEntryRemoved
         // cacheEntryRemoved will resolve when the cache subscription is no longer active
         // perform cleanup steps once the `cacheEntryRemoved` promise resolves
       },
     }),
-    sendMessage: builder.mutation({
-      query: (message) => ({
-        url: `msg/newmsg`,
-        method: 'POST',
-        body: message // => { roomId: xxx, message: text, sender: userId, type: 'chat' }
-      }),
-      async onQueryStarted(message, { dispatch, queryFulfilled }) {
-        try {
-          const { data: newMsg } = await queryFulfilled
-          dispatch(
-            apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
-              draft.messages.push(message)
-            })
-          )
-        } catch (error) {
-          console.log('[ERROR]', error)
-        }
-      },
-    }),
+    // sendMessage: builder.mutation({
+    //   query: (message) => ({
+    //     url: `msg/newmsg`,
+    //     method: 'POST',
+    //     body: message // => { roomId: xxx, message: text, sender: userId, type: 'chat' }
+    //   }),
+    //   async onCacheEntryAdded(
+    //     sendMessage,
+    //     { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+    //   ) {
+    //     await cacheDataLoaded
+    //     const handshake = (message) => {
+    //       try {
+    //         if (message) updateCachedData(
+    //           (draft) => {
+    //             draft.messages.push(message)
+    //           }
+    //         )
+    //       } catch (error) {
+    //         console.log('[ERROR]', error)
+    //       }
+    //     }
+    //     socket.emit('newMsg', handshake)
+    //     await cacheEntryRemoved
+    //   },
+    //     // await cacheEntryRemoved
+    //     // cacheEntryRemoved will resolve when the cache subscription is no longer active
+    //     // perform cleanup steps once the `cacheEntryRemoved` promise resolves
+    //   // async onQueryStarted(message, { dispatch, queryFulfilled }) {
+    //   //   try {
+    //   //     const { data: newMsg } = await queryFulfilled
+    //   //     dispatch(
+    //   //       apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
+    //   //         draft.messages.push(message)
+    //   //       })
+    //   //     )
+    //   //   } catch (error) {
+    //   //     console.log('[ERROR]', error)
+    //   //   }
+    //   // },
+    // }),
   })
 })
 

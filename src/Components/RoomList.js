@@ -7,7 +7,8 @@ import { Badge } from '@mui/material';
 import Link from '@mui/material/Link';
 
 
-export default function RoomList() {
+const RoomList = () => {
+
 
   const rooms = [
     {_id: '001', room: 'Kitchen', private: false, unread: 0},
@@ -17,7 +18,7 @@ export default function RoomList() {
 
   return (
         <List>
-        {rooms.map((element, index) => {
+        {rooms.map((element) => {
           if (!element.private){
             return (
               <Link 
@@ -25,11 +26,12 @@ export default function RoomList() {
                 underline='hover'
                 component={RouterLink} 
                 to={{
-                  pathname: `/chat/`,
+                  pathname: `/chat/${element._id}`,
                   state: {
-                    type:     'group',
-                    roomId:   `${element._id}`,
-                    roomName: `${element.room}`}
+                    type: 'group',
+                    // roomId:   `${element._id}`,
+                    roomName: `${element.room}`
+                  }
                 }}>
                 <ListItem button key={element.room}>
                  <Badge badgeContent={element.unread} color="primary"> 
@@ -43,3 +45,5 @@ export default function RoomList() {
       </List>
     )
 }
+
+export default RoomList
