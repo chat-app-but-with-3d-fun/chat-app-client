@@ -48,24 +48,25 @@ export default function ChatBox(props) {
 
 
     return (
-      
        <Grid item xs={12}
          sx={{
             display: 'flex',
             flexDirection: 'column',
             }}
         >
-                <Typography variant='h5' align='center'>Chat in {room}</Typography>
-                <Box 
-                    sx={{
-                        maxHeight: '70vh',
-                        overflowX: 'hidden',
-                        overflowY: 'scroll'
-                    }}
-                >
+            <Typography variant='h5' align='center'>
+                Chat in {room}
+            </Typography>
+            <Box 
+                sx={{
+                    maxHeight: '70vh',
+                    overflowX: 'hidden',
+                    overflowY: 'scroll'
+                }}
+            >
                 <List>
-                    {messageList?.messages?.map((message, index) => {
-                        return (
+                    {
+                        messageList?.messages?.map((message, index) => (
                             <ListItem key={index}>
                                 <Grid container 
                                     direction='row'
@@ -96,8 +97,8 @@ export default function ChatBox(props) {
                                     }
                                 </Grid>
                             </ListItem> 
-                        )
-                    })}
+                        ))
+                    }
                 </List>
                 </Box>
                 <Divider />
@@ -109,8 +110,6 @@ export default function ChatBox(props) {
                         <Fab color="primary" aria-label="add" onClick={sendMessageHandler}><SendIcon /></Fab>
                     </Grid>
                 </Grid>
-            </Grid>
-        
-
+        </Grid>
     )
 }
