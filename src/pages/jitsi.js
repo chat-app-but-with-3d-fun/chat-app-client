@@ -287,6 +287,9 @@ useEffect(() => {
 //Helper Functions
 const consoleRoom = () => {
     console.log('WHAT THE ROOM: ', room.current)
+    console.log('Remote AUDIO: ', countRemoteAudio)
+    console.log('Remote VIDEO: ', countRemoteVideo)
+
 }
 
 //Controll the streams
@@ -357,7 +360,7 @@ const handleShareScreen = () => {
                 return <audio ref={element.ref} key={`remoteAudio${index}`} autoPlay/>
             })}
 
-            <button onClick={consoleRoom}>Print room</button>
+            <button onClick={consoleRoom}>Print remote tracks</button>
             
             <button onClick={handleMute}>{isMuted  ?  'Speak' : "Pssstt"}</button><button onClick={handleShareScreen}>Share Screen</button>
         </div>
