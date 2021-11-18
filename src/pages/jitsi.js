@@ -1,3 +1,4 @@
+import { ConstructionOutlined } from '@mui/icons-material';
 import { cleanup } from '@testing-library/react';
 import React, {createRef, useRef, useState, useEffect} from 'react'
 import JitsiParticipant from '../Components/JitsiParticipant';
@@ -303,29 +304,33 @@ const handleMute = () => {
 
 const handleShareScreen = () => {
    
-        console.log('Should get disposed', countLocalVideo)
-        countLocalVideo?.media.dispose()
-        console.log('AND NOW: ', countLocalVideo)
-        window.JitsiMeetJS.createLocalTracks({ devices: [ screenShare ? 'video' : 'desktop' ] })
-                    .then(tracks => {
-                        tracks[0].addEventListener(
-                            window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
-                            () => console.log('local track muted'));
-                        tracks[0].addEventListener(
-                            window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
-                            () => console.log('local track stoped'));
+    console.log('Should get disposed', countLocalVideo)
+    countLocalVideo?.media.dispose()
+    console.log('AND NOW: ', countLocalVideo)
+    window.JitsiMeetJS.createLocalTracks({ devices: [screenShare ? 'video' : 'desktop' ] })
+                // .then(onLocalTracks)
+                // .catch(error => {
+                //     throw error;})
+                // setScreenShare(() => !screenShare)
 
-                        setCountLocalVideo({
-                            ...countLocalVideo,
-                            media: tracks[0]
-                        })
-                        room.current.addTrack(tracks[0]);
-                        setScreenShare(() => !screenShare)
+                .then(tracks => {
+                    tracks[0].addEventListener(
+                         window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
+                         () => console.log('local track muted'));
+                    tracks[0].addEventListener(
+                         window.JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
+                         () => console.log('local track stoped'));
+                    setCountLocalVideo({
+                        ...countLocalVideo,
+                        media: tracks[0]
                     })
-                    .catch(error => {
-                        throw error;
+                room.current.addTrack(tracks[0]);
+                setScreenShare(() => !screenShare)
+                   })
+                .catch(error => {
+                    throw error;
                     });
-    
+    console.log('LOCAL TRACKS: ',room.current.getLocalTracks())
 }
 
     return (
@@ -336,7 +341,7 @@ const handleShareScreen = () => {
                 }}>Connect</button>
             <button onClick={() => {disconnect()}}>Disconnect</button>
             
-            {countLocalVideo && <video style={{transform: "scaleX(-1)", height: '300px', width: '300px'}} key={`localVideo`} ref={countLocalVideo.ref} autoPlay playsInline muted />
+            {countLocalVideo && <video style={{height: '1000px', width: '1400px'}} key={`localVideo`} ref={countLocalVideo.ref} autoPlay playsInline muted />
             }
             
             {countLocalAudio && <audio ref={countLocalAudio.ref} key={`localAudio`} autoPlay muted/>
