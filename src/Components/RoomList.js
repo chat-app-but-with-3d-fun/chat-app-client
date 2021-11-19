@@ -24,19 +24,22 @@ const RoomList = () => {
   //   {_id: '002', room: "Lobby", private: false, unread: 2},
   //   {_id: '003', room: 'School', private: false, unread: 5},
   //   {_id: '004', room: 'private-xyz-xyz', private: true, unread: 1}]
-
+  console.log('User ROOMS: ', userRooms)
   return (
     <List>
       {
-        userRooms.map((room) => {
-          if (!room.private) (
+        userRooms.map((element) => {
+          const room = element.room
+          console.log(room)
+          if (!room.private) {
+            return (
             <Link 
               color='inherit'
               underline='hover'
               component={RouterLink} 
               key={room._id}
               to={{
-                pathname: `/chat/${room.name}`,
+                pathname: `/chat/${room.roomName}`,
                 state: {
                   type: 'group',
                   roomId:   room._id,
@@ -46,13 +49,12 @@ const RoomList = () => {
             >
               <ListItem button onClick>
               {/* <Badge badgeContent={room.unread} color="primary">  */}
-                <ListItemText primary={room.name} />
+                <ListItemText primary={room.roomName} />
               {/* </Badge> */}
               </ListItem>
             </Link>
           )
-        })
-      }
+        }})}
     </List>
   )
 }
