@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import {Link as RouterLink} from 'react-router-dom'
 import List from '@mui/material/List';
+import { Box } from '@mui/system';
+import { Chip } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import { Badge } from '@mui/material';
@@ -30,9 +32,10 @@ const RoomList = () => {
       {
         userRooms.map((element) => {
           const room = element.room
-          console.log(room)
+          console.log(room._id)
           if (!room.private) {
             return (
+            <Box sx={{display: 'flex', justifyContent: 'space-around', width: "100%"}}>
             <Link 
               color='inherit'
               underline='hover'
@@ -53,9 +56,14 @@ const RoomList = () => {
               {/* </Badge> */}
               </ListItem>
             </Link>
-          )
+            {element.unread > 0 && 
+               <Chip label={element.unread} size="small" color="success" sx={{paddingLeft: "10px", paddingRight: "10px"}} />
+            }
+            </Box>
+            )
         }})}
     </List>
+    
   )
 }
 
