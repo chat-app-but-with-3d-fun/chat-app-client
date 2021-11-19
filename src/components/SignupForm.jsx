@@ -32,7 +32,7 @@ const SignupForm = () => {
     signupUser(inputs)
   }
 
-  if (isError) console.log('ERROR =>', error.data.error.message)
+  if (isError) console.log('ERROR =>', error)
   if (isSuccess) {
     console.log(`Welcome, ${userData.username}`)
     dispatch(

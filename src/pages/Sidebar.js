@@ -14,7 +14,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import AccordionComponent from '../Components/accordion';
 import RoomList from '../Components/RoomList';
-import { Badge } from '@mui/material';
+import { Badge, Chip } from '@mui/material';
 import {useGetConnectionQuery} from '../features/api/apiSlice'
 
 
@@ -95,9 +95,13 @@ export default function Sidebar(props) {
         <AccordionComponent 
           expanded={true} 
           headline={
-            <Badge badgeContent={unreadMsg} color="primary"> 
+            // <Badge badgeContent={unreadMsg} color="primary"> 
+              <Box sx={{display: 'flex', justifyContent: 'space-around', width: "100%"}}>
               <Typography>Rooms</Typography>
-            </Badge>}
+              <Chip label={unreadMsg} size="small" color="success" sx={{paddingLeft: "10px", paddingRight: "10px"}} />
+              </Box>
+            // </Badge>
+          }
           
           body={<RoomList />}
         />

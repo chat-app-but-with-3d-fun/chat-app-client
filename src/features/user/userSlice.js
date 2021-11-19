@@ -21,6 +21,10 @@ export const userSlice = createSlice({
         : state[key] = payload[key]
       }
     },
+    addFriend: (state, { payload }) => {
+      state.friends.push(payload.friend)
+      state.rooms.push(payload.room)
+    },
     userLogout: (state, action) => {
       return initialState
     }
@@ -28,6 +32,7 @@ export const userSlice = createSlice({
 })
 
 export const selectUserId = state => state.user.userId
+export const selectUserRooms = state => state.user.rooms
 
 export const { setUser, userLogout } = userSlice.actions
 

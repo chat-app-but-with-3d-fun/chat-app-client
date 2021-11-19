@@ -31,12 +31,15 @@ const App = () => {
     <div className="App">
       <Router>
         <Switch>
+          <Route exact path="/sign-:form" component={Register} />
+
           <Sidebar >
             <Route exact path="/" component={Home} />
-            <Route path="/chat/" component={Room} />
+            <Route exact path="/chat/:roomId" component={Room} />
+            <Route exact path="/dashboard" component={Dashboard} />
           </Sidebar>
-          <Route path="/sign-:form" component={Register} />
-          <Route exact path="/dashboard" component={Dashboard} />
+
+          
         </Switch>
       </Router>
     </div>
