@@ -68,11 +68,13 @@ import { useParams } from 'react-router';
 // ]
 
 
-const Room = ({location}) => {
+const Room = (props, {location}) => {
     //state from react-router-dom
-    const { state: { roomId, type, roomName }} = location 
+    // const { state: { roomId, type, roomName }} = location 
+    const roomName = 'testS'
+    const {roomId} = props.match.params
     const [tab, setTab] = useState('chat')
-
+    console.log('LOCATION: ',roomId)
     const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
     
     const changeTab = (e, newTab) => {

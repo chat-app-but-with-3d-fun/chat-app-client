@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import {Link as RouterLink} from 'react-router-dom'
 import List from '@mui/material/List';
+import { Box } from '@mui/system';
+import { Chip } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import { Badge } from '@mui/material';
@@ -24,19 +26,23 @@ const RoomList = () => {
   //   {_id: '002', room: "Lobby", private: false, unread: 2},
   //   {_id: '003', room: 'School', private: false, unread: 5},
   //   {_id: '004', room: 'private-xyz-xyz', private: true, unread: 1}]
-
+  console.log('User ROOMS: ', userRooms)
   return (
     <List>
       {
-        userRooms.map((room) => {
-          if (!room.private) (
+        userRooms.map((element) => {
+          const room = element.room
+          console.log(room._id)
+          if (!room.private) {
+            return (
+            <Box sx={{display: 'flex', justifyContent: 'space-around', width: "100%"}}>
             <Link 
               color='inherit'
               underline='hover'
               component={RouterLink} 
               key={room._id}
               to={{
-                pathname: `/chat/${room.name}`,
+                pathname: `/chat/${room._id}`,
                 state: {
                   type: 'group',
                   roomId:   room._id,
@@ -46,14 +52,18 @@ const RoomList = () => {
             >
               <ListItem button onClick>
               {/* <Badge badgeContent={room.unread} color="primary">  */}
-                <ListItemText primary={room.name} />
+                <ListItemText primary={room.roomName} />
               {/* </Badge> */}
               </ListItem>
             </Link>
-          )
-        })
-      }
+            {element.unread > 0 && 
+               <Chip label={element.unread} size="small" color="success" sx={{paddingLeft: "10px", paddingRight: "10px"}} />
+            }
+            </Box>
+            )
+        }})}
     </List>
+    
   )
 }
 

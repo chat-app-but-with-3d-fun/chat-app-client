@@ -35,7 +35,7 @@ const App = () => {
 
           <Sidebar >
             <Route exact path="/" component={Home} />
-            <Route exact path="/chat/:roomName" component={Room} />
+            <Route exact path="/chat/:roomId" component={Room} />
             <Route exact path="/dashboard" component={Dashboard} />
           </Sidebar>
 
