@@ -42,7 +42,7 @@ const RoomList = () => {
               component={RouterLink} 
               key={room._id}
               to={{
-                pathname: `/chat/${room.roomName}`,
+                pathname: `/chat/${room._id}`,
                 state: {
                   type: 'group',
                   roomId:   room._id,

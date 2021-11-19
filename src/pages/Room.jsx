@@ -68,65 +68,66 @@ import { useParams } from 'react-router';
 // ]
 
 
-const Room = ({location}) => {
+const Room = (props, {location}) => {
     //state from react-router-dom
     // const { state: { roomId, type, roomName }} = location 
-    const {state} = location
+    const roomName = 'testS'
+    const {roomId} = props.match.params
     const [tab, setTab] = useState('chat')
-    console.log('LOCATION: ',location)
-    // const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
+    console.log('LOCATION: ',roomId)
+    const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
     
     const changeTab = (e, newTab) => {
         setTab(newTab);
     }
 
-    // return(
-    // // <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
+    return(
+    <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
         
-    // //     <Grid item md="6" lg='8' sx={{
-    // //             display: "flex",
-    // //             alignItems: 'center',
-    // //             justifyContent: 'center',
-    // //             backgroundColor: "lightgray"}}>
-    // //         <Box sx={{
-    // //             width: "200px",
-    // //             height: "200px",
-    // //             backgroundColor: 'green'}}>
-    // //             CANVAS
-    // //          </Box>
-    // //     </Grid>
+        <Grid item md="6" lg='8' sx={{
+                display: "flex",
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: "lightgray"}}>
+            <Box sx={{
+                width: "200px",
+                height: "200px",
+                backgroundColor: 'green'}}>
+                CANVAS
+             </Box>
+        </Grid>
         
-    // //     <Grid item direction='column' md="6" lg='4'>
-    // //     <Paper elevation="10"  >
-    // //         <Box>
-    // //             <Tabs
-    // //                 value={tab}
-    // //                 onChange={changeTab}
-    // //                 textColor="secondary"
-    // //                 indicatorColor="secondary"
-    // //                 aria-label="Tabs for changing msg window"
-    // //                 >
-    // //                 <Tab value="chat" label="Chat" />
-    // //                 <Tab value="notes" label="Notes" />
-    // //                 <Tab value="screen" label="Screen" />
-    // //             </Tabs>
+        <Grid item direction='column' md="6" lg='4'>
+        <Paper elevation="10"  >
+            <Box>
+                <Tabs
+                    value={tab}
+                    onChange={changeTab}
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                    aria-label="Tabs for changing msg window"
+                    >
+                    <Tab value="chat" label="Chat" />
+                    <Tab value="notes" label="Notes" />
+                    <Tab value="screen" label="Screen" />
+                </Tabs>
                 
-    // //         </Box>
-    // //         {
-    // //             tab === 'chat' &&
-    // //             <ChatBox
-    // //                 messageList={messageList}
-    // //                 room={{ roomId, roomName}}
-    // //             />
-    // //         }
-    // //         {
-    // //             tab === 'notes' &&
-    // //             <NoteBox room={roomName} />
-    // //         }
-    // //     </Paper>
-    // //     </Grid>
-    // // </Grid>
-    // )
+            </Box>
+            {
+                tab === 'chat' &&
+                <ChatBox
+                    messageList={messageList}
+                    room={{ roomId, roomName}}
+                />
+            }
+            {
+                tab === 'notes' &&
+                <NoteBox room={roomName} />
+            }
+        </Paper>
+        </Grid>
+    </Grid>
+    )
 }
 
 
