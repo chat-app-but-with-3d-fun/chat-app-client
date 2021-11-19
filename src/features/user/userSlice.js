@@ -21,6 +21,10 @@ export const userSlice = createSlice({
         : state[key] = payload[key]
       }
     },
+    addFriend: (state, { payload }) => {
+      state.friends.push(payload.friend)
+      state.rooms.push(payload.room)
+    },
     userLogout: (state, action) => {
       return initialState
     }
