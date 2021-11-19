@@ -1,0 +1,11 @@
+Model Information:
+* title:	Lowpoly pear
+* source:	https://sketchfab.com/3d-models/lowpoly-pear-618ad10c9f414e9d805e36fd514011e1
+* author:	Zacxophone (https://sketchfab.com/Zacxophone)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Lowpoly pear" (https://sketchfab.com/3d-models/lowpoly-pear-618ad10c9f414e9d805e36fd514011e1) by Zacxophone (https://sketchfab.com/Zacxophone) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -6,38 +6,92 @@ import { Environment, OrbitControls, Stars, useAnimations, useGLTF } from '@reac
 // import { usePlane } from "@react-three/cannon"
 import { useSpring, animated } from '@react-spring/three'
 
-function Box(props){
-  return (
-    <mesh {...props}>
-      <boxGeometry attach='geometry' position={[-1, 1, 0]} />
-      <meshLambertMaterial attach='material' color='hotpink' />
-    </mesh>
-  )
-}
+
+
+// function Box(props){
+//   return (
+//     <mesh {...props}>
+//       <boxGeometry attach='geometry' position={[-1, 1, 0]} />
+//       <meshLambertMaterial attach='material' color='hotpink' />
+//     </mesh>
+//   )
+// }
 
 function Plane(props){
   return(
 
     <mesh>
-      <planeGeometry attach="geometry" {...props} />
+      <planeGeometry attach="geometry" {...props} args={[1000, 1000]} />
       <meshStandardMaterial attach="material" color="#fff" />
     </mesh>
   )
 }
 
-function Sphere(props){
+// function Sphere(props){
 
-  return(
-    <>
-    <ambientLight intensity={0.2} />
-    <directionalLight />
-    <mesh>
-      <sphereGeometry args={[1, 32, 32]}  {...props} />
-      <meshStandardMaterial color='red' />
-    </mesh>
-    </>
-  )
-}
+//   return(
+//     <>
+//     <ambientLight intensity={0.2} />
+//     <directionalLight />
+//     <mesh>
+//       <sphereGeometry args={[1, 32, 32]}  {...props} />
+//       <meshStandardMaterial color='red' />
+//     </mesh>
+//     </>
+//   )
+// }
+
+// function Drone(props){
+//   const url = './drone/scene.gltf'
+//   const drone = useLoader(GLTFLoader, url)
+//   const { nodes, materials, animations } = useGLTF(drone)
+//   const { ref, mixer, names, actions, clips } = useAnimations(animations, drone.scene)
+//   console.log(drone.actions);
+//   return(
+//     <Suspense fallback={null}>
+//       <primitive object={drone.scene} {...props} />
+//     </Suspense>
+//   ) 
+// }
+
+//  ------------------- FROG ISN'T ANIMATED -------------------
+// function Frog(props){
+//   const url = './frog/scene.gltf'
+//   const frog = useLoader(GLTFLoader, url)
+//   const { nodes, materials, animations } = useGLTF(frog)
+//   const { ref, mixer, names, actions, clips } = useAnimations(animations, frog.scene)
+//   console.log(frog);
+
+//     useEffect(() => {
+//     actions.rotate(360).play()
+//     })
+
+//   return(
+//     <Suspense fallback={null}>
+//       <primitive object={frog.scene} {...props} />
+//     </Suspense>
+//   )
+// }
+
+// ---------------------   OTHER  PEAR    --------------------- 
+// function Pear(props){
+//   const url = './pear/scene.gltf'
+//   const pear = useLoader(GLTFLoader, url)
+//   const { nodes, materials, animations } = useGLTF(pear)
+//   const { ref, mixer, names, actions, clips } = useAnimations(animations, pear.scene)
+
+//   console.log(actions);
+
+//   // useEffect(() => {
+//   //   actions.play()
+//   // })
+
+//   return(
+//     <Suspense fallback={null}>
+//       <primitive object={pear.scene} {...props} />
+//     </Suspense>
+//   )
+// }
 
 function Pegasus(props){
   const url = './pegasus/scene.gltf';
@@ -45,9 +99,9 @@ function Pegasus(props){
   const { nodes, materials, animations } = useGLTF(url)
   const { ref, mixer, names, actions, clips } = useAnimations(animations, gltf.scene)
 
-  console.log(actions);
+  console.log(gltf.actions);
   useEffect(() => {
-  actions["metarig|HorseWalk"].play()
+  actions["metarig|Fly"].play()
   })
 
   console.log(gltf);
@@ -63,8 +117,16 @@ function Pegasus(props){
 }
 
 function Pear(props){
-  const pear = useLoader(GLTFLoader, './pear/scene.gltf')
+  const url = './pear/scene.gltf'
+  const pear = useLoader(GLTFLoader, url)
+  const { nodes, materials, animations } = useGLTF(url)
+  const { ref, mixer, names, actions, clips } = useAnimations(animations, pear.scene)
   console.log(pear);
+
+  useEffect(() => {
+  actions["ArmatureAction"].play()
+  })
+
   return(
     <Suspense fallback={null}>
       <primitive object={pear.scene} scale={0.5} {...props} />
@@ -73,19 +135,17 @@ function Pear(props){
 
 }
 
-
-
-function Bar(props){
-  const bar = useLoader(GLTFLoader, './classicbar/scene.gltf')
-  return(
-    <Suspense fallback={null} castShadow receiveShadow>
-      <primitive object={bar.scene} scale={8} {...props} />
-    </Suspense>
-  )
-}
-
 function Robot(props){
-  const robot = useLoader(GLTFLoader, './robot/scene.gltf')
+  const url = './robot/scene.gltf'
+  const robot = useLoader(GLTFLoader, url)
+  const { nodes, materials, animations } = useGLTF(url)
+  const { ref, mixer, names, actions, clips } = useAnimations(animations, robot.scene)
+  console.log(robot);
+
+  useEffect(() => {
+  actions['Take 001'].play()
+  })
+  
   return(
     <Suspense fallback={null} args={[1, 1, 0]}>
       <primitive object={robot.scene} scale={3} {...props}/>
@@ -118,14 +178,17 @@ export default function Home(props){
         <Stars fade />
         <ambientLight intensity={1} />
         <spotLight position={[10, 15, 10]} angle={0.3} /> 
-        <Plane position={[0,0,0]} />
-        {/* <Box position={[2.5, 2.5, 2.5]}/>
+        {/* <Plane position={[0,0,0]} />
+        <Box position={[2.5, 2.5, 2.5]}/>
         <Sphere position={[4,4,4]} /> */}
-        <Pegasus position={[0,0,0]} />
-        <Pear position={[0,0,0]} />
-        {/* <Bar position={[0,0,0]} invalidate/> */}
-        <Robot position={0,0,0}/>
-        <Streetlight position={0,0,0} scale={0.5}/>
+        <Pegasus position={[4,0,0]} />
+        <Pear position={[0,0,4]} scale={0.5}/>
+
+{/*         
+        <Streetlight position={0,0,0} scale={0.5}/> */}
+        <Robot position={2,0,0} scale={0.10}/>
+        {/* <Drone position={[0,0,1]} scale={0.1} />
+        <Frog position={[0,0,1]} /> */}
       </Suspense>
     </Canvas>
     </>
