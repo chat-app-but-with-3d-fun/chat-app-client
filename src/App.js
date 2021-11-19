@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Dashboard from './pages/Dashboard';
 import Register from "./pages/Register";
 import "./sass/main.scss";
+import Sidebar from "./pages/Sidebar";
+import Room from "./pages/Room";
 import { useAuthUserMutation } from "./features/api/apiSlice";
 import { setUser } from "./features/user/userSlice";
 
@@ -29,9 +31,15 @@ const App = () => {
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/sign-:form" component={Register} />
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/sign-:form" component={Register} />
+
+          <Sidebar >
+            <Route exact path="/" component={Home} />
+            <Route exact path="/chat/:roomName" component={Room} />
+            <Route exact path="/dashboard" component={Dashboard} />
+          </Sidebar>
+
+          
         </Switch>
       </Router>
     </div>

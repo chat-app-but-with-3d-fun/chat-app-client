@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  name: '',
   roomId: '',
-  messages: []
 }
 
 export const roomSlice = createSlice({
@@ -10,21 +10,25 @@ export const roomSlice = createSlice({
   initialState,
   reducers: {
     setRoom: (state, { payload }) => {
-      state.roomId = payload
+      console.log('setting room... payload =>', payload)
+      for (let key in payload) {
+        state[key] = payload[key]
+      }
     },
-    setMessages: (state, action) => {
-      console.log('action', action)
-      state.messages = action.payload
-    },
-    addMessage: (state, { payload }) => {
-      state.messages.push(payload)
-    },
+    // setMessages: (state, action) => {
+    //   console.log('action', action)
+    //   state.messages = action.payload
+    // },
+    // addMessage: (state, { payload }) => {
+    //   state.messages.push(payload)
+    // },
   },
   extraReducers: {}
 })
 
-export const selectMessages = state => state.room.messages
+// export const selectMessages = state => state.room.messages
 export const selectRoomId = state => state.room.roomId
+export const selectRoomName = state => state.room.name
 
 export const {
   setRoom,

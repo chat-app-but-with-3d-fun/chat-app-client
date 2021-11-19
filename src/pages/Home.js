@@ -3,8 +3,7 @@ import { Canvas } from 'react-three-fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 
 
-
-function Box(){
+const Box = () => {
   return (
     <mesh>
       <boxBufferGeometry attach='geometry' />
@@ -13,7 +12,7 @@ function Box(){
   )
 }
 
-function Plane(){
+const Plane = () => {
   return(
     <mesh position={[0, 2, 0]} rotation={[-Math.PI/2, 0, 0]}>
       <planeBufferGeometry attach='geometry' args={[100,100]} />
@@ -22,21 +21,23 @@ function Plane(){
   )
 }
 
-export default function App(){
+const Home = () => {
+  
   return (
     <>
-    <div>
-      welcome to koko!
-    </div>
-    <Canvas style={{width: '100%' , height: '100%' }}>
+      <h3>welcome to koko!</h3>
+    {/* <Canvas style={{width: '100vw' , height: '100vh' }}>
       <color attach='background' args={'black'}/>
       <OrbitControls />
       <Stars fade />
       <ambientLight intensity={1} />
       <spotLight position={[10, 15, 10]} angle={0.3} />
-      <Box />
+      <Box onClick={() => console.log('BOX CLICKED')}/>
       <Plane />
-    </Canvas>
+    </Canvas> */}
     </>
   )
 }
+
+
+export default Home

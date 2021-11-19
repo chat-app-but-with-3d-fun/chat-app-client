@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import socketIOClient from 'socket.io-client'
+import { userSlice } from '../user/userSlice'
 
-const socket = new socketIOClient('http://127.0.0.1:5000', {query: "userId=618a4b43a886683b026cfb4e"})
+export let socket;
 
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/',
+    baseUrl: 'https://mysterious-basin-77886.herokuapp.com/',
     prepareHeaders(headers) {
       return headers;
     },
@@ -26,16 +27,51 @@ export const apiSlice = createApi({
         url: 'user/login',
         method: 'POST',
         body: userData
-      })
+      }),
+      async onQueryStarted(userData, { dispatch, queryFulfilled }) {
+        try {
+          const { data: userData } = await queryFulfilled
+          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
+          console.log(`new connection with userId => `, userData._id)
+          dispatch(
+            userSlice.actions.setUser(userData)
+          )
+          // dispatch(
+          //   apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
+          //     draft.messages.push(message)
+          //   })
+          // )
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      }
     }),
     authUser: builder.mutation({
       query: () => ({
         url: 'user/auth',
         method: 'POST',
-      })
+      }),
+      async onQueryStarted(userData, { dispatch, queryFulfilled }) {
+        try {
+          const { data: userData } = await queryFulfilled
+          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
+          console.log(`new connection with userId => `, userData._id)
+          dispatch(
+            userSlice.actions.setUser(userData)
+          )
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      },
     }),
     logoutUser: builder.query({
-      query: () => 'user/logout'
+      query: () => 'user/logout',
+      async onCacheEntryAdded(
+        args,
+        { cacheEntryRemoved }
+      ) {
+        await cacheEntryRemoved
+      }
     }),
     findFriend: builder.mutation({
       query: ({userId, input}) => ({
@@ -67,7 +103,7 @@ export const apiSlice = createApi({
     getMessages: builder.query({
       query: (roomId) => `msg/${roomId}`,
       async onCacheEntryAdded(
-        roomId,
+        getMessages,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
         await cacheDataLoaded
@@ -83,30 +119,52 @@ export const apiSlice = createApi({
           }
         }
         socket.on('newMsg', handshake)
-        await cacheEntryRemoved
+        // await cacheEntryRemoved
         // cacheEntryRemoved will resolve when the cache subscription is no longer active
         // perform cleanup steps once the `cacheEntryRemoved` promise resolves
       },
     }),
-    sendMessage: builder.mutation({
-      query: (message) => ({
-        url: `msg/newmsg`,
-        method: 'POST',
-        body: message // => { roomId: xxx, message: text, sender: userId, type: 'chat' }
-      }),
-      async onQueryStarted(message, { dispatch, queryFulfilled }) {
-        try {
-          const { data: newMsg } = await queryFulfilled
-          dispatch(
-            apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
-              draft.messages.push(message)
-            })
-          )
-        } catch (error) {
-          console.log('[ERROR]', error)
-        }
-      },
-    }),
+    // sendMessage: builder.mutation({
+    //   query: (message) => ({
+    //     url: `msg/newmsg`,
+    //     method: 'POST',
+    //     body: message // => { roomId: xxx, message: text, sender: userId, type: 'chat' }
+    //   }),
+    //   async onCacheEntryAdded(
+    //     sendMessage,
+    //     { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+    //   ) {
+    //     await cacheDataLoaded
+    //     const handshake = (message) => {
+    //       try {
+    //         if (message) updateCachedData(
+    //           (draft) => {
+    //             draft.messages.push(message)
+    //           }
+    //         )
+    //       } catch (error) {
+    //         console.log('[ERROR]', error)
+    //       }
+    //     }
+    //     socket.emit('newMsg', handshake)
+    //     await cacheEntryRemoved
+    //   },
+    //     // await cacheEntryRemoved
+    //     // cacheEntryRemoved will resolve when the cache subscription is no longer active
+    //     // perform cleanup steps once the `cacheEntryRemoved` promise resolves
+    //   // async onQueryStarted(message, { dispatch, queryFulfilled }) {
+    //   //   try {
+    //   //     const { data: newMsg } = await queryFulfilled
+    //   //     dispatch(
+    //   //       apiSlice.util.updateQueryData('getMessages', message.roomId, (draft) => {
+    //   //         draft.messages.push(message)
+    //   //       })
+    //   //     )
+    //   //   } catch (error) {
+    //   //     console.log('[ERROR]', error)
+    //   //   }
+    //   // },
+    // }),
   })
 })
 

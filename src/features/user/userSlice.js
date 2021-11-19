@@ -28,6 +28,7 @@ export const userSlice = createSlice({
 })
 
 export const selectUserId = state => state.user.userId
+export const selectUserRooms = state => state.user.rooms
 
 export const { setUser, userLogout } = userSlice.actions
 
