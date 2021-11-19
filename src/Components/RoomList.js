@@ -46,7 +46,7 @@ const RoomList = () => {
             >
               <ListItem button onClick>
               {/* <Badge badgeContent={room.unread} color="primary">  */}
-                <ListItemText primary={room.name} />
+                <ListItemText primary={room.roomName} />
               {/* </Badge> */}
               </ListItem>
             </Link>
