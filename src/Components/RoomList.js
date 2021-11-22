@@ -1,69 +1,89 @@
 import React, {useEffect} from 'react';
-import {Link as RouterLink} from 'react-router-dom'
 import List from '@mui/material/List';
+import { Link as RouterLink } from 'react-router-dom'
 import { Box } from '@mui/system';
+import List from '@mui/material/List';
 import { Chip } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import { Badge } from '@mui/material';
+import { selectUserRooms } from '../features/user/userSlice';
+import NewRoomForm from '../components/NewRoomForm';
 import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserRooms } from '../features/user/userSlice';
+import { selectUserFriends,
+  selectPublicRooms,
+  selectPrivateRooms, selectUserId } from '../features/user/userSlice';
 import { setRoom } from '../features/room/roomSlice';
 
 
-const RoomList = () => {
 
-  const userRooms = useSelector(selectUserRooms)
+const RoomList = (props) => {
 
-  // const selectRoomHandler = (id, name) => {
-  //   console.log('changing to room ->', name)
-  //   dispatch(setRoom({id, name}))
-  // }
+  const {rooms} = props
+  const userFriends = useSelector(selectUserFriends)
+  const userId    = useSelector(selectUserId)
 
-  // const rooms = [
-  //   {_id: '001', room: 'Kitchen', private: false, unread: 0},
-  //   {_id: '002', room: "Lobby", private: false, unread: 2},
-  //   {_id: '003', room: 'School', private: false, unread: 5},
-  //   {_id: '004', room: 'private-xyz-xyz', private: true, unread: 1}]
-  console.log('User ROOMS: ', userRooms)
+  const getName = (room) => {
+    const friendId = room.roomName
+      .split('-')
+      .filter(element =>(element != userId) && (element != 'privatChat')) 
+      .join()
+    const friendName = userFriends
+      .find(element => element._id === friendId)
+    console.log('FRIENDNAME: ', friendName?.username)
+    
+     return friendName?.username
+  }
+console.log('FRIENDS: ',userFriends)
   return (
+    <>
+    <NewRoomForm />
     <List>
       {
-        userRooms.map((element) => {
-          const room = element.room
-          console.log(room._id)
-          if (!room.private) {
+        rooms.map((element) => {
+          const { room } = element
+  
             return (
-            <Box sx={{display: 'flex', justifyContent: 'space-around', width: "100%"}}>
-            <Link 
-              color='inherit'
-              underline='hover'
-              component={RouterLink} 
-              key={room._id}
-              to={{
-                pathname: `/chat/${room._id}`,
-                state: {
-                  type: 'group',
-                  roomId:   room._id,
-                  roomName: room.roomName
+              <Box sx={
+                  {display: 'flex',
+                   justifyContent: `${element.unread > 0 ? "space-between" : "flex-start"}`,
+                   alignItems: 'center',
+                   width: "100%"}
+                  } 
+                   key={room._id}>
+
+                <Link 
+                  color='inherit'
+                  underline='hover'
+                  component={RouterLink}
+                  to={{
+                    pathname: `/chat/${room.roomName}`,
+                    state: {
+                      roomId: room._id,
+                      type: 'chat',
+                      roomName: room.roomName
+                    }
+                  }}
+                >
+                  <ListItem button>
+                    <Badge badgeContent={element.unread} color="primary"> 
+                      <ListItemText primary={room.private ? getName(room) : room.roomName} />
+                    </Badge>
+                  </ListItem>
+                </Link>
+                {
+                  element.unread > 0 && 
+                    <Chip label={element.unread} size="small" color="success" sx={{paddingLeft: "10px", paddingRight: "10px"}} />
                 }
-              }}
-            >
-              <ListItem button onClick>
-              {/* <Badge badgeContent={room.unread} color="primary">  */}
-                <ListItemText primary={room.roomName} />
-              {/* </Badge> */}
-              </ListItem>
-            </Link>
-            {element.unread > 0 && 
-               <Chip label={element.unread} size="small" color="success" sx={{paddingLeft: "10px", paddingRight: "10px"}} />
-            }
-            </Box>
+              </Box>
             )
-        }})}
+        }
+        )
+        
+        }
     </List>
-    
+    </>
   )
 }
 
