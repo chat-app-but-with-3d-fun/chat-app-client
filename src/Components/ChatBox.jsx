@@ -26,8 +26,6 @@ const ChatBox = ({ messageList, room }) => {
     }
 
     const sendMessageHandler = () => {
-        console.log('sending =>', message)
-        console.log('socket', socket)
         socket.emit('newMsg',
         {
             "type": "chat",
