@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import List from '@mui/material/List';
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import { Box } from '@mui/system';
 import { Chip } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
