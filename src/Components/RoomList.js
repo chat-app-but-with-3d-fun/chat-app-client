@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import List from '@mui/material/List';
 import { Link as RouterLink } from 'react-router-dom'
 import { Box } from '@mui/system';
 import List from '@mui/material/List';
@@ -15,7 +14,6 @@ import { selectUserFriends,
   selectPublicRooms,
   selectPrivateRooms, selectUserId } from '../features/user/userSlice';
 import { setRoom } from '../features/room/roomSlice';
-
 
 
 const RoomList = (props) => {
@@ -35,10 +33,10 @@ const RoomList = (props) => {
     
      return friendName?.username
   }
-console.log('FRIENDS: ',userFriends)
+console.log('FRIENDS: ',rooms)
   return (
     <>
-    <NewRoomForm />
+    {!rooms[0]?.room.private && <NewRoomForm />} 
     <List>
       {
         rooms.map((element) => {
@@ -61,15 +59,13 @@ console.log('FRIENDS: ',userFriends)
                     pathname: `/chat/${room.roomName}`,
                     state: {
                       roomId: room._id,
-                      type: 'chat',
-                      roomName: room.roomName
+                      type: `${room.private ? 'private' : 'chat'}`,
+                      roomName: `${room.private ? getName(room) : room.roomName}`
                     }
                   }}
                 >
                   <ListItem button>
-                    <Badge badgeContent={element.unread} color="primary"> 
                       <ListItemText primary={room.private ? getName(room) : room.roomName} />
-                    </Badge>
                   </ListItem>
                 </Link>
                 {

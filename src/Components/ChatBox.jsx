@@ -9,7 +9,7 @@ import { selectUserId } from '../features/user/userSlice';
 import moment from 'moment';
 import { socket } from '../features/api/apiSlice';
 
-const ChatBox = ({ messageList, room }) => {
+const ChatBox = ({ messageList, room}) => {
     const [ message, setMessage ] = useState('')
     const userId = useSelector(selectUserId)
     
@@ -41,8 +41,7 @@ const ChatBox = ({ messageList, room }) => {
     //     const timePast  = (dateNow-tmpDate)/1000/60/60/24
     //     return `${Math.floor(timePast)} days ago`
     // }
-
-
+    console.log('MESSAGES: ', messageList)
     return (
        <Grid item xs={12}
          sx={{
@@ -51,14 +50,15 @@ const ChatBox = ({ messageList, room }) => {
             }}
         >
             <Typography variant='h5' align='center'>
-                Chat in {room.roomName}
+                {room.type === 'private' ? `Direct chat with ${room.roomName}` : `Chatting in room ${room.roomName}`}
             </Typography>
             <Box 
                 sx={{
                     maxHeight: '70vh',
                     overflowX: 'hidden',
-                    overflowY: 'scroll'
+                    overflowY: 'scroll',
                 }}
+
             >
                 <List>
                     {
@@ -66,13 +66,13 @@ const ChatBox = ({ messageList, room }) => {
                             <ListItem key={index}>
                                 <Grid container 
                                     direction='row'
-                                    justifyContent={decideSide(message.sender)}
+                                    justifyContent={decideSide(message.sender._id)}
                                     spacing={2}
                                 >
                                     {
-                                        decideSide(message.sender) === 'flex-start' &&
+                                        decideSide(message.sender._id) === 'flex-start' &&
                                         <Grid item>
-                                            <Avatar>{`${message.sender[0]}`}</Avatar>
+                                            <Avatar>{`${message.sender.username.substring(0,1).toUpperCase()}`}</Avatar>
                                         </Grid>
                                     }
                                     <Grid item direction='column'>
@@ -86,7 +86,7 @@ const ChatBox = ({ messageList, room }) => {
                                     </Paper>
                                     </Grid>
                                     {
-                                        decideSide(message.sender) === 'flex-end' && 
+                                        decideSide(message.sender._id) === 'flex-end' && 
                                         <Grid item>
                                             <Avatar sx={{ bgcolor: deepPurple[500] }}>me</Avatar>
                                         </Grid>
