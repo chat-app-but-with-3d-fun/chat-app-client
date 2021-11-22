@@ -17,16 +17,6 @@ import { useSpring, animated } from '@react-spring/three'
 //   )
 // }
 
-function Plane(props){
-  return(
-
-    <mesh>
-      <planeGeometry attach="geometry" {...props} args={[1000, 1000]} />
-      <meshStandardMaterial attach="material" color="#fff" />
-    </mesh>
-  )
-}
-
 // function Sphere(props){
 
 //   return(
@@ -41,18 +31,19 @@ function Plane(props){
 //   )
 // }
 
-// function Drone(props){
-//   const url = './drone/scene.gltf'
-//   const drone = useLoader(GLTFLoader, url)
-//   const { nodes, materials, animations } = useGLTF(drone)
-//   const { ref, mixer, names, actions, clips } = useAnimations(animations, drone.scene)
-//   console.log(drone.actions);
-//   return(
-//     <Suspense fallback={null}>
-//       <primitive object={drone.scene} {...props} />
-//     </Suspense>
-//   ) 
-// }
+function Plane(props){
+  return(
+
+    <mesh rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry attach="geometry" {...props} args={[50, 50]} />
+      <meshStandardMaterial attach="material" color="slategrey" />
+    </mesh>
+  )
+}
+
+
+
+
 
 //  ------------------- FROG ISN'T ANIMATED -------------------
 // function Frog(props){
@@ -98,20 +89,26 @@ function Pegasus(props){
   const gltf = useLoader(GLTFLoader, url);
   const { nodes, materials, animations } = useGLTF(url)
   const { ref, mixer, names, actions, clips } = useAnimations(animations, gltf.scene)
+  // const props = useSpring({
 
-  console.log(gltf.actions);
+  // })
+
+  // console.log(gltf.actions);
   useEffect(() => {
-  actions["metarig|Fly"].play()
+  actions["metarig|Fly"].stop()
   })
 
   console.log(gltf);
   return(
     <Suspense fallback={null} >
-    <primitive object={gltf.scene} {...props} 
-    // onClick={() =>
-    //   // This makes the object fly upwards when clicked on
-    //   gltf.applyImpulse([0, 5, -10], [1, 1, 1])}
-      />
+    <primitive object={gltf.scene} {...props} onClick={(e) => {
+      console.log("I have clicked on Pegasus", e);
+      actions["metarig|Fly"].play();
+      setTimeout(() => {
+         
+      }, 3000);
+      }}/>
+      
     </Suspense>
   )
 }
@@ -121,15 +118,21 @@ function Pear(props){
   const pear = useLoader(GLTFLoader, url)
   const { nodes, materials, animations } = useGLTF(url)
   const { ref, mixer, names, actions, clips } = useAnimations(animations, pear.scene)
-  console.log(pear);
+  // console.log(pear);
 
   useEffect(() => {
-  actions["ArmatureAction"].play()
+  actions["ArmatureAction"].stop()
   })
 
   return(
     <Suspense fallback={null}>
-      <primitive object={pear.scene} scale={0.5} {...props} />
+      <primitive object={pear.scene} scale={0.5} {...props} onClick={(e) => {
+        console.log("I have clicked on Pear", e);
+        actions["ArmatureAction"].play();
+        setTimeout(() => {
+          
+        }, 3000);
+        }}/>
     </Suspense>
   )
 
@@ -140,24 +143,32 @@ function Robot(props){
   const robot = useLoader(GLTFLoader, url)
   const { nodes, materials, animations } = useGLTF(url)
   const { ref, mixer, names, actions, clips } = useAnimations(animations, robot.scene)
-  console.log(robot);
+  // console.log(robot);
 
   useEffect(() => {
-  actions['Take 001'].play()
+  actions['Take 001'].stop()
   })
   
   return(
     <Suspense fallback={null} args={[1, 1, 0]}>
-      <primitive object={robot.scene} scale={3} {...props}/>
+      <primitive object={robot.scene} scale={3} {...props}onClick={(e) => {
+        console.log("I have clicked on Robot", e);
+        actions['Take 001'].play();
+        setTimeout(() => {
+          
+        }, 3000);
+      }}/>
     </Suspense>
   )
 }
 
 function Streetlight(props){
   const streetlight = useLoader(GLTFLoader, './streetlight/scene.gltf')
+
+  console.log(streetlight);
   return(
     <Suspense fallback={null}>
-      <primitive object={streetlight.scene} scale={0.5} {...props}/>
+      <primitive object={streetlight.scene} scale={0.5} {...props} />
     </Suspense>
   )
 }
@@ -177,18 +188,19 @@ export default function Home(props){
         <OrbitControls />
         <Stars fade />
         <ambientLight intensity={1} />
-        <spotLight position={[10, 15, 10]} angle={0.3} /> 
-        {/* <Plane position={[0,0,0]} />
-        <Box position={[2.5, 2.5, 2.5]}/>
-        <Sphere position={[4,4,4]} /> */}
+        <spotLight position={[0, 0, 0]} /> 
+        <Plane position={[0,0,0]} />
+
         <Pegasus position={[4,0,0]} />
         <Pear position={[0,0,4]} scale={0.5}/>
 
-{/*         
-        <Streetlight position={0,0,0} scale={0.5}/> */}
+        
+        <Streetlight position={0,0,0} scale={0.5}/>
         <Robot position={2,0,0} scale={0.10}/>
-        {/* <Drone position={[0,0,1]} scale={0.1} />
-        <Frog position={[0,0,1]} /> */}
+        
+        {/* <Frog position={[0,0,1]} /> */}        
+        {/* <Box position={[2.5, 2.5, 2.5]}/>
+        <Sphere position={[4,4,4]} /> */}
       </Suspense>
     </Canvas>
     </>
