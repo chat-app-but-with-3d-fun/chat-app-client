@@ -6,7 +6,7 @@ import { Chip } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import { Badge } from '@mui/material';
-// import Link from '@mui/material/Link';
+import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserRooms } from '../features/user/userSlice';
 import { setRoom } from '../features/room/roomSlice';
@@ -37,6 +37,7 @@ const RoomList = () => {
             return (
               <Box sx={{display: 'flex', justifyContent: 'space-around', width: "100%"}} key={room._id}>
                 <Link 
+                  component={RouterLink}
                   to={{
                     pathname: `/chat/${room.roomName}`,
                     state: {
