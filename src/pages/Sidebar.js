@@ -4,19 +4,16 @@ import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import AccordionComponent from '../Components/accordion';
 import RoomList from '../Components/RoomList';
-import { Badge, Chip } from '@mui/material';
-import {useGetConnectionQuery} from '../features/api/apiSlice'
-
+import { useSelector } from 'react-redux';
+import {
+   selectPublicRooms,
+   selectPrivateRooms,
+   selectUnreadPrivate,
+   selectUnreadPublic } from '../features/user/userSlice';
 
 
 
@@ -26,42 +23,42 @@ const drawerWidth = 240;
 
 export default function Sidebar(props) {
 
-  const rooms = [
-    {room: 'Kitchen', private: false, unread: 0},
-    {room: "Lobby", private: false, unread: 2},
-    {room: 'School', private: false, unread: 5},
-    {room: 'private-xyz-xyz', private: true, unread: 1}]
-  
-  const friends = [
-    {username: 'Gerda', _id: 12345, online: true},
-    {username: "Helga", _id: 12346, online: true},
-    {username: 'Lucas', _id: 12347, online: false},
-    {username: 'Aimee', _id: 12348, online: false}
-  ]
-  
-  const [unreadMsg, setUnreadMsg] = useState(null) 
-  const [unreadPri, setUnreadPri] = useState(null)
-  
-  const [active, setActive] = useState(true)
+  const privateRooms = useSelector(selectPrivateRooms)
+  const publicRooms = useSelector(selectPublicRooms)
+  const unreadPrivate = useSelector(selectUnreadPrivate)
+  const unreadPublic = useSelector(selectUnreadPublic)
 
-  const calculateUnreadTotal = () => {
-    const unreadTotal = rooms.reduce((acc, cur) => {
-      return acc + cur.unread}, 0
-      )
-      return unreadTotal
-    }
   
+  //  const [unreadPrivate, setUnreadPrivate] = useState(null) 
+  //  const [unreadPublic, setUnreadPublic] = useState(null)
+  
+ 
+  // const calculateUnread = () => {
+     
+  //     const countUnreadPub = publicRooms.reduce((acc, cur) => {
+  //       return acc + cur.unread}, 0
+  //       )
+  //     const countUnreadPriv = privateRooms.reduce((acc, cur) => {
+  //       return acc + cur.unread}, 0
+  //       )
+      
+  //     return {countUnreadPub, countUnreadPriv}
+    
+  //   }
+  
+ 
 
-  useEffect(( ) => {
-      const unread = calculateUnreadTotal()
-      setUnreadMsg(unread)
-    }, [rooms] )
+  // useEffect(( ) => {
+  //     const unread = calculateUnread()
+  //     const {countUnreadPriv, countUnreadPub} = unread
+  //     setUnreadPrivate(() => countUnreadPriv)
+  //     setUnreadPublic(() => countUnreadPub)
+  //   }, [] )
 
 
 //Would be nice to shrink the drawer when a chat window opens, for this a global state about the current postion could be used
 //api fetch for rooms and friends
 //LISTENER register for status change so api fetch can be redone (e.g. friend gets online)
-
  return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -95,29 +92,52 @@ export default function Sidebar(props) {
         <AccordionComponent 
           expanded={true} 
           headline={
-            // <Badge badgeContent={unreadMsg} color="primary"> 
-              <Box sx={{display: 'flex', justifyContent: 'space-around', width: "100%"}}>
-              <Typography>Rooms</Typography>
-              <Chip label={unreadMsg} size="small" color="success" sx={{paddingLeft: "10px", paddingRight: "10px"}} />
+              <Box sx={{display: 'flex', justifyContent: 'space-between', width: "100%"}}>
+              <Typography 
+                fontWeight='bold'
+                >ROOMS
+              </Typography>
+              <Typography
+              sx={{
+                background: 'lightgrey',
+                color: 'grey',
+                paddingLeft: '6px',
+                paddingRight: '6px',
+                borderRadius: '20%',
+                marginRight: '10px'
+              }} >
+                {unreadPublic}
+              </Typography>
               </Box>
-            // </Badge>
           }
           
-          body={<RoomList />}
+          body={<RoomList rooms={publicRooms}/>}
         />
        
-       <AccordionComponent expanded={false} headline="Friends" body={
-          <List>
-           {friends.map((el, index) => (
-             <ListItem button key={el.username}>
-                <ListItemText primary={el.username} />
-             </ListItem>
-           ))}
-         </List>
-        } />
-        
-
-
+       <AccordionComponent 
+          expanded={false} 
+          headline={
+              <Box sx={{display: 'flex', justifyContent: 'space-between', width: "100%"}}>
+                <Typography 
+                  fontWeight='bold'
+                >
+                  FRIENDS
+                </Typography> 
+                <Typography
+                  sx={{
+                    background: 'lightgrey',
+                    color: 'grey',
+                    paddingLeft: '6px',
+                    paddingRight: '6px',
+                    borderRadius: '20%',
+                    marginRight: '10px'
+                  }} >
+                {unreadPrivate}
+              </Typography>
+              </Box>
+            }
+          body={<RoomList rooms={privateRooms}/>}
+        />
       </Drawer>
      {props.children}
  
