@@ -98,10 +98,22 @@ export const apiSlice = createApi({
     }),
     // room -----------
     createRoom: builder.mutation({
-      query: () => ({
+      query: (roomName) => ({
         url: `room/newroom`,
-        method: 'POST'
-      })
+        method: 'POST',
+        body: {roomName}
+      }),
+      async onQueryStarted({userId, friendId}, { dispatch, queryFulfilled }) {
+        try {
+          const { data: newRoom } = await queryFulfilled
+          dispatch(
+            userSlice.actions.createRoom(newRoom)
+          )
+          socket.emit('changeStatus', '')
+        } catch (error) {
+          console.log('[ERROR]', error)
+        }
+      },
     }),
     inviteFriendToRoom: builder.query({
       query: ({friendId, roomId}) => (
@@ -141,6 +153,7 @@ export const {
   useLogoutUserQuery,
   useFindUserMutation,
   useAddFriendMutation,
+  useCreateRoomMutation,
   useGetMessagesQuery,
   useSendMessageMutation
 } = apiSlice
