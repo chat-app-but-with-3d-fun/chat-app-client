@@ -8,35 +8,48 @@ import ListItem from '@mui/material/ListItem';
 import { Badge } from '@mui/material';
 import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserRooms } from '../features/user/userSlice';
+import { selectUserFriends,
+  selectPublicRooms,
+  selectPrivateRooms, selectUserId } from '../features/user/userSlice';
 import { setRoom } from '../features/room/roomSlice';
 
 
-const RoomList = () => {
+const RoomList = (props) => {
 
-  const userRooms = useSelector(selectUserRooms)
+  const {rooms} = props
+  const userFriends = useSelector(selectUserFriends)
+  const userId    = useSelector(selectUserId)
 
-  // const selectRoomHandler = (id, name) => {
-  //   console.log('changing to room ->', name)
-  //   dispatch(setRoom({id, name}))
-  // }
-
-  // const rooms = [
-  //   {_id: '001', room: 'Kitchen', private: false, unread: 0},
-  //   {_id: '002', room: "Lobby", private: false, unread: 2},
-  //   {_id: '003', room: 'School', private: false, unread: 5},
-  //   {_id: '004', room: 'private-xyz-xyz', private: true, unread: 1}]
-  console.log('User ROOMS: ', userRooms)
+  const getName = (room) => {
+    const friendId = room.roomName
+      .split('-')
+      .filter(element =>(element != userId) && (element != 'privatChat')) 
+      .join()
+    const friendName = userFriends
+      .find(element => element._id === friendId)
+    console.log('FRIENDNAME: ', friendName?.username)
+    
+     return friendName?.username
+  }
+console.log('FRIENDS: ',userFriends)
   return (
     <List>
       {
-        userRooms.map((element) => {
+        rooms.map((element) => {
           const { room } = element
           console.log(room._id)
-          if (!room.private) {
+         
             return (
-              <Box sx={{display: 'flex', justifyContent: 'space-around', width: "100%"}} key={room._id}>
+              <Box sx={
+                  {display: 'flex',
+                   justifyContent: `${element.unread > 0 ? "space-between" : "flex-start"}`,
+                   alignItems: 'center',
+                   width: "100%"}
+                  } 
+                   key={room._id}>
                 <Link 
+                  color='inherit'
+                  underline='hover'
                   component={RouterLink}
                   to={{
                     pathname: `/chat/${room.roomName}`,
@@ -49,7 +62,7 @@ const RoomList = () => {
                 >
                   <ListItem button>
                     <Badge badgeContent={element.unread} color="primary"> 
-                      <ListItemText primary={room.roomName} />
+                      <ListItemText primary={room.private ? getName(room) : room.roomName} />
                     </Badge>
                   </ListItem>
                 </Link>
@@ -59,7 +72,10 @@ const RoomList = () => {
                 }
               </Box>
             )
-        }})}
+        }
+        )
+        
+        }
     </List>
     
   )
