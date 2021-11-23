@@ -6,8 +6,8 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import AccordionComponent from '../Components/accordion';
-import RoomList from '../Components/RoomList';
+import AccordionComponent from '../components/accordion';
+import RoomList from '../components/RoomList';
 import { useSelector } from 'react-redux';
 import {
    selectPublicRooms,
