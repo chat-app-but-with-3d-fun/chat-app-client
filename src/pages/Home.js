@@ -111,7 +111,7 @@ export default function Home(props){
       <h2>welcome to koko!</h2>
     </div>
     <Canvas 
-    style={{width: '100%' , height: '100%' }} camera={{ fov: 75, near: 0.1, far: 1000, position: [3, 3, 5 ] }} 
+    style={{width: '300px' , height: '300px' }} camera={{ fov: 75, near: 0.1, far: 1000, position: [3, 3, 5 ] }} 
     // camera={{ position: [0, 0, 0], near: 0.1, far: 1000 }}
     {...props}>      
     <color attach='background' args={'black'}/>

@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import { Badge } from '@mui/material';
 import { selectUserRooms } from '../features/user/userSlice';
-import NewRoomForm from '../components/NewRoomForm';
+import NewRoomForm from './NewRoomForm';
 import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserFriends,
