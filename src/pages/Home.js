@@ -5,31 +5,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Environment, OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei';
 // import { usePlane } from "@react-three/cannon"
 import { useSpring, animated } from '@react-spring/three'
+// import Loader from 'loader.js';
 
 
-
-// function Box(props){
-//   return (
-//     <mesh {...props}>
-//       <boxGeometry attach='geometry' position={[-1, 1, 0]} />
-//       <meshLambertMaterial attach='material' color='hotpink' />
-//     </mesh>
-//   )
-// }
-
-// function Sphere(props){
-
-//   return(
-//     <>
-//     <ambientLight intensity={0.2} />
-//     <directionalLight />
-//     <mesh>
-//       <sphereGeometry args={[1, 32, 32]}  {...props} />
-//       <meshStandardMaterial color='red' />
-//     </mesh>
-//     </>
-//   )
-// }
 
 function Plane(props){
   return(
@@ -40,10 +18,6 @@ function Plane(props){
     </mesh>
   )
 }
-
-
-
-
 
 //  ------------------- FROG ISN'T ANIMATED -------------------
 // function Frog(props){
@@ -89,9 +63,6 @@ function Pegasus(props){
   const gltf = useLoader(GLTFLoader, url);
   const { nodes, materials, animations } = useGLTF(url)
   const { ref, mixer, names, actions, clips } = useAnimations(animations, gltf.scene)
-  // const props = useSpring({
-
-  // })
 
   // console.log(gltf.actions);
   useEffect(() => {
@@ -105,7 +76,7 @@ function Pegasus(props){
       console.log("I have clicked on Pegasus", e);
       actions["metarig|Fly"].play();
       setTimeout(() => {
-         
+        actions["metarig|Fly"].stop()
       }, 3000);
       }}/>
       
@@ -130,8 +101,9 @@ function Pear(props){
         console.log("I have clicked on Pear", e);
         actions["ArmatureAction"].play();
         setTimeout(() => {
-          
+          actions["ArmatureAction"].stop()
         }, 3000);
+      
         }}/>
     </Suspense>
   )
@@ -151,27 +123,59 @@ function Robot(props){
   
   return(
     <Suspense fallback={null} args={[1, 1, 0]}>
-      <primitive object={robot.scene} scale={3} {...props}onClick={(e) => {
+      <primitive object={robot.scene} scale={3} {...props} onClick={(e) => {
         console.log("I have clicked on Robot", e);
         actions['Take 001'].play();
         setTimeout(() => {
-          
+          actions['Take 001'].stop()
         }, 3000);
       }}/>
     </Suspense>
   )
 }
 
-function Streetlight(props){
-  const streetlight = useLoader(GLTFLoader, './streetlight/scene.gltf')
+// function Idk(props){
 
-  console.log(streetlight);
-  return(
-    <Suspense fallback={null}>
-      <primitive object={streetlight.scene} scale={0.5} {...props} />
-    </Suspense>
-  )
-}
+//   // This is some kind of bird?
+
+//   const url = './idk/scene.gltf'
+//   const idk = useLoader(GLTFLoader, url);
+//   const { nodes, materials, animations } = useGLTF(url)
+//   const { ref, mixer, names, actions, clips } = useAnimations(animations, idk.scene)
+
+//   console.log(idk)
+
+//   return(
+//     <Suspense fallback={null}>
+//       <primitive object={idk.scene} {...props}/>
+//     </Suspense>
+//   )
+
+// }
+
+// function Baseball(props){
+//   const url = './basball/scene.gltf';
+//   const baseball = useLoader(GLTFLoader, url);
+//   const { nodes, materials, animations } = useGLTF(url)
+//   const { ref, mixer, names, actions, clips } = useAnimations(animations, baseball.scene)
+
+//   return(
+//     <Suspense fallback={null}>
+//       <primitive object={baseball} {...props} />
+//     </Suspense>
+//   )
+// }
+
+// function Streetlight(props){
+//   const streetlight = useLoader(GLTFLoader, './streetlight/scene.gltf')
+
+//   console.log(streetlight);
+//   return(
+//     <Suspense fallback={null}>
+//       <primitive object={streetlight.scene} scale={0.5} {...props} />
+//     </Suspense>
+//   )
+// }
 
 export default function Home(props){
   return (
@@ -193,10 +197,11 @@ export default function Home(props){
 
         <Pegasus position={[4,0,0]} />
         <Pear position={[0,0,4]} scale={0.5}/>
-
+        {/* <Idk position={[1,1,1]}/> */}
+        {/* <Baseball position={[2,2,2]} /> */}
         
-        <Streetlight position={0,0,0} scale={0.5}/>
-        <Robot position={2,0,0} scale={0.10}/>
+        {/* <Streetlight position={0,-4,0} scale={0.5}/> */}
+        <Robot position={2,2,0} scale={0.10}/>
         
         {/* <Frog position={[0,0,1]} /> */}        
         {/* <Box position={[2.5, 2.5, 2.5]}/>
