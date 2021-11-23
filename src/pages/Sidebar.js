@@ -15,6 +15,8 @@ import {
    selectUnreadPrivate,
    selectUnreadPublic
 } from '../features/user/userSlice';
+import NewRoomForm from '../components/NewRoomForm';
+
 
 const drawerWidth = 240;
 
@@ -108,7 +110,12 @@ export default function Sidebar(props) {
               </Box>
           }
           
-          body={<RoomList rooms={publicRooms}/>}
+          body={
+          <>
+          <NewRoomForm />
+          <RoomList rooms={publicRooms}/>
+          </>
+          }
         />
        
        <AccordionComponent 
@@ -133,7 +140,12 @@ export default function Sidebar(props) {
               </Typography>
               </Box>
             }
-          body={<RoomList rooms={privateRooms}/>}
+          body={
+          <>
+            <button>Add a friend</button>
+            <RoomList rooms={privateRooms}/>
+          </>
+          }
         />
       </Drawer>
      {props.children}

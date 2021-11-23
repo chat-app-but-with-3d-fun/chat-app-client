@@ -55,8 +55,10 @@ const ChatBox = ({ messageList, room}) => {
             <Box 
                 sx={{
                     maxHeight: '70vh',
-                    overflowX: 'hidden',
-                    overflowY: 'scroll',
+                    overflowX: 'auto',
+                    // overflowY: 'scroll',
+                    display: "flex",
+                    flexDirection: "column-reverse",
                 }}
 
             >
@@ -72,7 +74,7 @@ const ChatBox = ({ messageList, room}) => {
                                     {
                                         decideSide(message.sender._id) === 'flex-start' &&
                                         <Grid item>
-                                            <Avatar>{`${message.sender.username.substring(0,1).toUpperCase()}`}</Avatar>
+                                            <Avatar>{`${message.sender.username?.substring(0,1).toUpperCase()}`}</Avatar>
                                         </Grid>
                                     }
                                     <Grid item direction='column'>

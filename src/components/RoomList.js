@@ -39,7 +39,6 @@ const RoomList = (props) => {
 console.log('FRIENDS: ',rooms)
   return (
     <>
-    {!rooms[0]?.room.private && <NewRoomForm />} 
     <List>
       {
         rooms.map((element) => {
