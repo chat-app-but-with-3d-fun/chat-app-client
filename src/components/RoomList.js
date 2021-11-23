@@ -8,6 +8,7 @@ import { Badge } from '@mui/material';
 import { selectUserRooms } from '../features/user/userSlice';
 import NewRoomForm from '../components/NewRoomForm';
 import Link from '@mui/material/Link';
+import List from '@mui/material/List'
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectUserFriends,
