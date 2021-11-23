@@ -6,20 +6,17 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import AccordionComponent from '../Components/accordion';
-import RoomList from '../Components/RoomList';
+import AccordionComponent from '../components/accordion';
+import RoomList from '../components/RoomList';
 import { useSelector } from 'react-redux';
 import {
    selectPublicRooms,
    selectPrivateRooms,
    selectUnreadPrivate,
-   selectUnreadPublic } from '../features/user/userSlice';
-
-
+   selectUnreadPublic
+} from '../features/user/userSlice';
 
 const drawerWidth = 240;
-
-
 
 export default function Sidebar(props) {
 
@@ -59,7 +56,7 @@ export default function Sidebar(props) {
 //Would be nice to shrink the drawer when a chat window opens, for this a global state about the current postion could be used
 //api fetch for rooms and friends
 //LISTENER register for status change so api fetch can be redone (e.g. friend gets online)
- return (
+  return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
