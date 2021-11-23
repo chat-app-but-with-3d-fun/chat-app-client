@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import List from '@mui/material/List';
 import { Link as RouterLink } from 'react-router-dom'
 import { Box } from '@mui/system';
-import List from '@mui/material/List';
 import { Chip } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
@@ -11,9 +10,12 @@ import { selectUserRooms } from '../features/user/userSlice';
 import NewRoomForm from '../components/NewRoomForm';
 import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserFriends,
+import {
+  selectUserFriends,
   selectPublicRooms,
-  selectPrivateRooms, selectUserId } from '../features/user/userSlice';
+  selectPrivateRooms,
+  selectUserId
+} from '../features/user/userSlice';
 import { setRoom } from '../features/room/roomSlice';
 
 
