@@ -53,7 +53,7 @@ const Room = ({ location }) => {
                 tab === 'chat' &&
                 <ChatBox
                     messageList={messageList}
-                    room={{roomId, roomName}}
+                    room={{roomId, roomName, type}}
                 />
             }
             {
