@@ -1,10 +1,11 @@
 import React,{useState, useEffect} from 'react'
 import { Container, Button, ButtonGroup, Box, Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from '@mui/material'
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw} from 'draft-js';
+import { socket } from '../features/api/apiSlice';
 
 
 
-export default function NoteBox() {
+export default function NoteBox({room}) {
     
     const blockType = [
         {run: 'ordered-list-item', btn: 'ol'},
@@ -40,13 +41,45 @@ export default function NoteBox() {
 
     function onChange(editorState) {
         setEditorState(editorState);
-        const raw = convertToRaw(editorState.getCurrentContent());
-       
+        // const raw = convertToRaw(editorState.getCurrentContent());
+        // const raw = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+        // console.log('This is how it started ', raw)
+        // socket.emit('noteChange', 
+        //     {
+        //         "room": room.roomId,
+        //         "note": raw
+        //     })
+        // const json = convertFromRaw(JSON.parse(raw))
+        // console.log('convert it from json: ', json)
+        // const newEditorState = EditorState.createWithContent(json)
+        // setEditorState(() => newEditorState)
     }
 
+    function handleSave(){
+        // const raw = convertToRaw(editorState.getCurrentContent());
+        const raw = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+        console.log('This is how it started ', raw)
+        socket.emit('noteChange', 
+            {
+                "room": room.roomId,
+                "note": raw
+            })
+    }
+
+    useEffect(() => {
+        
+        socket.on('noteChange',( payload ) => {
+            console.log('This comes back: ', payload)
+            const json = convertFromRaw(JSON.parse(payload))
+            const newEditorThing = EditorState.createWithContent(json)
+            console.log('something changed in notebox', json)
+        //    console.log('AND HERE?? ',newEditorState)
+             setEditorState(() => newEditorThing)
+        })},[])
+
 
     
-    
+    console.log('ROOMID ARRVED??: ', room.roomId)
     return (
         <Paper
         elevation="10"
@@ -96,11 +129,13 @@ export default function NoteBox() {
                 })}
                 </ButtonGroup>
                 <Box >
+                <Button onClick={handleSave}>SAVE</Button>
                     <Editor
                         editorState={editorState}
                         onChange={onChange} 
                         
                         />
+                        
                 </Box>
 
 

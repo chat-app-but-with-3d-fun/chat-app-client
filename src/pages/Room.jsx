@@ -58,7 +58,7 @@ const Room = ({ location }) => {
             }
             {
                 tab === 'notes' &&
-                <NoteBox room={roomName} />
+                <NoteBox room={{roomId, roomName, type}} />
             }
         </Paper>
         </Grid>
