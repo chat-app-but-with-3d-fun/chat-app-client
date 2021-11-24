@@ -31,9 +31,13 @@ const RoomList = ({rooms}) => {
       .join()
     const friendName = userFriends
       .find(element => element._id === friendId)
-    console.log('FRIENDNAME: ', friendName?.username)
+    console.log('FRIEND -> ', friendName)
     return (
-      <div>{friendName?.username} <div style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: `${room?.users[1]?.online ? 'green' : 'red'}`}}></div></div>
+      <div>
+        {friendName?.username}
+        <div style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: `${friendName?.online ? 'green' : 'red'}`}}>
+        </div>
+      </div>
     )
   }
 
