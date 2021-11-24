@@ -35,6 +35,10 @@ export const apiSlice = createApi({
           console.log(`new connection with userId => `, userData._id)
           socket.on('register', (friendId) => {
             console.log('friendID => ', friendId)
+            socket.emit('handshake', friendId)
+            dispatch(
+              userSlice.actions.updateFriendStatus(friendId)
+            )
           })
           dispatch(
             userSlice.actions.setUser(userData)
@@ -56,6 +60,10 @@ export const apiSlice = createApi({
           console.log(`new connection with userId => `, userData._id)
           socket.on('register', (friendId) => {
             console.log('friendID => ', friendId)
+            socket.emit('handshake', friendId)
+            dispatch(
+              userSlice.actions.updateFriendStatus(friendId)
+            )
           })
           dispatch(
             userSlice.actions.setUser(userData)
