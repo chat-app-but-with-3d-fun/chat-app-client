@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Paper, Grid } from '@mui/material'
-import ChatBox from '../components/ChatBox';
+import ChatBox from '../components/ChatBox'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import NoteBox from '../components/NoteBox';

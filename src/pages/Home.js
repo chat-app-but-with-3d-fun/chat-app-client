@@ -113,7 +113,7 @@ export default function Home(props){
     <Canvas 
     style={{width: '300px' , height: '300px' }} camera={{ fov: 75, near: 0.1, far: 1000, position: [3, 3, 5 ] }} 
     // camera={{ position: [0, 0, 0], near: 0.1, far: 1000 }}
-    {...props}>      
+    {...props} sRGB={true}>      
     <color attach='background' args={'black'}/>
       <Suspense fallback={null}>
         <OrbitControls />
