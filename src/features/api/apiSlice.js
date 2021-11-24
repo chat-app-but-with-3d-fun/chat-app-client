@@ -33,7 +33,9 @@ export const apiSlice = createApi({
           const { data: userData } = await queryFulfilled
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
           console.log(`new connection with userId => `, userData._id)
-          socket.on('register', userData._id)
+          socket.on('register', (friendId) => {
+            console.log('friendID => ', friendId)
+          })
           dispatch(
             userSlice.actions.setUser(userData)
           )
@@ -52,7 +54,9 @@ export const apiSlice = createApi({
           const { data: userData } = await queryFulfilled
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
           console.log(`new connection with userId => `, userData._id)
-          socket.on('register', userData._id)
+          socket.on('register', (friendId) => {
+            console.log('friendID => ', friendId)
+          })
           dispatch(
             userSlice.actions.setUser(userData)
           )
