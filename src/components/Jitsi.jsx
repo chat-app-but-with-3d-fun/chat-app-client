@@ -57,7 +57,7 @@ export default function Jitsi() {
     //When connection works create local Tracks
     function onConnectionSuccess() {
         room.current = connection.current.initJitsiConference('conference', confOptions);
-        window.JitsiMeetJS.createLocalTracks({ devices: [ 'audio',] })
+        window.JitsiMeetJS.createLocalTracks({ devices: [ 'audio', 'video'] })
                     .then(onLocalTracks)
                     .catch(error => {
                         throw error;
@@ -313,6 +313,7 @@ const handleShareScreen = () => {
     countLocalVideo?.media.dispose()
     console.log('AND NOW: ', countLocalVideo)
     window.JitsiMeetJS.createLocalTracks({ devices: [screenShare ? 'video' : 'desktop' ] })
+    // window.JitsiMeetJS.createLocalTracks({ devices: [ 'desktop' ] })
         .then(tracks => {
             tracks[0].addEventListener(
                 window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
@@ -356,7 +357,7 @@ const handleVideoClick = (e, index) => {
             {/* <button onClick={() => {disconnect()}}>Disconnect</button>
             <button onClick={consoleRoom}>Print remote tracks</button> */}
           
-            {/* <button onClick={handleShareScreen}>{screenShare ? "Share Camera" : "Share Screen"}</button> */}
+            <button onClick={handleShareScreen}>{screenShare ? "Share Camera" : "Share Screen"}</button>
 
             
             {countLocalVideo && <video style={{height: '300px', width: '300px', display: 'none'}} key={`localVideo`} ref={countLocalVideo.ref} autoPlay playsInline muted />
@@ -364,12 +365,12 @@ const handleVideoClick = (e, index) => {
             
 
             <h3>Remote Videos</h3>
-            {/* {countRemoteVideo?.map((element, index) => {
+            {countRemoteVideo?.map((element, index) => {
                 return <video onClick={(e) => handleVideoClick(e, index)} width='300' height='300px' key={`remoteVideo${index}`} ref={element.ref} autoPlay playsInline muted />
-            })} */}
-            {countRemoteVideo?.map( (element,index) => {
-                <JitsiRemoteVideo videoRef={element.ref} />
             })}
+            {/* {countRemoteVideo?.map( (element,index) => {
+                <JitsiRemoteVideo videoRef={element.ref} />
+            })} */}
 
 
 
