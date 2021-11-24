@@ -5,7 +5,7 @@ import { Chip } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import { Badge } from '@mui/material';
-import { selectUserRooms } from '../features/user/userSlice';
+import { createRoom, selectUserRooms } from '../features/user/userSlice';
 import NewRoomForm from '../components/NewRoomForm';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List'
@@ -19,9 +19,8 @@ import {
 import { setRoom } from '../features/room/roomSlice';
 
 
-const RoomList = (props) => {
+const RoomList = ({rooms}) => {
 
-  const {rooms} = props
   const userFriends = useSelector(selectUserFriends)
   const userId    = useSelector(selectUserId)
 
@@ -33,53 +32,65 @@ const RoomList = (props) => {
     const friendName = userFriends
       .find(element => element._id === friendId)
     console.log('FRIENDNAME: ', friendName?.username)
-    
-     return friendName?.username
+    return (
+      <div>{friendName?.username} <div style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: `${room?.users[1]?.online ? 'green' : 'red'}`}}></div></div>
+    )
   }
-console.log('FRIENDS: ',rooms)
+
+  console.log('FRIENDS: ',rooms)
+
   return (
     <>
     <List>
       {
         rooms.map((element) => {
           const { room } = element
-  
-            return (
-              <Box sx={
-                  {display: 'flex',
-                   justifyContent: `${element.unread > 0 ? "space-between" : "flex-start"}`,
-                   alignItems: 'center',
-                   width: "100%"}
-                  } 
-                   key={room._id}>
-
-                <Link 
-                  color='inherit'
-                  underline='hover'
-                  component={RouterLink}
-                  to={{
-                    pathname: `/chat/${room.roomName}`,
-                    state: {
-                      roomId: room._id,
-                      type: `${room.private ? 'private' : 'chat'}`,
-                      roomName: `${room.private ? getName(room) : room.roomName}`
+          return (
+            <Box sx={{
+              display: 'flex',
+              justifyContent: `${element.unread > 0 ? "space-between" : "flex-start"}`,
+              alignItems: 'center',
+              width: "100%"
+            }} 
+              key={room._id}
+            >
+              <Link 
+                color='inherit'
+                underline='hover'
+                component={RouterLink}
+                to={{
+                  pathname: `/chat/${room.roomName}`,
+                  state: {
+                    roomId: room._id,
+                    type: `${room.private ? 'private' : 'chat'}`,
+                    roomName: `${room.private ? getName(room) : room.roomName}`
+                  }
+                }}
+              >
+                <ListItem button>
+                  <ListItemText
+                    primary={
+                      room.private ? getName(room) : room.roomName
                     }
+                  />
+                </ListItem>
+              </Link>
+              {
+                element.unread > 0 && 
+                <Chip
+                  label={element.unread}
+                  size="small"
+                  color="success"
+                  sx={{
+                    paddingLeft: "10px",
+                    paddingRight: "10px"
                   }}
-                >
-                  <ListItem button>
-                      <ListItemText primary={room.private ? getName(room) : room.roomName} />
-                  </ListItem>
-                </Link>
-                {
-                  element.unread > 0 && 
-                    <Chip label={element.unread} size="small" color="success" sx={{paddingLeft: "10px", paddingRight: "10px"}} />
-                }
-              </Box>
-            )
-        }
-        )
-        
-        }
+                />
+              }
+            </Box>
+          )
+        })
+      }
     </List>
     </>
   )
