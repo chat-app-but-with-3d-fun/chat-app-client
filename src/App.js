@@ -7,7 +7,7 @@ import Register from "./pages/Register";
 import "./sass/main.scss";
 import Sidebar from "./pages/Sidebar";
 import Room from "./pages/Room";
-import { useAuthUserMutation } from "./features/api/apiSlice";
+import { socket, useAuthUserMutation } from "./features/api/apiSlice";
 import { setUser } from "./features/user/userSlice";
 
 const App = () => {
@@ -32,13 +32,12 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/sign-:form" component={Register} />
+          <Route exact path="/" component={Home} />
 
           <Sidebar >
-            <Route exact path="/" component={Home} />
             <Route exact path="/chat/:roomId" component={Room} />
             <Route exact path="/dashboard" component={Dashboard} />
           </Sidebar>
-
           
         </Switch>
       </Router>
