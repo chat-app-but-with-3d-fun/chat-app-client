@@ -371,13 +371,15 @@ const handleVideoClick = (e, index) => {
                 return <video onClick={(e) => handleVideoClick(e, index)} width='300' height='300px' key={`remoteVideo${index}`} ref={element.ref} autoPlay playsInline muted />
             })} */}
 
+            
             {countRemoteVideo?.map( (element,index) => {
-                    if (tabOn === 'screen') {
-                        videoSwitch(() => element.ref)
+                    
+                    if (videoSwitch) {
                         return <JitsiRemoteVideo videoRef={element.ref} />
                     } else {
-                        return <JitsiRemoteVideo videoRef={element.ref} />
+                        return <video style={{height: '300px', width: '300px', display: 'none'}} ref={element.ref} autoplay playsInline muted />
                     }
+                    
                 })}    
         
             

@@ -4,8 +4,7 @@ import JitsiRemoteVideo from './JitsiRemoteVideo'
 
 
 export default function ScreenBox(props) {
-    const {videoStatus} = props
-    console.log('DOES VIDEOREF ARRIVE? :', videoStatus)
+    const {screenShare, setScreenShare} = props
     return (
         <Paper
         elevation="10"
@@ -14,7 +13,7 @@ export default function ScreenBox(props) {
         >
             <Grid item xs={12}>
                 <Typography variant='h5' align='center'>Screen Share</Typography>
-                <JitsiRemoteVideo videoRef={videoStatus} />
+                <Button onClick={() => setScreenShare(() => !screenShare)}>Show Screen</Button>
             </Grid>
 
         </Paper>

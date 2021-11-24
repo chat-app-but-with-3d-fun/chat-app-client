@@ -20,7 +20,7 @@ const Room = ({ location }) => {
         setTab(newTab);
     }
 
-    const [videoOn, setVideoOn] = useState(null)
+    const [videoOn, setVideoOn] = useState(false)
 
     return(
     <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
@@ -36,7 +36,7 @@ const Room = ({ location }) => {
                 backgroundColor: 'green'}}>
                 CANVAS
              </Box> */}
-             <Jitsi tabOn={tab} videoSwitch={setVideoOn}/>
+             <Jitsi tabOn={tab} videoSwitch={videoOn}/>
         </Grid>
         
         <Grid item direction='column' md="6" lg='4'>
@@ -68,7 +68,7 @@ const Room = ({ location }) => {
             }
             {
                  tab === 'screen' &&
-                <ScreenBox videoStatus={videoOn} />
+                <ScreenBox screenShare={videoOn} setScreenShare={setVideoOn} />
             }
         </Paper>
         </Grid>
