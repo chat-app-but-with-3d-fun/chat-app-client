@@ -40,46 +40,33 @@ export default function NoteBox({room}) {
     
 
     function onChange(editorState) {
-        setEditorState(editorState);
-        // const raw = convertToRaw(editorState.getCurrentContent());
-        // const raw = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-        // console.log('This is how it started ', raw)
-        // socket.emit('noteChange', 
-        //     {
-        //         "room": room.roomId,
-        //         "note": raw
-        //     })
-        // const json = convertFromRaw(JSON.parse(raw))
-        // console.log('convert it from json: ', json)
-        // const newEditorState = EditorState.createWithContent(json)
-        // setEditorState(() => newEditorState)
+        setEditorState(() => editorState);
     }
 
     function handleSave(){
-        // const raw = convertToRaw(editorState.getCurrentContent());
         const raw = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-        console.log('This is how it started ', raw)
-        socket.emit('noteChange', 
+        socket.emit('newNote', 
             {
                 "room": room.roomId,
-                "note": raw
+                "message": raw,
+                "type" : "note"
             })
     }
 
+    function displayNote(msgObj){
+        const json = convertFromRaw(JSON.parse(msgObj.message))
+        const newEditorThing = EditorState.createWithContent(json)
+        setEditorState(() => newEditorThing)
+    }
+
     useEffect(() => {
-        
-        socket.on('noteChange',( payload ) => {
-            console.log('This comes back: ', payload)
-            const json = convertFromRaw(JSON.parse(payload))
-            const newEditorThing = EditorState.createWithContent(json)
-            console.log('something changed in notebox', json)
-        //    console.log('AND HERE?? ',newEditorState)
-             setEditorState(() => newEditorThing)
-        })},[])
+        socket.emit('getNotes', {"room": room.roomId})
+        socket.on('oldNote', (payload) => displayNote(payload[payload.length-1]))
+        socket.on('noteChange',displayNote)
+        },[])
 
 
     
-    console.log('ROOMID ARRVED??: ', room.roomId)
     return (
         <Paper
         elevation="10"
