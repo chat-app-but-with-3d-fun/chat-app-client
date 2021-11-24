@@ -28,6 +28,13 @@ export const userSlice = createSlice({
       console.log('payload...', payload)
       state.rooms.push(payload)
     },
+    updateFriendStatus: (state, { payload }) => {
+      console.log('payload...', payload)
+      const index = state.friends.findIndex(
+        item => item._id === payload
+      )
+      state.friends[index].online = !state.friends[index].online
+    },
     userLogout: (state, action) => {
       return initialState
     }
@@ -48,6 +55,12 @@ export const selectUnreadPublic = state => state.user.rooms.filter(el => el.room
 
 
 
-export const { setUser, addFriend, createRoom, userLogout } = userSlice.actions
+export const {
+  setUser,
+  addFriend,
+  createRoom,
+  updateFriendStatus,
+  userLogout
+} = userSlice.actions
 
 export default userSlice.reducer
