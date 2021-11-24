@@ -6,6 +6,8 @@ import Tab from '@mui/material/Tab';
 import NoteBox from '../components/NoteBox';
 import { useGetMessagesQuery } from "../features/api/apiSlice"
 import Jitsi from '../components/Jitsi';
+import JitsiRemoteVideo from '../components/JitsiRemoteVideo';
+import ScreenBox from '../components/ScreenBox';
 
 const Room = ({ location }) => {
     //state from react-router-dom
@@ -17,6 +19,8 @@ const Room = ({ location }) => {
     const changeTab = (e, newTab) => {
         setTab(newTab);
     }
+
+    const [videoOn, setVideoOn] = useState(null)
 
     return(
     <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
@@ -32,7 +36,7 @@ const Room = ({ location }) => {
                 backgroundColor: 'green'}}>
                 CANVAS
              </Box> */}
-             <Jitsi />
+             <Jitsi tabOn={tab} videoSwitch={setVideoOn}/>
         </Grid>
         
         <Grid item direction='column' md="6" lg='4'>
@@ -61,6 +65,10 @@ const Room = ({ location }) => {
             {
                 tab === 'notes' &&
                 <NoteBox room={{roomId, roomName, type}} />
+            }
+            {
+                 tab === 'screen' &&
+                <ScreenBox videoStatus={videoOn} />
             }
         </Paper>
         </Grid>

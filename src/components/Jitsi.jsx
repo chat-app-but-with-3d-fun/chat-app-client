@@ -6,7 +6,9 @@ import JitsiLocalAudio from './JitsiAudio';
 import { Box } from '@mui/system';
 import JitsiRemoteVideo from './JitsiRemoteVideo';
 
-export default function Jitsi() {
+export default function Jitsi(props) {
+
+    const {tabOn, videoSwitch} = props
 
     const connection       = useRef(null)
     const room             = useRef(null);
@@ -365,12 +367,20 @@ const handleVideoClick = (e, index) => {
             
 
             <h3>Remote Videos</h3>
-            {countRemoteVideo?.map((element, index) => {
+            {/* {countRemoteVideo?.map((element, index) => {
                 return <video onClick={(e) => handleVideoClick(e, index)} width='300' height='300px' key={`remoteVideo${index}`} ref={element.ref} autoPlay playsInline muted />
-            })}
-            {/* {countRemoteVideo?.map( (element,index) => {
-                <JitsiRemoteVideo videoRef={element.ref} />
             })} */}
+
+            {countRemoteVideo?.map( (element,index) => {
+                    if (tabOn === 'screen') {
+                        videoSwitch(() => element.ref)
+                        return <JitsiRemoteVideo videoRef={element.ref} />
+                    } else {
+                        return <JitsiRemoteVideo videoRef={element.ref} />
+                    }
+                })}    
+        
+            
 
 
 
