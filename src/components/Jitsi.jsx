@@ -1,4 +1,10 @@
 import React, {createRef, useRef, useState, useEffect} from 'react'
+import Fab from '@mui/material/Fab';
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import JitsiLocalAudio from './JitsiAudio';
+import { Box } from '@mui/system';
+import JitsiRemoteVideo from './JitsiRemoteVideo';
 
 export default function Jitsi() {
 
@@ -51,7 +57,7 @@ export default function Jitsi() {
     //When connection works create local Tracks
     function onConnectionSuccess() {
         room.current = connection.current.initJitsiConference('conference', confOptions);
-        window.JitsiMeetJS.createLocalTracks({ devices: [ 'audio', 'video' ] })
+        window.JitsiMeetJS.createLocalTracks({ devices: [ 'audio',] })
                     .then(onLocalTracks)
                     .catch(error => {
                         throw error;
@@ -212,6 +218,9 @@ useEffect(() => {
         });
     }
     isVideo.current = false
+    
+    //ADDED automatic loading
+    connection.current.connect()
 },[])
 
 //After rendering the dom Elements attach the media streams
@@ -339,31 +348,47 @@ const handleVideoClick = (e, index) => {
 }
 
     return (
-        <div style={{marginTop: "100px"}}>
-            <button onClick={async() => {
+        <Box sx={{display: 'flex', flexDirection: 'column'}}>
+            {/* <button onClick={async() => {
                 connection.current.connect()}}>
                     Connect
-            </button>
-            <button onClick={() => {disconnect()}}>Disconnect</button>
-            <button onClick={consoleRoom}>Print remote tracks</button>
-            <button onClick={handleMute}>{isMuted  ?  'Speak' : "Pssstt"}</button>
-            <button onClick={handleShareScreen}>{screenShare ? "Share Camera" : "Share Screen"}</button>
+            </button> */}
+            {/* <button onClick={() => {disconnect()}}>Disconnect</button>
+            <button onClick={consoleRoom}>Print remote tracks</button> */}
+          
+            {/* <button onClick={handleShareScreen}>{screenShare ? "Share Camera" : "Share Screen"}</button> */}
 
-            <h3>Local Video</h3>
-            {countLocalVideo && <video style={{height: '300px', width: '300px'}} key={`localVideo`} ref={countLocalVideo.ref} autoPlay playsInline muted />
+            
+            {countLocalVideo && <video style={{height: '300px', width: '300px', display: 'none'}} key={`localVideo`} ref={countLocalVideo.ref} autoPlay playsInline muted />
             }
             
-            {countLocalAudio && <audio ref={countLocalAudio.ref} key={`localAudio`} autoPlay muted/>
-            }
 
             <h3>Remote Videos</h3>
-            {countRemoteVideo?.map((element, index) => {
+            {/* {countRemoteVideo?.map((element, index) => {
                 return <video onClick={(e) => handleVideoClick(e, index)} width='300' height='300px' key={`remoteVideo${index}`} ref={element.ref} autoPlay playsInline muted />
+            })} */}
+            {countRemoteVideo?.map( (element,index) => {
+                <JitsiRemoteVideo videoRef={element.ref} />
             })}
 
+
+
+            {/* {
+            countLocalAudio && <audio ref={countLocalAudio.ref} key={`localAudio`} autoPlay muted/>
+            } */}
+            
+            {countLocalAudio && <JitsiLocalAudio audioRef={countLocalAudio.ref}/>}
+            
             {countRemoteAudio?.map((element, index) => {
                 return <audio ref={element.ref} key={`remoteAudio${index}`} autoPlay/>
             })}
-        </div>
+            
+            
+            
+            
+            <Fab  onClick={handleMute} variant="extended" color="secondary">
+                {isMuted  ?  <><MicOffIcon />Speak</> : <><MicIcon />Pssstt</>}
+            </Fab>
+        </Box>
     )
 }
