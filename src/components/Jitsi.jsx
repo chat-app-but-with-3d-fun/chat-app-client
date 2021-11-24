@@ -7,7 +7,7 @@ import { Box } from '@mui/system';
 
 export default function Jitsi(props) {
 
-    const {tabOn, videoSwitch} = props
+    const {id} = props
 
     const connection       = useRef(null)
     const room             = useRef(null);
@@ -45,7 +45,7 @@ export default function Jitsi(props) {
            useStunTurn: true,
         }, 
         useStunTurn: true, 
-        bosh: `https://meet.jit.si/http-bind?room=pucktesttest`, 
+        bosh: `https://meet.jit.si/http-bind?room=puck${id}`, 
         websocket: 'wss://meet.jit.si/xmpp-websocket', 
         clientNode: 'http://jitsi.org/jitsimeet', 
     };
@@ -350,7 +350,8 @@ const handleShareScreen = () => {
             }    
                         
             {
-                countLocalAudio && <JitsiLocalAudio audioRef={countLocalAudio.ref}/>
+                countLocalAudio && 
+                    <JitsiLocalAudio audioRef={countLocalAudio.ref}/>
             }
             
             {
@@ -358,7 +359,10 @@ const handleShareScreen = () => {
                     return <audio ref={element.ref} key={`remoteAudio${index}`} autoPlay/>
                 })
             }
-            <Fab onClick={handleMute} variant="extended" color="secondary">
+            <Fab onClick={handleMute}
+                 variant="extended"
+                 color="secondary"
+                 sx={{position: 'absolute', bottom: '20px'}}>
                 {isMuted  ?  <><MicOffIcon />Speak</> : <><MicIcon />Pssstt</>}
             </Fab>
         </Box>

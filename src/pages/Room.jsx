@@ -6,6 +6,7 @@ import Tab from '@mui/material/Tab';
 import NoteBox from '../components/NoteBox';
 import { useGetMessagesQuery } from "../features/api/apiSlice"
 import Jitsi from '../components/Jitsi';
+import ScreenBox from '../components/ScreenBox';
 
 const Room = ({ location }) => {
     //state from react-router-dom
@@ -26,13 +27,13 @@ const Room = ({ location }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: "lightgray"}}>
-            {/* <Box sx={{
+            <Box sx={{
                 width: "200px",
                 height: "200px",
                 backgroundColor: 'green'}}>
                 CANVAS
-             </Box> */}
-             {/* <Jitsi /> */}
+             </Box>
+             <Jitsi id={roomId} />
         </Grid>
         
         <Grid item direction='column' md="6" lg='4'>
@@ -61,6 +62,10 @@ const Room = ({ location }) => {
             {
                 tab === 'notes' &&
                 <NoteBox room={{roomId, roomName, type}} />
+            }
+            {
+                 tab === 'screen' &&
+                <ScreenBox />
             }
         </Paper>
         </Grid>
