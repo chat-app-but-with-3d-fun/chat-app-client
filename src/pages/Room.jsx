@@ -32,7 +32,7 @@ const Room = ({ location }) => {
                 backgroundColor: 'green'}}>
                 CANVAS
              </Box> */}
-             <Jitsi />
+             {/* <Jitsi /> */}
         </Grid>
         
         <Grid item direction='column' md="6" lg='4'>
