@@ -34,8 +34,12 @@ export const apiSlice = createApi({
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
           console.log(`new connection with userId => `, userData._id)
           socket.on('register', (friendId) => {
-            console.log('friendID => ', friendId)
             socket.emit('handshake', friendId)
+            dispatch(
+              userSlice.actions.updateFriendStatus(friendId)
+            )
+          })
+          socket.on('unRegister', (friendId) => {
             dispatch(
               userSlice.actions.updateFriendStatus(friendId)
             )
@@ -59,8 +63,12 @@ export const apiSlice = createApi({
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
           console.log(`new connection with userId => `, userData._id)
           socket.on('register', (friendId) => {
-            console.log('friendID => ', friendId)
             socket.emit('handshake', friendId)
+            dispatch(
+              userSlice.actions.updateFriendStatus(friendId)
+            )
+          })
+          socket.on('unRegister', (friendId) => {
             dispatch(
               userSlice.actions.updateFriendStatus(friendId)
             )
