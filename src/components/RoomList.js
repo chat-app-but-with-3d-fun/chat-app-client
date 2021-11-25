@@ -31,13 +31,24 @@ const RoomList = ({rooms}) => {
       .join()
     const friendName = userFriends
       .find(element => element._id === friendId)
-    console.log('FRIENDNAME: ', friendName?.username)
-    return (
-      <div>{friendName?.username} <div style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: `${room?.users[1]?.online ? 'green' : 'red'}`}}></div></div>
-    )
+    return friendName?.username
   }
 
-  console.log('FRIENDS: ',rooms)
+  const getFriendStatus = (room) => {
+    const friendId = room.roomName
+      .split('-')
+      .filter(element =>(element != userId) && (element != 'privatChat')) 
+      .join()
+    const friendName = userFriends
+      .find(element => element._id === friendId)
+    return (
+      <div>
+        {friendName?.username}
+        <div style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: `${friendName?.online ? 'green' : 'red'}`}}>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -70,7 +81,7 @@ const RoomList = ({rooms}) => {
                 <ListItem button>
                   <ListItemText
                     primary={
-                      room.private ? getName(room) : room.roomName
+                      room.private ? getFriendStatus(room) : room.roomName
                     }
                   />
                 </ListItem>

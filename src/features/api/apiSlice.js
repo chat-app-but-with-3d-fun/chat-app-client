@@ -34,7 +34,15 @@ export const apiSlice = createApi({
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
           console.log(`new connection with userId => `, userData._id)
           socket.on('register', (friendId) => {
-            console.log('friendID => ', friendId)
+            socket.emit('handshake', friendId)
+            dispatch(
+              userSlice.actions.updateFriendStatus(friendId)
+            )
+          })
+          socket.on('unRegister', (friendId) => {
+            dispatch(
+              userSlice.actions.updateFriendStatus(friendId)
+            )
           })
           dispatch(
             userSlice.actions.setUser(userData)
@@ -55,7 +63,15 @@ export const apiSlice = createApi({
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
           console.log(`new connection with userId => `, userData._id)
           socket.on('register', (friendId) => {
-            console.log('friendID => ', friendId)
+            socket.emit('handshake', friendId)
+            dispatch(
+              userSlice.actions.updateFriendStatus(friendId)
+            )
+          })
+          socket.on('unRegister', (friendId) => {
+            dispatch(
+              userSlice.actions.updateFriendStatus(friendId)
+            )
           })
           dispatch(
             userSlice.actions.setUser(userData)
@@ -131,14 +147,19 @@ export const apiSlice = createApi({
       query: (roomId) => `msg/${roomId}`,
       async onCacheEntryAdded(
         getMessages,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
       ) {
         await cacheDataLoaded
         const messageReceive = (message) => {
           try {
             if (message) updateCachedData(
               (draft) => {
-                draft.messages.push(message)
+                const roomId = getState().room.roomId
+                console.log('getting message =>', message)
+                console.log('in room ->', roomId)
+                if (roomId === message.room) {
+                  draft.messages.push(message)
+                }
               }
             )
           } catch (error) {

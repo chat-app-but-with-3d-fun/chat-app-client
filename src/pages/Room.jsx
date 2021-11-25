@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react'
+
+import React, { useEffect, useState } from 'react'
+
 import { Box, Paper, Grid } from '@mui/material'
 import ChatBox from '../components/ChatBox';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import NoteBox from '../components/NoteBox';
 import { useGetMessagesQuery } from "../features/api/apiSlice"
+import { useDispatch } from 'react-redux';
+import { setRoom } from '../features/room/roomSlice';
 import Jitsi from '../components/Jitsi';
 import ScreenBox from '../components/ScreenBox';
 import { socket } from '../features/api/apiSlice';
@@ -17,17 +21,19 @@ const Room = ({ location }) => {
     const [tab, setTab] = useState('chat')
     const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
     
+    const dispatch = useDispatch()
+
     const changeTab = (e, newTab) => {
         setTab(newTab);
     }
 
     useEffect(() => {
+        dispatch(
+            setRoom(roomId)
+        )
         socket.emit('setRoom', {"room": roomId})
-        socket.on("roomUpdate", (payload) => console.log('USER IS IN ROOM: ',payload))
-        return function cleanup() {
-            socket.emit('setRoom', {"room": null})
-        }
-        },[])
+        },[roomId])
+
 
     return(
     <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>

@@ -7,7 +7,7 @@ import { selectUserId } from '../features/user/userSlice';
 import moment from 'moment';
 import { socket } from '../features/api/apiSlice';
 
-const ChatBox = ({ messageList, room}) => {
+const ChatBox = ({ messageList, room }) => {
     const [ message, setMessage ] = useState('')
     const userId = useSelector(selectUserId)
     
