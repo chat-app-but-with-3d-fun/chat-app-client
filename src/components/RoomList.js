@@ -31,7 +31,6 @@ const RoomList = ({rooms}) => {
       .join()
     const friendName = userFriends
       .find(element => element._id === friendId)
-    console.log('FRIEND -> ', friendName)
     return friendName?.username
   }
 
@@ -42,7 +41,6 @@ const RoomList = ({rooms}) => {
       .join()
     const friendName = userFriends
       .find(element => element._id === friendId)
-    console.log('FRIEND -> ', friendName)
     return (
       <div>
         {friendName?.username}
@@ -51,9 +49,6 @@ const RoomList = ({rooms}) => {
       </div>
     )
   }
-
-
-  console.log('FRIENDS: ',rooms)
 
   return (
     <>
