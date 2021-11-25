@@ -1,0 +1,269 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1864,
+      "max": [
+        1.423721432685852,
+        1.4229907989501953,
+        1.423116683959961
+      ],
+      "min": [
+        -1.4237322807312012,
+        -1.4229905605316162,
+        -1.4236632585525513
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 22368,
+      "componentType": 5126,
+      "count": 1864,
+      "max": [
+        0.9994921088218689,
+        0.9991599917411804,
+        0.9996803402900696
+      ],
+      "min": [
+        -0.9999386668205261,
+        -0.9991600513458252,
+        -0.999835193157196
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1864,
+      "max": [
+        0.904609739780426,
+        0.8930140137672424,
+        0.8042399287223816,
+        1.0
+      ],
+      "min": [
+        -0.9540963768959045,
+        -0.6164870262145996,
+        -0.8260847330093384,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1864,
+      "max": [
+        0.9980400204658508,
+        0.9569900035858154
+      ],
+      "min": [
+        0.0019499999471008778,
+        0.0019499999471008778
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 10512,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Francesco Coldesina (https://sketchfab.com/topfrank2013)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/base-ball-ball-f923538fe3034464aeeef036d2b6afe6",
+      "title": "Base Ball Ball"
+    },
+    "generator": "Sketchfab-11.97.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 42048,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 14912,
+      "byteOffset": 42048,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 44736,
+      "byteOffset": 56960,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 29824,
+      "byteOffset": 101696,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 131520,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/BaseballBall_baseColor.jpeg"
+    },
+    {
+      "uri": "textures/BaseballBall_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/BaseballBall_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "BaseballBall",
+      "normalTexture": {
+        "index": 2
+      },
+      "occlusionTexture": {
+        "index": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "BaseballBall-_BaseballBall_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -5.053215392444312e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        -5.053215392444312e-16,
+        0.0,
+        0.0,
+        1.3631677575176582e-05,
+        1.3020039091316295e-07,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.02539999969303608,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.02539999969303608,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.02539999969303608,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "BaseBallBall.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "name": "BaseballBall-"
+    },
+    {
+      "mesh": 0,
+      "name": "BaseballBall-_BaseballBall_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}
