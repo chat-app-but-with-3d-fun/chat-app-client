@@ -16,6 +16,7 @@ import {
    selectUnreadPublic,
 } from '../features/user/userSlice';
 import NewRoomForm from '../components/NewRoomForm';
+import AddNewFriend from '../components/AddNewFriend';
 
 
 const drawerWidth = 240;
@@ -143,7 +144,7 @@ export default function Sidebar({children}) {
             }
           body={
           <>
-            <button>Add a friend</button>
+            <AddNewFriend />
             <RoomList rooms={privateRooms} />
           </>
           }
