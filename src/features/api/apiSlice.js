@@ -147,14 +147,19 @@ export const apiSlice = createApi({
       query: (roomId) => `msg/${roomId}`,
       async onCacheEntryAdded(
         getMessages,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
       ) {
         await cacheDataLoaded
         const handshake = (message) => {
           try {
             if (message) updateCachedData(
               (draft) => {
-                draft.messages.push(message)
+                const roomId = getState().room.roomId
+                console.log('getting message =>', message)
+                console.log('in room ->', roomId)
+                if (roomId === message.room) {
+                  draft.messages.push(message)
+                }
               }
             )
           } catch (error) {
