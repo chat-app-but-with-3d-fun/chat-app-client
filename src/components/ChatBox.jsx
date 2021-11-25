@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import { Container, Box, Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from '@mui/material'
+import { Box, Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
 import { deepPurple } from '@mui/material/colors';
-import { FixedSizeList } from 'react-window';
-import { useGetMessagesQuery, useSendMessageMutation } from "../features/api/apiSlice"
 import { useSelector } from 'react-redux';
 import { selectUserId } from '../features/user/userSlice';
 import moment from 'moment';
@@ -26,6 +24,7 @@ const ChatBox = ({ messageList, room}) => {
     }
 
     const sendMessageHandler = () => {
+        console.log('sending message ->', message)
         socket.emit('newMsg',
         {
             "type": "chat",
@@ -34,14 +33,7 @@ const ChatBox = ({ messageList, room}) => {
         })
         setMessage('')
     }
-     
-    // const getDate = (dateInput) => {
-    //     const dateNow   = new Date() 
-    //     const tmpDate   = new Date(dateInput)
-    //     const timePast  = (dateNow-tmpDate)/1000/60/60/24
-    //     return `${Math.floor(timePast)} days ago`
-    // }
-    console.log('MESSAGES: ', messageList)
+
     return (
        <Grid item xs={12}
          sx={{
@@ -64,38 +56,41 @@ const ChatBox = ({ messageList, room}) => {
             >
                 <List>
                     {
-                        messageList?.messages?.map((message, index) => (
-                            <ListItem key={index}>
-                                <Grid container 
-                                    direction='row'
-                                    justifyContent={decideSide(message.sender._id)}
-                                    spacing={2}
-                                >
-                                    {
-                                        decideSide(message.sender._id) === 'flex-start' &&
-                                        <Grid item>
-                                            <Avatar>{`${message.sender.username?.substring(0,1).toUpperCase()}`}</Avatar>
+                        messageList?.messages?.map((message, index) => {
+                            const msgDate = message.createdAt.split('.')
+                            return (
+                                <ListItem key={index}>
+                                    <Grid container 
+                                        direction='row'
+                                        justifyContent={decideSide(message.sender._id)}
+                                        spacing={2}
+                                    >
+                                        {
+                                            decideSide(message.sender._id) === 'flex-start' &&
+                                            <Grid item>
+                                                <Avatar>{`${message.sender.username?.substring(0,1).toUpperCase()}`}</Avatar>
+                                            </Grid>
+                                        }
+                                        <Grid item direction='column'>
+                                        <Paper elevation='10' sx={{borderRadius: '10%', padding: "10px"}}>
+                                        <Grid item >
+                                                <ListItemText primary={message.message}></ListItemText>
                                         </Grid>
-                                    }
-                                    <Grid item direction='column'>
-                                    <Paper elevation='10' sx={{borderRadius: '10%', padding: "10px"}}>
-                                    <Grid item >
-                                            <ListItemText primary={message.message}></ListItemText>
-                                    </Grid>
-                                    <Grid item >
-                                        <ListItemText secondary={moment(message.createdAt).calendar()}></ListItemText>
-                                    </Grid>
-                                    </Paper>
-                                    </Grid>
-                                    {
-                                        decideSide(message.sender._id) === 'flex-end' && 
-                                        <Grid item>
-                                            <Avatar sx={{ bgcolor: deepPurple[500] }}>me</Avatar>
+                                        <Grid item >
+                                            <ListItemText secondary={moment(message.createdAt).calendar('LTS')}></ListItemText>
                                         </Grid>
-                                    }
-                                </Grid>
-                            </ListItem> 
-                        ))
+                                        </Paper>
+                                        </Grid>
+                                        {
+                                            decideSide(message.sender._id) === 'flex-end' && 
+                                            <Grid item>
+                                                <Avatar sx={{ bgcolor: deepPurple[500] }}>me</Avatar>
+                                            </Grid>
+                                        }
+                                    </Grid>
+                                </ListItem>
+                            ) 
+                        })
                     }
                 </List>
                 </Box>

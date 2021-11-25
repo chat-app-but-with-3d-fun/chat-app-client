@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Paper, Grid } from '@mui/material'
 import ChatBox from '../components/ChatBox';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import NoteBox from '../components/NoteBox';
 import { useGetMessagesQuery } from "../features/api/apiSlice"
+import Jitsi from '../components/Jitsi';
+import ScreenBox from '../components/ScreenBox';
+import { socket } from '../features/api/apiSlice';
+
 
 const Room = ({ location }) => {
     //state from react-router-dom
@@ -16,6 +20,14 @@ const Room = ({ location }) => {
     const changeTab = (e, newTab) => {
         setTab(newTab);
     }
+
+    useEffect(() => {
+        socket.emit('setRoom', {"room": roomId})
+        socket.on("roomUpdate", (payload) => console.log('USER IS IN ROOM: ',payload))
+        return function cleanup() {
+            socket.emit('setRoom', {"room": null})
+        }
+        },[])
 
     return(
     <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
@@ -31,6 +43,7 @@ const Room = ({ location }) => {
                 backgroundColor: 'green'}}>
                 CANVAS
              </Box>
+             <Jitsi id={roomId} />
         </Grid>
         
         <Grid item direction='column' md="6" lg='4'>
@@ -58,7 +71,11 @@ const Room = ({ location }) => {
             }
             {
                 tab === 'notes' &&
-                <NoteBox room={roomName} />
+                <NoteBox room={{roomId, roomName, type}} />
+            }
+            {
+                 tab === 'screen' &&
+                <ScreenBox />
             }
         </Paper>
         </Grid>
