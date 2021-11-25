@@ -54,9 +54,11 @@ export default function NoteBox({room}) {
     }
 
     function displayNote(msgObj){
+       if (msgObj){
         const json = convertFromRaw(JSON.parse(msgObj.message))
         const newEditorThing = EditorState.createWithContent(json)
         setEditorState(() => newEditorThing)
+       }
     }
 
     useEffect(() => {
