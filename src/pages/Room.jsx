@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Paper, Grid } from '@mui/material'
 import ChatBox from '../components/ChatBox';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import NoteBox from '../components/NoteBox';
 import { useGetMessagesQuery } from "../features/api/apiSlice"
+import { useDispatch } from 'react-redux';
+import { setRoom } from '../features/room/roomSlice';
+import { socket } from '../features/api/apiSlice'
 
 const Room = ({ location }) => {
     //state from react-router-dom
@@ -13,9 +16,17 @@ const Room = ({ location }) => {
     const [tab, setTab] = useState('chat')
     const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
     
+    const dispatch = useDispatch()
+
     const changeTab = (e, newTab) => {
         setTab(newTab);
     }
+
+    useEffect(() => {
+        dispatch(
+            setRoom(roomId)
+        )
+    }, [roomId])
 
     return(
     <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>

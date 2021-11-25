@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { socket } from '../api/apiSlice'
 
 const initialState = {
-  name: '',
   roomId: '',
 }
 
@@ -10,10 +10,9 @@ export const roomSlice = createSlice({
   initialState,
   reducers: {
     setRoom: (state, { payload }) => {
-      console.log('setting room... payload =>', payload)
-      for (let key in payload) {
-        state[key] = payload[key]
-      }
+      console.log('setting room... with id =>', payload)
+      state.roomId = payload
+      if (socket) socket?.emit('setRoom', { room: payload })
     },
     // setMessages: (state, action) => {
     //   console.log('action', action)
@@ -32,9 +31,6 @@ export const selectRoomName = state => state.room.name
 
 export const {
   setRoom,
-  sendMessage,
-  addMessage,
-  setMessages
 } = roomSlice.actions
 
 export default roomSlice.reducer
