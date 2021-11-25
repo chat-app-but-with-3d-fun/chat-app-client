@@ -1,10 +1,11 @@
 import React,{useState, useEffect} from 'react'
 import { Container, Button, ButtonGroup, Box, Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from '@mui/material'
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw} from 'draft-js';
+import { socket } from '../features/api/apiSlice';
 
 
 
-export default function NoteBox() {
+export default function NoteBox({room}) {
     
     const blockType = [
         {run: 'ordered-list-item', btn: 'ol'},
@@ -39,13 +40,32 @@ export default function NoteBox() {
     
 
     function onChange(editorState) {
-        setEditorState(editorState);
-        const raw = convertToRaw(editorState.getCurrentContent());
-       
+        setEditorState(() => editorState);
     }
 
+    function handleSave(){
+        const raw = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+        socket.emit('newNote', 
+            {
+                "room": room.roomId,
+                "message": raw,
+                "type" : "note"
+            })
+    }
 
-    
+    function displayNote(msgObj){
+        const json = convertFromRaw(JSON.parse(msgObj.message))
+        const newEditorThing = EditorState.createWithContent(json)
+        setEditorState(() => newEditorThing)
+    }
+
+    useEffect(() => {
+        socket.emit('getNotes', {"room": room.roomId})
+        socket.on('oldNote', (payload) => displayNote(payload[payload.length-1]))
+        socket.on('noteChange',displayNote)
+        },[])
+
+
     
     return (
         <Paper
@@ -96,11 +116,13 @@ export default function NoteBox() {
                 })}
                 </ButtonGroup>
                 <Box >
+                <Button onClick={handleSave}>SAVE</Button>
                     <Editor
                         editorState={editorState}
                         onChange={onChange} 
                         
                         />
+                        
                 </Box>
 
 

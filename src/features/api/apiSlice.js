@@ -150,7 +150,7 @@ export const apiSlice = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
       ) {
         await cacheDataLoaded
-        const handshake = (message) => {
+        const messageReceive = (message) => {
           try {
             if (message) updateCachedData(
               (draft) => {
@@ -166,7 +166,8 @@ export const apiSlice = createApi({
             console.log('[ERROR]', error)
           }
         }
-        socket.on('newMsg', handshake)
+        socket.on('newMsg', messageReceive)
+        
         // await cacheEntryRemoved
       },
     }),

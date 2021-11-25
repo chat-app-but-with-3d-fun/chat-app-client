@@ -7,8 +7,11 @@ import Register from "./pages/Register";
 import "./sass/main.scss";
 import Sidebar from "./pages/Sidebar";
 import Room from "./pages/Room";
-import { socket, useAuthUserMutation } from "./features/api/apiSlice";
-import { selectUserId, setUser, updateFriendStatus } from "./features/user/userSlice";
+
+import {socket, useAuthUserMutation } from "./features/api/apiSlice";
+import {  selectUserId, setUser, updateFriendStatus } from "./features/user/userSlice";
+import Jitsi from "./components/Jitsi";
+
 
 const App = () => {
   const userId = useSelector(selectUserId)
@@ -48,6 +51,7 @@ const App = () => {
           <Sidebar >
             <Route exact path="/chat/:roomId" component={Room} />
             <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/jitsi" component={Jitsi} />
           </Sidebar>
           
         </Switch>
