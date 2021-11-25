@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 import Dashboard from './pages/Dashboard';
 import Register from "./pages/Register";
 import "./sass/main.scss";
@@ -46,7 +46,7 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/sign-:form" component={Register} />
-          <Route exact path="/" component={Home} />
+          {/* <Route exact path="/" component={Home} /> */}
 
           <Sidebar >
             <Route exact path="/chat/:roomId" component={Room} />
