@@ -53,7 +53,7 @@ const ChatBox = ({ messageList, room }) => {
                 {room.type === 'private' ? `Direct chat with ${room.roomName}` : `Chatting in room ${room.roomName}`}
             </Typography>
             {/* create opacity effect on top of chat if there are more than 2 elements */}
-            <Box sx={{position: 'relative', height:"84vh"}}>
+            <Box sx={{position: 'relative', height:"85vh"}}>
             {messageList?.messages.length < 3 ? <></> : 
                 <Box sx={
                     {position: "absolute",
@@ -62,6 +62,7 @@ const ChatBox = ({ messageList, room }) => {
                     backgroundImage: "linear-gradient(to bottom,  rgba(255, 255, 255, 1) 0%, rgba(233, 233, 233, 0) 100%)",
                     zIndex: '9999'}}></Box>
             }
+            
             <Box sx={{
                     position: 'absolute',
                     bottom: '0',
@@ -70,9 +71,9 @@ const ChatBox = ({ messageList, room }) => {
                 autoHide
                 autoHideTimeout={1000}
                 autoHideDuration={200}
-                style={{height: '73vh', width:'100%'}}
+                style={{height: '75vh', width:'100%'}}
                 ref={scrollBar}>
-           <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyConten: 'flex-end'}}>
+           <Box sx={{display: 'flex', flexDirection: 'column'}}>
                 <List>
                     {
                         messageList?.messages?.map((message, index) => {
@@ -115,12 +116,12 @@ const ChatBox = ({ messageList, room }) => {
                 </Box>
                 </Scrollbars>
                 <Divider />
-                <Grid container style={{padding: '20px'}}>
-                    <Grid item xs={11}>
+                <Grid container spacing={1} sx={{padding: '20px'}} >
+                    <Grid item xs={10}>
                         <TextField id="outlined-basic-email" label="Type Something" value={message} onChange={inputHandler} fullWidth />
                     </Grid>
-                    <Grid xs={1} align="right">
-                        <Fab color="primary" aria-label="add" onClick={sendMessageHandler}><SendIcon /></Fab>
+                    <Grid item xs={1} align="right">
+                        <Fab size="medium" color="primary" aria-label="add" onClick={sendMessageHandler}><SendIcon /></Fab>
                     </Grid>
                 </Grid>
                 </Box>

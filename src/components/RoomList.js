@@ -74,7 +74,8 @@ const RoomList = ({rooms}) => {
                   state: {
                     roomId: room._id,
                     type: `${room.private ? 'private' : 'chat'}`,
-                    roomName: `${room.private ? getName(room) : room.roomName}`
+                    roomName: `${room.private ? getName(room) : room.roomName}`,
+                    roomUsers: room.users
                   }
                 }}
               >

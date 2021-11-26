@@ -74,8 +74,8 @@ export default function NoteBox({room}) {
              display: 'flex',
              flexDirection: 'column',
             }}>
-            <Typography variant='h5' align='center'>Notes</Typography>
-            <Box sx={{height: '84vh'}}>
+            <Typography variant='h5' align='center'  sx={{marginTop: '20px'}}>Notes</Typography>
+            <Box sx={{height: '84vh', marginTop: '20px'}}>
                 <ButtonGroup 
                  variant="outlined" 
                  aria-label="outlined button group" 
@@ -83,7 +83,7 @@ export default function NoteBox({room}) {
                     justifyContent: 'center',
                     margin: "0 auto",
                     width: "70%",
-                    marginBottom: "50px",
+                    marginBottom: "20px",
                     display: 'flex',
                     flexWrap: "wrap" }}>
                 

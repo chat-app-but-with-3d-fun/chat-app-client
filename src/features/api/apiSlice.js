@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import socketIOClient from 'socket.io-client'
 import { userSlice } from '../user/userSlice'
+import { roomSlice } from '../room/roomSlice'
 
 export let socket;
 
@@ -137,11 +138,45 @@ export const apiSlice = createApi({
         }
       },
     }),
-    inviteFriendToRoom: builder.query({
-      query: ({friendId, roomId}) => (
-        `room/${roomId}/${friendId}`
-      )
+    inviteFriendToRoom: builder.mutation({
+      query: ({friendId, roomId}) => ({
+        url: `room/${roomId}/adduser/${friendId}`,
+        method: 'POST'
+      }),
+    async onQueryStarted({userId}, {dispatch, queryFulfilled}){
+      try{
+        const {data : newRoomUser} = await queryFulfilled
+          dispatch(
+            roomSlice.actions.addUser(newRoomUser)
+          )
+          // socket.emit(changeStatus, `${newRoomUser._id}`)
+      } catch(error) {
+        console.log('[ERROR]', error)
+      }
+    }
+  }),
+  getRoomInfo: builder.mutation({
+    query: ({id}) => ({
+      url: `room/getroom`,
+      method: 'POST',
+      body: {id}
     }),
+    async onQueryStarted({userId}, { dispatch, queryFulfilled }) {
+      console.log('HEY DO WE ARRIVE HERE??')
+      try {
+        const { data: newRoom } = await queryFulfilled
+        console.log('WE TRY TO GET ROOM INFOS: ', newRoom)
+        const tmpObj = {
+          roomId: newRoom._id,
+          roomUsers: newRoom.users}
+        // dispatch(
+        //   roomSlice.actions.setRoom(tmpObj)
+        // )
+      } catch (error) {
+        console.log('[ERROR in getting RoOM INFO]', error)
+      }
+    },
+  }),
     // messages
     getMessages: builder.query({
       query: (roomId) => `msg/${roomId}`,
@@ -181,7 +216,9 @@ export const {
   useLogoutUserQuery,
   useFindUserMutation,
   useAddFriendMutation,
+  useInviteFriendToRoomMutation,
   useCreateRoomMutation,
+  useGetRoomInfoMutation,
   useGetMessagesQuery,
   useSendMessageMutation
 } = apiSlice

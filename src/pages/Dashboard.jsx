@@ -7,7 +7,7 @@ const Dashboard = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(
-      setRoom(null)
+      setRoom({roomId: null, roomUsers: null})
     )
   }, [dispatch])
 

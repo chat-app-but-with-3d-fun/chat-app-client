@@ -13,26 +13,29 @@ import { setRoom } from '../features/room/roomSlice';
 import Jitsi from '../components/Jitsi';
 import ScreenBox from '../components/ScreenBox';
 import { socket } from '../features/api/apiSlice';
-
+import { useGetRoomInfoMutation } from '../features/api/apiSlice';
 
 const Room = ({ location }) => {
     //state from react-router-dom
     console.log('location ->', location)
-    const { state: { roomId, type, roomName } } = location 
+    const { state: { roomId, type, roomName, roomUsers } } = location 
     const [tab, setTab] = useState('chat')
     const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
-    
+    const [ roomInfo ] = useGetRoomInfoMutation()
+
     const dispatch = useDispatch()
+
 
     const changeTab = (e, newTab) => {
         setTab(newTab);
     }
 
     useEffect(() => {
+        console.log('ROOM CHANGED')
         dispatch(
-            setRoom(roomId)
+            setRoom({roomId, roomUsers})
         )
-       
+        roomInfo({id: roomId})
         },[roomId])
 
 
@@ -77,7 +80,7 @@ const Room = ({ location }) => {
             }
             {
                  tab === 'screen' &&
-                <ScreenBox />
+                <ScreenBox users={roomUsers} id={roomId} />
             }
         </Paper>
         </Grid>
