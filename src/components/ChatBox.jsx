@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Box, Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
 import { deepPurple } from '@mui/material/colors';
@@ -6,11 +6,13 @@ import { useSelector } from 'react-redux';
 import { selectUserId } from '../features/user/userSlice';
 import moment from 'moment';
 import { socket } from '../features/api/apiSlice';
+import { Scrollbars } from 'rc-scrollbars';
 
 const ChatBox = ({ messageList, room }) => {
     const [ message, setMessage ] = useState('')
     const userId = useSelector(selectUserId)
-    
+    const scrollBar = useRef()
+
     const decideSide = (otherId) => {
         if (userId === otherId){
             return 'flex-end'
@@ -34,6 +36,12 @@ const ChatBox = ({ messageList, room }) => {
         setMessage('')
     }
 
+
+    useEffect(() => {
+        if (scrollBar) scrollBar.current.scrollToBottom();
+    }, [scrollBar, messageList] )
+
+    console.log('MESSAGE LIST: ',messageList)
     return (
        <Grid item xs={12}
          sx={{
@@ -44,16 +52,27 @@ const ChatBox = ({ messageList, room }) => {
             <Typography variant='h5' align='center'>
                 {room.type === 'private' ? `Direct chat with ${room.roomName}` : `Chatting in room ${room.roomName}`}
             </Typography>
-            <Box 
-                sx={{
-                    maxHeight: '70vh',
-                    overflowX: 'auto',
-                    // overflowY: 'scroll',
-                    display: "flex",
-                    flexDirection: "column-reverse",
-                }}
-
-            >
+            {/* create opacity effect on top of chat if there are more than 2 elements */}
+            <Box sx={{position: 'relative', height:"84vh"}}>
+            {messageList?.messages.length < 3 ? <></> : 
+                <Box sx={
+                    {position: "absolute",
+                    height: '150px',
+                    width: '100%',
+                    backgroundImage: "linear-gradient(to bottom,  rgba(255, 255, 255, 1) 0%, rgba(233, 233, 233, 0) 100%)",
+                    zIndex: '9999'}}></Box>
+            }
+            <Box sx={{
+                    position: 'absolute',
+                    bottom: '0',
+                    width: '100%', height:"100%"}}>
+            <Scrollbars 
+                autoHide
+                autoHideTimeout={1000}
+                autoHideDuration={200}
+                style={{height: '73vh', width:'100%'}}
+                ref={scrollBar}>
+           <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyConten: 'flex-end'}}>
                 <List>
                     {
                         messageList?.messages?.map((message, index) => {
@@ -94,6 +113,7 @@ const ChatBox = ({ messageList, room }) => {
                     }
                 </List>
                 </Box>
+                </Scrollbars>
                 <Divider />
                 <Grid container style={{padding: '20px'}}>
                     <Grid item xs={11}>
@@ -103,6 +123,8 @@ const ChatBox = ({ messageList, room }) => {
                         <Fab color="primary" aria-label="add" onClick={sendMessageHandler}><SendIcon /></Fab>
                     </Grid>
                 </Grid>
+                </Box>
+                </Box>
         </Grid>
     )
 }

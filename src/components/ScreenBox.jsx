@@ -10,9 +10,17 @@ export default function ScreenBox(props) {
         sx={{display: 'flex',
             flexDirection: 'column'}}
         >
-            <Grid item xs={12}>
-                <Typography variant='h5' align='center'>Screen Share</Typography>
-                
+            <Grid item xs={12}
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}>
+                <Typography variant='h5' align='center'>Room Settings</Typography>
+                <Box>
+
+                </Box>
+
+
             </Grid>
 
         </Paper>

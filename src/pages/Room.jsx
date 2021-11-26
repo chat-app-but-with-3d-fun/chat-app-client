@@ -41,7 +41,7 @@ const Room = ({ location }) => {
         
         <Grid item md="6" lg='8' sx={{
                 display: "flex",
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 justifyContent: 'center',
                 backgroundColor: "lightgray"}}>
              <Chat3D location={{ location }}></Chat3D>
@@ -60,7 +60,7 @@ const Room = ({ location }) => {
                     >
                     <Tab value="chat" label="Chat" />
                     <Tab value="notes" label="Notes" />
-                    <Tab value="screen" label="Screen" />
+                    <Tab value="screen" label="Room" />
                 </Tabs>
                 
             </Box>
