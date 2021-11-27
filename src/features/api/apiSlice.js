@@ -34,6 +34,7 @@ export const apiSlice = createApi({
           const { data: userData } = await queryFulfilled
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
           console.log(`new connection with userId => `, userData._id)
+          
           socket.on('register', (friendId) => {
             socket.emit('handshake', friendId)
             dispatch(
@@ -45,9 +46,20 @@ export const apiSlice = createApi({
               userSlice.actions.updateFriendStatus(friendId)
             )
           })
+          socket.on('statusMsg', (payload) => {
+            console.log('STATUS MESSAGE RECEIVED!', payload)
+            if (payload.type === 'inviteToRoom'){
+              dispatch(
+                userSlice.actions.updateRoomStatus(payload.updateRoom)
+              )
+              socket.emit('changeStatus', '')
+            }
+          })
+
           dispatch(
             userSlice.actions.setUser(userData)
           )
+          
         } catch (error) {
           console.log('[ERROR]', error)
         }
@@ -62,21 +74,36 @@ export const apiSlice = createApi({
         try {
           const { data: userData } = await queryFulfilled
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
-          console.log(`new connection with userId => `, userData._id)
+          console.log(`new connection with userId => `, userData)
+          
           socket.on('register', (friendId) => {
             socket.emit('handshake', friendId)
             dispatch(
               userSlice.actions.updateFriendStatus(friendId)
             )
           })
+          
           socket.on('unRegister', (friendId) => {
             dispatch(
               userSlice.actions.updateFriendStatus(friendId)
             )
           })
+
+          socket.on('statusMsg', (payload) => {
+            console.log('STATUS MESSAGE RECEIVED!', payload)
+            if (payload.type === 'inviteToRoom'){
+              console.log('The update should happen now', payload.updateRoom)
+              dispatch(
+                userSlice.actions.updateRoomStatus(payload.updateRoom)
+              )
+              socket.emit('changeStatus', '')
+              }
+          })
+
           dispatch(
             userSlice.actions.setUser(userData)
           )
+  
         } catch (error) {
           console.log('[ERROR]', error)
         }
@@ -146,10 +173,16 @@ export const apiSlice = createApi({
     async onQueryStarted({userId}, {dispatch, queryFulfilled}){
       try{
         const {data : newRoomUser} = await queryFulfilled
+          const {username, _id, updateRoom} = newRoomUser
+          console.log('INVITE FRIEND RETURNS FROM BACKEND', newRoomUser)
           dispatch(
-            roomSlice.actions.addUser(newRoomUser)
+            roomSlice.actions.addUser({username, _id})
           )
-          // socket.emit(changeStatus, `${newRoomUser._id}`)
+        socket.emit('changeStatus', {
+          "type": "inviteToRoom",
+          "friend": _id,
+          updateRoom
+        })
       } catch(error) {
         console.log('[ERROR]', error)
       }
@@ -168,10 +201,12 @@ export const apiSlice = createApi({
         console.log('WE TRY TO GET ROOM INFOS: ', newRoom)
         const tmpObj = {
           roomId: newRoom._id,
-          roomUsers: newRoom.users}
-        // dispatch(
-        //   roomSlice.actions.setRoom(tmpObj)
-        // )
+          roomUsers: newRoom.users,
+          roomName: newRoom.roomName
+        }
+        dispatch(
+          roomSlice.actions.setRoom(tmpObj)
+        )
       } catch (error) {
         console.log('[ERROR in getting RoOM INFO]', error)
       }

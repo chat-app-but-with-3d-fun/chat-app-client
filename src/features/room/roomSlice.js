@@ -3,7 +3,8 @@ import { socket } from '../api/apiSlice'
 
 const initialState = {
   roomId: '',
-  roomUsers: []
+  roomUsers: [],
+  roomName: ''
 
 }
 

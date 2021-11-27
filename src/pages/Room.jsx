@@ -32,9 +32,9 @@ const Room = ({ location }) => {
 
     useEffect(() => {
         console.log('ROOM CHANGED')
-        dispatch(
-            setRoom({roomId, roomUsers})
-        )
+        // dispatch(
+        //     setRoom({roomId, roomUsers})
+        // )
         roomInfo({id: roomId})
         },[roomId])
 
