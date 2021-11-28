@@ -56,6 +56,9 @@ export const apiSlice = createApi({
             }
           })
 
+          socket.on('joinRoom', (payload) => console.log('USER joined ROOM: ', payload))
+
+
           dispatch(
             userSlice.actions.setUser(userData)
           )
@@ -99,6 +102,8 @@ export const apiSlice = createApi({
               socket.emit('changeStatus', '')
               }
           })
+
+          socket.on('joinRoom', (payload) => console.log('USER joined ROOM: ', payload))
 
           dispatch(
             userSlice.actions.setUser(userData)
@@ -202,7 +207,8 @@ export const apiSlice = createApi({
         const tmpObj = {
           roomId: newRoom._id,
           roomUsers: newRoom.users,
-          roomName: newRoom.roomName
+          roomName: newRoom.roomName,
+          roomPrivate: newRoom.private
         }
         dispatch(
           roomSlice.actions.setRoom(tmpObj)
@@ -221,6 +227,7 @@ export const apiSlice = createApi({
       ) {
         await cacheDataLoaded
         const messageReceive = (message) => {
+          console.log('MESSAGE RECEIVED ', message)
           try {
             if (message) updateCachedData(
               (draft) => {

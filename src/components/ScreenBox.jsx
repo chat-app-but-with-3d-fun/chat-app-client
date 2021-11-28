@@ -10,6 +10,7 @@ import Select from '@mui/material/Select';
 import { useInviteFriendToRoomMutation } from "../features/api/apiSlice"
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 
 export default function ScreenBox(props) {
     const {users, id} = props
@@ -20,9 +21,6 @@ export default function ScreenBox(props) {
     const [filterUser, setFilterUser] = useState(null)
     const [ inviteFriendToRoom, { isLoading: inviteFriend } ] = useInviteFriendToRoomMutation()
     
-
-
-
 
     const handleChange = (event) => {
         setNewUser(event.target.value);
@@ -37,15 +35,22 @@ export default function ScreenBox(props) {
             setNewUser(() => null)
       }, [newUser])
 
-    //   useEffect(() => {
-    //     if (roomUsers){
-    //         const tmpArr = userFriends.filter(element => {
-    //             element.
-    //         })
-    //     }
-    //   }, [roomUsers, userFriends])
-console.log('FRIENDS: ', userFriends)
-console.log('ROOM: ', roomUsers)
+      useEffect(() => {
+        if (roomUsers){
+            const tmpArr = userFriends.filter(friend => {
+                return !roomUsers.find(usersInside => usersInside._id === friend._id) 
+            })
+            if (tmpArr.length > 0) {
+                setFilterUser(() => tmpArr)
+            } else {
+                console.log('FILTER USER SHOULD BE ZERO')
+                setFilterUser(() => null)
+            }
+            
+        }
+      }, [roomUsers, userFriends])
+
+
     return (
         <Paper
         elevation="10"
@@ -68,9 +73,9 @@ console.log('ROOM: ', roomUsers)
                             )
                         })}
                         </Stack>
-
-                        <FormControl fullWidth sx={{margin: '20px'}}>
-                             <InputLabel id="demo-simple-select-label">Add a friend</InputLabel>
+                        {filterUser ? 
+                         <FormControl fullWidth sx={{margin: '20px'}}>
+                            <InputLabel id="demo-simple-select-label">Add a friend</InputLabel>
                             <Select
                                 labelId="friend-select-label"
                                 id="friend-select"
@@ -78,13 +83,16 @@ console.log('ROOM: ', roomUsers)
                                 label="Add User"
                                 onChange={handleChange}
                             >
-                                {userFriends.map((element,index) => {
-                                    return(
-                                        <MenuItem value={element._id}>{element.username}</MenuItem>
-                                    )
-                                })}
+                            {filterUser.map((element,index) => {
+                               return(
+                                   <MenuItem value={element._id}>{element.username}</MenuItem>
+                               )
+                            })}
                             </Select>
-                        </FormControl>
+                        </FormControl> :
+                       <Alert sx={{marginTop: '10px'}}severity="success">All your friends are in this room</Alert>
+                    }
+                        
                     </Box>
                 </Box>
 

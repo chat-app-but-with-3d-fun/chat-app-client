@@ -13,47 +13,26 @@ import Jitsi from '../components/Jitsi';
 import ScreenBox from '../components/ScreenBox';
 import { socket } from '../features/api/apiSlice';
 import { useGetRoomInfoMutation } from '../features/api/apiSlice';
-import {selectRoom} from '../features/room/roomSlice'
+import {selectRoomId, selectRoomName, selectRoomUsers, selectRoom} from '../features/room/roomSlice'
 
-const Room = ({ location }) => {
-    //state from react-router-dom
-    console.log('location ->', location)
-    const { state: { roomId, type, roomName, roomUsers } } = location 
+
+
+
+export default function RoomTabContainer() {
+   
     const [tab, setTab] = useState('chat')
-    const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
     
-    const [ roomInfo ] = useGetRoomInfoMutation()
-    const roomObj       = useSelector(selectRoom)
-
-    const dispatch = useDispatch()
-
-
+    
+    const sliceRoomId = useSelector(selectRoomId)
+    const sliceRoomName = useSelector(selectRoomName)
+    const sliceRoomUsers = useSelector(selectRoomUsers)
+   
     const changeTab = (e, newTab) => {
         setTab(newTab);
     }
 
-    useEffect(() => {
-        console.log('ROOM CHANGED')
-        if (roomId) roomInfo({id: roomId})
-        },[roomId])
-    
-    // console.log('GET BY ROOM SLICE: ', roomObj)
-    console.log('ROOM HANDED OVER: ', roomId, type, roomName, roomUsers )
-    
-    return(
-    <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
-        
-        <Grid item md="6" lg='8' sx={{
-                display: "flex",
-                alignItems: 'flex-start',
-                justifyContent: 'center',
-                backgroundColor: "lightgray"}}>
-             {/* <Chat3D location={{ location }}></Chat3D> */}
-             {/* <Jitsi id={roomId} /> */}
-        </Grid>
-        
-        <Grid item direction='column' md="6" lg='4'>
-        <Paper elevation="10"  >
+    return (
+       <Paper elevation="10"  >
             <Box>
                 <Tabs
                     value={tab}
@@ -83,11 +62,6 @@ const Room = ({ location }) => {
                  tab === 'screen' &&
                 <ScreenBox users={roomUsers} id={roomId} />
             }
-        </Paper>
-        </Grid>
-    </Grid>
+        </Paper> 
     )
 }
-
-
-export default Room

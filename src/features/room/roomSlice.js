@@ -4,7 +4,8 @@ import { socket } from '../api/apiSlice'
 const initialState = {
   roomId: '',
   roomUsers: [],
-  roomName: ''
+  roomName: '',
+  roomPrivate: null
 
 }
 
@@ -39,9 +40,10 @@ export const roomSlice = createSlice({
 })
 
 // export const selectMessages = state => state.room.messages
-export const selectRoomId = state => state.room.roomId
-export const selectRoomName = state => state.room.name
-export const selectRoomUsers = state => state.room.roomUsers
+export const selectRoomId     = state => state.room.roomId
+export const selectRoomName   = state => state.room.roomName
+export const selectRoomUsers  = state => state.room.roomUsers
+export const selectRoom       = state => state.room
 
 export const {
   setRoom, addUser

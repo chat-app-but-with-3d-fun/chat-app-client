@@ -41,7 +41,7 @@ const ChatBox = ({ messageList, room }) => {
         if (scrollBar) scrollBar.current.scrollToBottom();
     }, [scrollBar, messageList] )
 
-    console.log('MESSAGE LIST: ',messageList)
+
     return (
        <Grid item xs={12}
          sx={{
