@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import React, { useState, Suspense } from 'react';
 import { Box, Paper, Grid } from '@mui/material';
 import ChatBox from '../components/ChatBox';
+=======
+import React, { useState } from 'react'
+import { Box, Paper, Grid } from '@mui/material'
+import ChatBox from '../components/ChatBox'
+>>>>>>> aimee
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Chat3D from '../components/Chat3D.js';
