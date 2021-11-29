@@ -31,7 +31,6 @@ const Room = ({ location }) => {
         dispatch(
             setRoom(roomId)
         )
-        socket.emit('setRoom', {"room": roomId})
         },[roomId])
 
 
