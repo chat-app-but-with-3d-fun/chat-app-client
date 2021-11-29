@@ -2,10 +2,13 @@ import React,{useState, useEffect} from 'react'
 import { Container, Button, ButtonGroup, Box, Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from '@mui/material'
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw} from 'draft-js';
 import { socket } from '../features/api/apiSlice';
+import { Scrollbars } from 'rc-scrollbars';
+import SaveIcon from '@mui/icons-material/Save';
+import { useSelector } from 'react-redux';
+import {selectRoom} from '../features/room/roomSlice'
 
 
-
-export default function NoteBox({room}) {
+export default function NoteBox() {
     
     const blockType = [
         {run: 'ordered-list-item', btn: 'ol'},
@@ -19,11 +22,11 @@ export default function NoteBox({room}) {
         {run: 'header-six', btn: 'h6'}
         ]
     const inlineStyle = [{run: 'ITALIC',btn: 'I'}, {run: 'BOLD', btn: 'B'}, {run: 'UNDERLINE', btn: 'U'}, {run: 'CODE', btn: '<code>'}]
-   
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty(),);
-
     const currentInlineStyle    = editorState.getCurrentInlineStyle()
     const currentBlockType      = RichUtils.getCurrentBlockType(editorState)
+    const room      = useSelector(selectRoom)
+
 
 //Functions
     function toggleInlineStyle(event, type) {
@@ -70,61 +73,72 @@ export default function NoteBox({room}) {
 
     
     return (
-        <Paper
-        elevation="10"
-        sx={{display: 'flex',
-            flexDirection: 'column'}}
-        >
-            <Grid item xs={12}>
-                <Typography variant='h5' align='center'>Notes</Typography>
-                <Box 
-                    sx={{
-                        minHeight: "80vh",
-                        maxHeight: '80vh',
-                        overflowX: 'hidden',
-                        overflowY: 'scroll'
-                    }}
-                >
-
+        <Grid item xs={12}
+            sx={{
+             display: 'flex',
+             flexDirection: 'column',
+            }}>
+            <Typography variant='h5' align='center'  sx={{marginTop: '20px'}}>Notes</Typography>
+            <Box sx={{height: '84vh', marginTop: '20px'}}>
+                <ButtonGroup 
+                 variant="outlined" 
+                 aria-label="outlined button group" 
+                 sx={{
+                    justifyContent: 'center',
+                    margin: "0 auto",
+                    width: "70%",
+                    marginBottom: "20px",
+                    display: 'flex',
+                    flexWrap: "wrap" }}>
                 
-               <ButtonGroup 
-                    variant="outlined" 
-                    aria-label="outlined button group" 
-                    sx={{
-                        justifyContent: 'center',
-                        margin: "0 auto",
-                        width: "70%",
-                        marginBottom: "50px",
-                        display: 'flex',
-                        flexWrap: "wrap" }}>
-                {blockType.map((element) => {
-                    return(
-                        <Button
-                            variant={currentBlockType === element.run ? 'contained' : 'outlined'}
-                            onClick={(e) => toggleBlockType(e, element.run)}
-                            size="small"
-                        >{element.btn}</Button> 
-                    )
-                })}
-                
-                {inlineStyle.map((element) => {
-                    return(
-                        <Button
-                            variant = {currentInlineStyle.size>0 && currentInlineStyle.has(element.run) ? 'contained' : 'outlined' }
-                            onClick={(e) => toggleInlineStyle(e, element.run)}
-                            size="small"
-                        >{element.btn}</Button> 
-                    )
-                })}
+                    {blockType.map((element) => {
+                        return(
+                            <Button
+                             variant={currentBlockType === element.run ? 'contained' : 'outlined'}
+                             onClick={(e) => toggleBlockType(e, element.run)}
+                             size="small"
+                            >{element.btn}</Button>)
+                    })}
+                    {inlineStyle.map((element) => {
+                        return(
+                            <Button
+                             variant = {currentInlineStyle.size>0 && currentInlineStyle.has(element.run) ? 'contained' : 'outlined' }
+                             onClick={(e) => toggleInlineStyle(e, element.run)}
+                             size="small"
+                            >{element.btn}</Button>)
+                    })}
                 </ButtonGroup>
-                <Box >
-                <Button onClick={handleSave}>SAVE</Button>
-                    <Editor
-                        editorState={editorState}
-                        onChange={onChange} 
-                        
-                        />
-                        
+                <Box sx={{
+                    width: "100%",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center' }} >
+                    
+                    <Box sx={{
+                        width: '90%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start'}}>
+                        <Button onClick={handleSave}>
+                            <SaveIcon sx={{marginRight: '10px'}}/>
+                            SAVE
+                        </Button>
+                    </Box>
+                    
+                    <Paper sx={{width: "90%", padding:'20px'}} elevation="10">
+                        <Scrollbars 
+                         autoHide
+                         autoHideTimeout={1000}
+                         autoHideDuration={200}
+                         style={{height: '500px', width:'100%'}}>
+                            <Editor
+                             editorState={editorState}
+                             onChange={onChange} 
+                            />
+                        </Scrollbars>
+                    </Paper>
+                    
                 </Box>
 
 
@@ -133,6 +147,6 @@ export default function NoteBox({room}) {
             </Box>
             </Grid>
 
-        </Paper>
+        // </Paper>
     )
 }

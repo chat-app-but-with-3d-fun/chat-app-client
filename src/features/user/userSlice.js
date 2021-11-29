@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  userId: '',
+  userId: null,
   username: '',
   email: '',
   avatar: '',
@@ -14,6 +14,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, { payload }) => {
+      console.log('INITIAL USER SET: ', payload)
       for (let key in payload) {
         key === '_id'
         ? state.userId = payload[key]
@@ -34,6 +35,10 @@ export const userSlice = createSlice({
         item => item._id === payload
       )
       state.friends[index].online = !state.friends[index].online
+    },
+    updateRoomStatus: (state, { payload }) => {
+      console.log('UPDATE ROOM', payload)
+      state.rooms.push({room: payload, unread: 0})  
     },
     userLogout: (state, action) => {
       return initialState
@@ -60,6 +65,7 @@ export const {
   addFriend,
   createRoom,
   updateFriendStatus,
+  updateRoomStatus,
   userLogout
 } = userSlice.actions
 

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, Redirect, useHistory } from 'react-router-dom'
 import { Box } from '@mui/system';
 import { Chip } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
@@ -16,13 +16,16 @@ import {
   selectPrivateRooms,
   selectUserId
 } from '../features/user/userSlice';
-import { setRoom } from '../features/room/roomSlice';
+import { setRoom,  } from '../features/room/roomSlice';
+import { useGetRoomInfoMutation } from '../features/api/apiSlice';
 
 
 const RoomList = ({rooms}) => {
 
   const userFriends = useSelector(selectUserFriends)
   const userId    = useSelector(selectUserId)
+  const [ roomInfo ] = useGetRoomInfoMutation()
+  let history = useHistory()
 
   const getName = (room) => {
     const friendId = room.roomName
@@ -50,6 +53,12 @@ const RoomList = ({rooms}) => {
     )
   }
 
+  const handleLinkClick = (e, room) => {
+    e.preventDefault()
+    roomInfo({id: room._id})
+    history.push(`/chat/${room.roomName}`)
+  }
+
   return (
     <>
     <List>
@@ -65,7 +74,7 @@ const RoomList = ({rooms}) => {
             }} 
               key={room._id}
             >
-              <Link 
+              {/* <Link 
                 color='inherit'
                 underline='hover'
                 component={RouterLink}
@@ -74,18 +83,19 @@ const RoomList = ({rooms}) => {
                   state: {
                     roomId: room._id,
                     type: `${room.private ? 'private' : 'chat'}`,
-                    roomName: `${room.private ? getName(room) : room.roomName}`
+                    roomName: `${room.private ? getName(room) : room.roomName}`,
+                    roomUsers: room.users
                   }
                 }}
-              >
-                <ListItem button>
+              > */}
+                <ListItem button onClick={(e) => handleLinkClick(e, room)}>
                   <ListItemText
                     primary={
                       room.private ? getFriendStatus(room) : room.roomName
                     }
                   />
                 </ListItem>
-              </Link>
+              {/* </Link> */}
               {
                 element.unread > 0 && 
                 <Chip

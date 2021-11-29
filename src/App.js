@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import Home from "./pages/Home";
@@ -12,11 +12,13 @@ import {  selectUserId, setUser, updateFriendStatus } from "./features/user/user
 import Jitsi from "./components/Jitsi";
 import NewMsgNotification from "./components/NewMsgNotification";
 
+import PublicRoute from './routes/PublicRoute'; 
+import PrivateRoute from './routes/PrivateRoute'; 
 
 const App = () => {
   const userId = useSelector(selectUserId)
   const [ authUser, { data, isSuccess } ] = useAuthUserMutation()
-
+  const [access, setAccess] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -24,6 +26,7 @@ const App = () => {
       console.log('autenticando usuario..')
       await authUser()
       if (isSuccess) {
+        
         console.log('auth resp =>', data)
         dispatch(setUser(data))
       }
@@ -44,17 +47,36 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        <Switch>
+        {/* <Switch>
           <Route exact path="/sign-:form" component={Register} />
-          {/* <Route exact path="/" component={Home} /> */}
-
           <Sidebar >
             <Route exact path="/chat/:roomId" component={Room} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/jitsi" component={Jitsi} />
-          </Sidebar>
+          </Sidebar> */}
           
-        </Switch>
+        {/* </Switch> */}
+        <Switch>
+        <PublicRoute
+            restricted={true}
+            component={Register}
+            path="/sign-:form"
+            exact />
+        <Sidebar >
+        <PrivateRoute
+            component={Dashboard}
+            path="/"
+            exact />
+        <PrivateRoute
+            component={Dashboard}
+            path="/dashboard"
+            exact />
+        <PrivateRoute
+            component={Room}
+            path="/chat/:roomId"
+            exact />
+        </Sidebar>
+        </Switch> 
       </Router>
           <NewMsgNotification /> 
     </div>

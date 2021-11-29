@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import socketIOClient from 'socket.io-client'
 import { userSlice } from '../user/userSlice'
+import { roomSlice } from '../room/roomSlice'
 import { notificationSlice } from '../notifications/notificationSlice'
 
 export let socket;
@@ -34,6 +35,7 @@ export const apiSlice = createApi({
           const { data: userData } = await queryFulfilled
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
           console.log(`new connection with userId => `, userData._id)
+          
           socket.on('register', (friendId) => {
             socket.emit('handshake', friendId)
             dispatch(
@@ -46,9 +48,33 @@ export const apiSlice = createApi({
             )
           })
 
+          socket.on('statusMsg', (payload) => {
+            console.log('STATUS MESSAGE RECEIVED!', payload)
+            if (payload.type === 'inviteToRoom'){
+              dispatch(
+                userSlice.actions.updateRoomStatus(payload.updateRoom)
+              )
+              socket.emit('changeStatus', '')
+            }
+          })
+
+          socket.on('joinRoom', (payload) => {
+            console.log('USER joined ROOM: ', payload)
+            dispatch(
+              roomSlice.actions.userJoinRoom(payload)
+            )
+          })
+          socket.on('leftRoom', (payload) =>{
+            console.log('USER left ROOM: ', payload)
+            dispatch(
+              roomSlice.actions.userLeftRoom(payload)
+            )
+          }) 
+
           dispatch(
             userSlice.actions.setUser(userData)
           )
+          
         } catch (error) {
           console.log('[ERROR]', error)
         }
@@ -63,26 +89,58 @@ export const apiSlice = createApi({
         try {
           const { data: userData } = await queryFulfilled
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
-          console.log(`new connection with userId => `, userData._id)
+          console.log(`new connection with userId => `, userData)
+          
           socket.on('register', (friendId) => {
             socket.emit('handshake', friendId)
             dispatch(
               userSlice.actions.updateFriendStatus(friendId)
             )
           })
+          
           socket.on('unRegister', (friendId) => {
             dispatch(
               userSlice.actions.updateFriendStatus(friendId)
             )
           })
+
+
+          socket.on('statusMsg', (payload) => {
+            console.log('STATUS MESSAGE RECEIVED!', payload)
+            if (payload.type === 'inviteToRoom'){
+              console.log('The update should happen now', payload.updateRoom)
+              dispatch(
+                userSlice.actions.updateRoomStatus(payload.updateRoom)
+              )
+              socket.emit('changeStatus', '')
+              }
+          })
+
+          socket.on('joinRoom', (payload) => {
+            console.log('USER joined ROOM: ', payload)
+            dispatch(
+              roomSlice.actions.userJoinRoom(payload)
+            )
+          })
+          
+          socket.on('leftRoom', (payload) =>{
+            console.log('USER left ROOM: ', payload)
+            dispatch(
+              roomSlice.actions.userLeftRoom(payload)
+            )
+          }) 
+
+
           socket.on('notification', (message) => {
             dispatch(
               notificationSlice.actions.setNotification(message)
             )
           })
+
           dispatch(
             userSlice.actions.setUser(userData)
           )
+  
         } catch (error) {
           console.log('[ERROR]', error)
         }
@@ -144,11 +202,54 @@ export const apiSlice = createApi({
         }
       },
     }),
-    inviteFriendToRoom: builder.query({
-      query: ({friendId, roomId}) => (
-        `room/${roomId}/${friendId}`
-      )
+    inviteFriendToRoom: builder.mutation({
+      query: ({friendId, roomId}) => ({
+        url: `room/${roomId}/adduser/${friendId}`,
+        method: 'POST'
+      }),
+    async onQueryStarted({userId}, {dispatch, queryFulfilled}){
+      try{
+        const {data : newRoomUser} = await queryFulfilled
+          const {username, _id, updateRoom} = newRoomUser
+          console.log('INVITE FRIEND RETURNS FROM BACKEND', newRoomUser)
+          dispatch(
+            roomSlice.actions.addUser({username, _id})
+          )
+        socket.emit('changeStatus', {
+          "type": "inviteToRoom",
+          "friend": _id,
+          updateRoom
+        })
+      } catch(error) {
+        console.log('[ERROR]', error)
+      }
+    }
+  }),
+  getRoomInfo: builder.mutation({
+    query: ({id}) => ({
+      url: `room/getroom`,
+      method: 'POST',
+      body: {id}
     }),
+    async onQueryStarted({userId}, { dispatch, queryFulfilled }) {
+      console.log('HEY DO WE ARRIVE HERE??')
+      try {
+        const { data: newRoom } = await queryFulfilled
+        console.log('WE TRY TO GET ROOM INFOS: ', newRoom)
+        const tmpObj = {
+          roomId: newRoom._id,
+          roomUsers: newRoom.users,
+          roomName: newRoom.roomName,
+          roomPrivate: newRoom.private
+        }
+        dispatch(
+          roomSlice.actions.setRoom(tmpObj)
+        )
+      } catch (error) {
+        console.log('[ERROR in getting RoOM INFO]', error)
+      }
+    },
+  }),
     // messages
     getMessages: builder.query({
       query: (roomId) => `msg/${roomId}`,
@@ -158,6 +259,7 @@ export const apiSlice = createApi({
       ) {
         await cacheDataLoaded
         const messageReceive = (message) => {
+          console.log('MESSAGE RECEIVED ', message)
           try {
             if (message) updateCachedData(
               (draft) => {
@@ -186,7 +288,9 @@ export const {
   useLogoutUserQuery,
   useFindUserMutation,
   useAddFriendMutation,
+  useInviteFriendToRoomMutation,
   useCreateRoomMutation,
+  useGetRoomInfoMutation,
   useGetMessagesQuery,
   useSendMessageMutation
 } = apiSlice
