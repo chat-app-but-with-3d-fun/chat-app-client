@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
+import Chat3D from '../components/Chat3D.js';
 
 import { Box, Paper, Grid } from '@mui/material'
 import ChatBox from '../components/ChatBox';
@@ -31,7 +32,7 @@ const Room = ({ location }) => {
         dispatch(
             setRoom(roomId)
         )
-        },[roomId])
+    },[roomId])
 
 
     return(
@@ -42,12 +43,7 @@ const Room = ({ location }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: "lightgray"}}>
-            <Box sx={{
-                width: "200px",
-                height: "200px",
-                backgroundColor: 'green'}}>
-                CANVAS
-             </Box>
+             <Chat3D location={{ location }}></Chat3D>
              <Jitsi id={roomId} />
         </Grid>
         

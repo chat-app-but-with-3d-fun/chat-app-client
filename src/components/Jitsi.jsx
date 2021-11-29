@@ -338,7 +338,7 @@ const handleShareScreen = () => {
 
 
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column'}}>
+        <>
             {
             countLocalVideo &&
                  <video style={{height: '300px', width: '300px', display: 'none'}} key={`localVideo`} ref={countLocalVideo.ref} autoPlay playsInline muted />
@@ -365,6 +365,6 @@ const handleShareScreen = () => {
                  sx={{position: 'absolute', bottom: '20px'}}>
                 {isMuted  ?  <><MicOffIcon />Speak</> : <><MicIcon />Pssstt</>}
             </Fab>
-        </Box>
+        </>
     )
 }
