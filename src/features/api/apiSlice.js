@@ -133,8 +133,9 @@ export const apiSlice = createApi({
 
           socket.on('notification', (message) => {
             dispatch(
-              notificationSlice.actions.setNotification(message)
-            )
+              notificationSlice.actions.setNotification(message))
+            dispatch(
+              userSlice.actions.incrMessages({room: message.room}))
           })
 
           dispatch(

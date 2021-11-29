@@ -14,18 +14,22 @@ import {
   selectUserFriends,
   selectPublicRooms,
   selectPrivateRooms,
-  selectUserId
+  selectUserId,
+  resetMessages
 } from '../features/user/userSlice';
-import { setRoom,  } from '../features/room/roomSlice';
 import { useGetRoomInfoMutation } from '../features/api/apiSlice';
+
 
 
 const RoomList = ({rooms}) => {
 
-  const userFriends = useSelector(selectUserFriends)
-  const userId    = useSelector(selectUserId)
-  const [ roomInfo ] = useGetRoomInfoMutation()
-  let history = useHistory()
+  const dispatch      = useDispatch()
+  const userFriends   = useSelector(selectUserFriends)
+  const userId        = useSelector(selectUserId)
+  const [ roomInfo ]  = useGetRoomInfoMutation()
+  let history         = useHistory()
+  
+
 
   const getName = (room) => {
     const friendId = room.roomName
@@ -45,17 +49,19 @@ const RoomList = ({rooms}) => {
     const friendName = userFriends
       .find(element => element._id === friendId)
     return (
-      <div>
-        {friendName?.username}
-        <div style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: `${friendName?.online ? 'green' : 'red'}`}}>
+      <Box>
+        
+        <div style={{ marginRight: '10px', display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: `${friendName?.online ? 'green' : 'red'}`}}>
         </div>
-      </div>
+        {friendName?.username}
+      </Box>
     )
   }
 
   const handleLinkClick = (e, room) => {
     e.preventDefault()
     roomInfo({id: room._id})
+    dispatch(resetMessages({room: room._id}))
     history.push(`/chat/${room.roomName}`)
   }
 
@@ -74,29 +80,14 @@ const RoomList = ({rooms}) => {
             }} 
               key={room._id}
             >
-              {/* <Link 
-                color='inherit'
-                underline='hover'
-                component={RouterLink}
-                to={{
-                  pathname: `/chat/${room.roomName}`,
-                  state: {
-                    roomId: room._id,
-                    type: `${room.private ? 'private' : 'chat'}`,
-                    roomName: `${room.private ? getName(room) : room.roomName}`,
-                    roomUsers: room.users
-                  }
-                }}
-              > */}
-                <ListItem button onClick={(e) => handleLinkClick(e, room)}>
+              <ListItem button onClick={(e) => handleLinkClick(e, room)}>
                   <ListItemText
                     primary={
                       room.private ? getFriendStatus(room) : room.roomName
                     }
                   />
                 </ListItem>
-              {/* </Link> */}
-              {
+                {
                 element.unread > 0 && 
                 <Chip
                   label={element.unread}

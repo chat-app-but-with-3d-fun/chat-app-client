@@ -40,6 +40,27 @@ export const userSlice = createSlice({
       console.log('UPDATE ROOM', payload)
       state.rooms.push({room: payload, unread: 0})  
     },
+    resetMessages: (state, { payload }) => {
+      const {room} = payload
+      const tmpArr = state.rooms.map(element => {
+        if (element.room._id === room) {
+          element.unread = 0
+        }
+        return element
+      })
+      state.rooms = Array.from(tmpArr)
+    },
+    incrMessages: (state, { payload }) => {
+      console.log('Increase MSG', payload)
+      const {room} = payload
+      const tmpArr = state.rooms.map(element => {
+        if (element.room._id === room) {
+          element.unread = element.unread+1 
+        }
+        return element
+      })
+      state.rooms = Array.from(tmpArr)
+    },
     userLogout: (state, action) => {
       return initialState
     }
@@ -47,6 +68,7 @@ export const userSlice = createSlice({
 })
 
 export const selectUserId = state => state.user.userId
+export const selectUserName = state => state.user.username
 export const selectUserRooms = state => state.user.rooms
 export const selectUserFriends = state => state.user.friends
 export const selectPrivateRooms = state => state.user.rooms.filter(el => el.room.private)
@@ -66,6 +88,8 @@ export const {
   createRoom,
   updateFriendStatus,
   updateRoomStatus,
+  resetMessages,
+  incrMessages,
   userLogout
 } = userSlice.actions
 
