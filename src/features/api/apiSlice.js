@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import socketIOClient from 'socket.io-client'
 import { userSlice } from '../user/userSlice'
+import { notificationSlice } from '../notifications/notificationSlice'
 
 export let socket;
 
@@ -44,6 +45,7 @@ export const apiSlice = createApi({
               userSlice.actions.updateFriendStatus(friendId)
             )
           })
+
           dispatch(
             userSlice.actions.setUser(userData)
           )
@@ -57,7 +59,7 @@ export const apiSlice = createApi({
         url: 'user/auth',
         method: 'POST',
       }),
-      async onQueryStarted(userData, { dispatch, queryFulfilled }) {
+      async onQueryStarted(userData, { dispatch, queryFulfilled, getState }) {
         try {
           const { data: userData } = await queryFulfilled
           socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
@@ -71,6 +73,11 @@ export const apiSlice = createApi({
           socket.on('unRegister', (friendId) => {
             dispatch(
               userSlice.actions.updateFriendStatus(friendId)
+            )
+          })
+          socket.on('notification', (message) => {
+            dispatch(
+              notificationSlice.actions.setNotification(message)
             )
           })
           dispatch(
@@ -147,7 +154,7 @@ export const apiSlice = createApi({
       query: (roomId) => `msg/${roomId}`,
       async onCacheEntryAdded(
         getMessages,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState }
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState, dispatch }
       ) {
         await cacheDataLoaded
         const messageReceive = (message) => {
@@ -155,8 +162,6 @@ export const apiSlice = createApi({
             if (message) updateCachedData(
               (draft) => {
                 const roomId = getState().room.roomId
-                console.log('getting message =>', message)
-                console.log('in room ->', roomId)
                 if (roomId === message.room) {
                   draft.messages.push(message)
                 }
