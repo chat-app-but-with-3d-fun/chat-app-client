@@ -1,3 +1,33 @@
+<<<<<<< HEAD
+import React, { Suspense, useRef, useState, useEffect } from 'react';
+import { Canvas, useLoader, useFrame, primitive } from 'react-three-fiber';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import {
+  Environment,
+  OrbitControls,
+  Stars,
+  useAnimations,
+  useGLTF,
+} from '@react-three/drei';
+// import { usePlane } from "@react-three/cannon"
+import { useSpring, animated } from '@react-spring/three';
+// import Loader from 'loader.js';
+import Pegasus from "../models/Pegasus.js";
+import Robot from "../models/Robot.js";
+import Pear from "../models/Pear.js";
+import Plane from "../models/Plane.js";
+
+// function Plane(props){
+//   return(
+
+//     <mesh rotation={[-Math.PI / 2, 0, 0]}>
+//       <planeGeometry attach="geometry" {...props} args={[50, 50]} />
+//       <meshStandardMaterial attach="material" color="slategrey" />
+//     </mesh>
+//   )
+// }
+
+=======
 
 import React, { Suspense, useRef, useState, useEffect } from "react";
 import { Canvas,  useLoader, useFrame, primitive } from 'react-three-fiber';
@@ -21,6 +51,7 @@ import Plane from "../components/Plane.js";
 //   )
 // }
 
+>>>>>>> main
 // function Pegasus(props){
 //   const url = './pegasus/scene.gltf';
 //   const gltf = useLoader(GLTFLoader, url);
@@ -57,6 +88,7 @@ import Plane from "../components/Plane.js";
 //   useEffect(() => {
 //   actions["ArmatureAction"].stop()
 //   })
+<<<<<<< HEAD
 
 //   return(
 //     <Suspense fallback={null}>
@@ -73,6 +105,24 @@ import Plane from "../components/Plane.js";
 
 // }
 
+=======
+
+//   return(
+//     <Suspense fallback={null}>
+//       <primitive object={pear.scene} scale={0.5} {...props} onClick={(e) => {
+//         console.log("I have clicked on Pear", e);
+//         actions["ArmatureAction"].play();
+//         setTimeout(() => {
+//           actions["ArmatureAction"].stop()
+//         }, 3000);
+      
+//         }}/>
+//     </Suspense>
+//   )
+
+// }
+
+>>>>>>> main
 // function Robot(props){
 //   const url = './robot/scene.gltf'
 //   const robot = useLoader(GLTFLoader, url)
@@ -108,7 +158,11 @@ import Plane from "../components/Plane.js";
 //   )
 // }
 
+<<<<<<< HEAD
+export default function Home(props) {
+=======
 export default function Home(props){
+>>>>>>> main
   return (
     <>
     <div>
@@ -125,6 +179,20 @@ export default function Home(props){
         <ambientLight intensity={1} />
         <spotLight position={[0, 0, 0]} /> 
         <Plane position={[0,0,0]} />
+<<<<<<< HEAD
+
+        <Pegasus position={[4,0,0]} />
+        <Pear position={[0,0,4]} scale={0.5}/>
+
+        {/* <Streetlight position={0,-4,0} scale={0.5}/> */}
+        <Robot position={2,2,0} scale={0.10}/>
+        
+      </Suspense>
+    </Canvas>
+    </>
+  );
+}
+=======
 
         <Pegasus position={[4,0,0]} />
         <Pear position={[0,0,4]} scale={0.5}/>
@@ -138,3 +206,4 @@ export default function Home(props){
   )
 }
 
+>>>>>>> main
