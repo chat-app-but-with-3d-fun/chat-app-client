@@ -33,9 +33,7 @@ const Room = ({ location }) => {
         setTab(newTab);
     }
 
-    
-    console.log('GET BY ROOM SLICE: ', roomObj)
-    
+
     return(
     <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
         

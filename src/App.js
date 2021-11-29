@@ -7,10 +7,10 @@ import Register from "./pages/Register";
 import "./sass/main.scss";
 import Sidebar from "./pages/Sidebar";
 import Room from "./pages/Room";
-
 import {socket, useAuthUserMutation } from "./features/api/apiSlice";
 import {  selectUserId, setUser, updateFriendStatus } from "./features/user/userSlice";
 import Jitsi from "./components/Jitsi";
+import NewMsgNotification from "./components/NewMsgNotification";
 
 import PublicRoute from './routes/PublicRoute'; 
 import PrivateRoute from './routes/PrivateRoute'; 
@@ -78,6 +78,7 @@ const App = () => {
         </Sidebar>
         </Switch> 
       </Router>
+          <NewMsgNotification /> 
     </div>
   );
 }
