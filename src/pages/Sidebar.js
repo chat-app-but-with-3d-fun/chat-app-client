@@ -8,20 +8,24 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import AccordionComponent from '../components/accordion';
 import RoomList from '../components/RoomList';
+<<<<<<< HEAD
 import { useSelector } from 'react-redux';
+=======
+import { useDispatch, useSelector } from 'react-redux';
+>>>>>>> main
 import {
    selectPublicRooms,
    selectPrivateRooms,
    selectUnreadPrivate,
-   selectUnreadPublic } from '../features/user/userSlice';
-
+   selectUnreadPublic,
+} from '../features/user/userSlice';
+import NewRoomForm from '../components/NewRoomForm';
+import AddNewFriend from '../components/AddNewFriend';
 
 
 const drawerWidth = 240;
 
-
-
-export default function Sidebar(props) {
+export default function Sidebar({children}) {
 
   const privateRooms = useSelector(selectPrivateRooms)
   const publicRooms = useSelector(selectPublicRooms)
@@ -56,10 +60,11 @@ export default function Sidebar(props) {
   //   }, [] )
 
 
+
 //Would be nice to shrink the drawer when a chat window opens, for this a global state about the current postion could be used
 //api fetch for rooms and friends
 //LISTENER register for status change so api fetch can be redone (e.g. friend gets online)
- return (
+  return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
@@ -111,7 +116,12 @@ export default function Sidebar(props) {
               </Box>
           }
           
-          body={<RoomList rooms={publicRooms}/>}
+          body={
+          <>
+          <NewRoomForm />
+          <RoomList rooms={publicRooms}/>
+          </>
+          }
         />
        
        <AccordionComponent 
@@ -136,10 +146,15 @@ export default function Sidebar(props) {
               </Typography>
               </Box>
             }
-          body={<RoomList rooms={privateRooms}/>}
+          body={
+          <>
+            <AddNewFriend />
+            <RoomList rooms={privateRooms} />
+          </>
+          }
         />
       </Drawer>
-     {props.children}
+     {children}
  
     </Box>
   );
