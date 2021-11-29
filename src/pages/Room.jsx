@@ -32,8 +32,7 @@ const Room = ({ location }) => {
         dispatch(
             setRoom(roomId)
         )
-       
-        },[roomId])
+    },[roomId])
 
 
     return(
