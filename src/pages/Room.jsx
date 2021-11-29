@@ -42,7 +42,7 @@ const Room = ({ location }) => {
                 alignItems: 'flex-start',
                 justifyContent: 'center',
                 backgroundColor: "lightgray"}}>
-             {/* <Chat3D location={{ location }}></Chat3D> */}
+             <Chat3D location={{ location }}></Chat3D>
              {/* <Jitsi id={roomId} /> */}
         </Grid>
         
