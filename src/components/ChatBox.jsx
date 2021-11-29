@@ -7,11 +7,17 @@ import { selectUserId } from '../features/user/userSlice';
 import moment from 'moment';
 import { socket } from '../features/api/apiSlice';
 import { Scrollbars } from 'rc-scrollbars';
+import { useGetMessagesQuery } from "../features/api/apiSlice"
+import {selectRoom} from '../features/room/roomSlice'
 
-const ChatBox = ({ messageList, room }) => {
+
+const ChatBox = () => {
     const [ message, setMessage ] = useState('')
     const userId = useSelector(selectUserId)
     const scrollBar = useRef()
+    const room      = useSelector(selectRoom)
+    const { data: messageList } = useGetMessagesQuery(room?.roomId, { refetchOnMountOrArgChange: true })
+    
 
     const decideSide = (otherId) => {
         if (userId === otherId){
@@ -36,6 +42,15 @@ const ChatBox = ({ messageList, room }) => {
         setMessage('')
     }
 
+    const getName = () => {
+        const friendId = room.roomName
+          .split('-')
+          .filter(element =>(element != userId) && (element != 'privatChat')) 
+          .join()
+        const friendName = room.roomUsers?.find(element => element._id === friendId)
+        return friendName?.username
+      }
+
 
     useEffect(() => {
         if (scrollBar) scrollBar.current.scrollToBottom();
@@ -50,7 +65,7 @@ const ChatBox = ({ messageList, room }) => {
             }}
         >
             <Typography variant='h5' align='center'>
-                {room.type === 'private' ? `Direct chat with ${room.roomName}` : `Chatting in room ${room.roomName}`}
+                {room.roomPrivate ? `Direct chat with ${getName()}` : `Chatting in room ${room.roomName}`}
             </Typography>
             {/* create opacity effect on top of chat if there are more than 2 elements */}
             <Box sx={{position: 'relative', height:"85vh"}}>

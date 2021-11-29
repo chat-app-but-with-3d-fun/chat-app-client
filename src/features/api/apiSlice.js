@@ -56,7 +56,18 @@ export const apiSlice = createApi({
             }
           })
 
-          socket.on('joinRoom', (payload) => console.log('USER joined ROOM: ', payload))
+          socket.on('joinRoom', (payload) => {
+            console.log('USER joined ROOM: ', payload)
+            dispatch(
+              roomSlice.actions.userJoinRoom(payload)
+            )
+          })
+          socket.on('leftRoom', (payload) =>{
+            console.log('USER left ROOM: ', payload)
+            dispatch(
+              roomSlice.actions.userLeftRoom(payload)
+            )
+          }) 
 
 
           dispatch(
@@ -103,7 +114,19 @@ export const apiSlice = createApi({
               }
           })
 
-          socket.on('joinRoom', (payload) => console.log('USER joined ROOM: ', payload))
+          socket.on('joinRoom', (payload) => {
+            console.log('USER joined ROOM: ', payload)
+            dispatch(
+              roomSlice.actions.userJoinRoom(payload)
+            )
+          })
+          
+          socket.on('leftRoom', (payload) =>{
+            console.log('USER left ROOM: ', payload)
+            dispatch(
+              roomSlice.actions.userLeftRoom(payload)
+            )
+          }) 
 
           dispatch(
             userSlice.actions.setUser(userData)

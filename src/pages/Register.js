@@ -50,9 +50,6 @@ const Registration = () => {
     : setFormType('signin')
   }, [])
 
-  if (userId) {
-    return <Redirect to='/dashboard' />
-  } else {
     return (
       <>
         <Container component="main" maxWidth='xs'>
@@ -100,7 +97,7 @@ const Registration = () => {
         /> */}
       </>
     )
-  }
+  // }
 }
 
 export default Registration

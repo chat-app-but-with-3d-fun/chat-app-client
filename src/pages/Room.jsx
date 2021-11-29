@@ -18,12 +18,13 @@ import {selectRoom} from '../features/room/roomSlice'
 const Room = ({ location }) => {
     //state from react-router-dom
     console.log('location ->', location)
-    const { state: { roomId, type, roomName, roomUsers } } = location 
+    // const { state: { roomId = 0, type = 'chat', roomName ='test', roomUsers = [] } } = location 
+    const roomObj       = useSelector(selectRoom)
     const [tab, setTab] = useState('chat')
-    const { data: messageList } = useGetMessagesQuery(roomId, { refetchOnMountOrArgChange: true })
+    // const { data: messageList } = useGetMessagesQuery(roomObj.roomId, { refetchOnMountOrArgChange: true })
     
     const [ roomInfo ] = useGetRoomInfoMutation()
-    const roomObj       = useSelector(selectRoom)
+    
 
     const dispatch = useDispatch()
 
@@ -32,13 +33,8 @@ const Room = ({ location }) => {
         setTab(newTab);
     }
 
-    useEffect(() => {
-        console.log('ROOM CHANGED')
-        if (roomId) roomInfo({id: roomId})
-        },[roomId])
     
-    // console.log('GET BY ROOM SLICE: ', roomObj)
-    console.log('ROOM HANDED OVER: ', roomId, type, roomName, roomUsers )
+    console.log('GET BY ROOM SLICE: ', roomObj)
     
     return(
     <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
@@ -70,19 +66,16 @@ const Room = ({ location }) => {
             </Box>
             {
                 tab === 'chat' &&
-                <ChatBox
-                    messageList={messageList}
-                    room={{roomId, roomName, type}}
-                />
+                <ChatBox />
             }
-            {
+            { 
                 tab === 'notes' &&
-                <NoteBox room={{roomId, roomName, type}} />
+                <NoteBox  />
             }
             {
-                 tab === 'screen' &&
-                <ScreenBox users={roomUsers} id={roomId} />
-            }
+                 tab === 'screen' && 
+                <ScreenBox />
+            } 
         </Paper>
         </Grid>
     </Grid>

@@ -4,9 +4,11 @@ import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw} from 'draf
 import { socket } from '../features/api/apiSlice';
 import { Scrollbars } from 'rc-scrollbars';
 import SaveIcon from '@mui/icons-material/Save';
+import { useSelector } from 'react-redux';
+import {selectRoom} from '../features/room/roomSlice'
 
 
-export default function NoteBox({room}) {
+export default function NoteBox() {
     
     const blockType = [
         {run: 'ordered-list-item', btn: 'ol'},
@@ -23,6 +25,8 @@ export default function NoteBox({room}) {
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty(),);
     const currentInlineStyle    = editorState.getCurrentInlineStyle()
     const currentBlockType      = RichUtils.getCurrentBlockType(editorState)
+    const room      = useSelector(selectRoom)
+
 
 //Functions
     function toggleInlineStyle(event, type) {
