@@ -2,12 +2,14 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { default as Pegasus } from '../models/Pegasus';
+import { default as Pear } from '../models/Pear';
+import { default as Robot } from '../models/Robot';
 
 const Chat3D = ({ location }) => {
   let usersModels = [
     { model: 'Pegasus' },
-    { model: 'Pegasus' },
-    { model: 'Pegasus' },
+    { model: 'Pear' },
+    { model: 'Robot' },
     { model: 'Pegasus' },
   ];
   let [models, setModels] = useState();
@@ -16,7 +18,7 @@ const Chat3D = ({ location }) => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
     let findModels = usersModels.map((mod, index) => {
       return 
-      // <Pegasus key={index} position={[index/10, 0, 0]} />;
+      <Pegasus key={index} position={[index/10, 0, 0]} />;
     });
 
     setModels(findModels);

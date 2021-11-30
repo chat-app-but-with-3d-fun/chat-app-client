@@ -3,7 +3,7 @@ import { Canvas,  useLoader, useFrame, primitive } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Environment, OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei';
 // import { usePlane } from "@react-three/cannon"
-import { useSpring, animated } from '@react-spring/three'
+// import { useSpring, animated } from '@react-spring/three'
 // import Loader from 'loader.js';
 
 export default function Pear(props){
