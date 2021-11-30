@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import socketIOClient from 'socket.io-client'
 import { userSlice } from '../user/userSlice'
-import { roomSlice } from '../room/roomSlice'
+import { roomSlice, updateActiveList } from '../room/roomSlice'
 import { notificationSlice } from '../notifications/notificationSlice'
 
 export let socket;
@@ -69,7 +69,14 @@ export const apiSlice = createApi({
             dispatch(
               roomSlice.actions.userLeftRoom(payload)
             )
-          }) 
+          })
+          
+          socket.on('updateActiveList', (payload) => {
+            console.log('YOU received an updated list of active users')
+            dispatch(
+              roomSlice.actions.updateActiveList(payload)
+            )
+          })
 
           dispatch(
             userSlice.actions.setUser(userData)
@@ -130,6 +137,12 @@ export const apiSlice = createApi({
             )
           }) 
 
+          socket.on('updateActiveList', (payload) => {
+            console.log('YOU received an updated list of active users')
+            dispatch(
+              roomSlice.actions.updateActiveList(payload)
+            )
+          })
 
           socket.on('notification', (message) => {
             dispatch(

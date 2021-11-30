@@ -79,7 +79,7 @@ export default function ScreenBox(props) {
                         <Stack direction="row" spacing={1}> 
                         {activeUserData?.map((element, index) => {
                             return(
-                            <Chip label={`${element.username}`} variant="outlined" />
+                            <Chip label={`${element?.username}`} variant="outlined" />
                             )
                         })}
                         </Stack>
