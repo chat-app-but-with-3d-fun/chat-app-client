@@ -10,16 +10,10 @@ import { default as Robot } from '../models/Robot.jsx';
 
 
 const Chat3D = ({ location }) => {
-  // let usersModels = [
-  //   { model: 'Pegasus' },
-  //   { model: 'Pegasus' },
-  //   { model: 'Pegasus' },
-    // { model: 'Pegasus' },
-  // ];
 
-  const[models, setModels] = useState();
-  const activeUsers = useSelector(selectActiveUsers)
-  const room      = useSelector(selectRoom)
+  const[models, setModels]  = useState();
+  const activeUsers         = useSelector(selectActiveUsers)
+  const room                = useSelector(selectRoom)
 
 
   useEffect(() => {
