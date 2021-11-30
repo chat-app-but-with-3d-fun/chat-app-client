@@ -6,17 +6,20 @@ source: https://sketchfab.com/3d-models/base-ball-ball-f923538fe3034464aeeef036d
 title: Base Ball Ball
 */
 
-import React, { useRef } from 'react';
+import React, { useRef, Suspense, useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 
 export default function Model({ ...props }) {
   const group = useRef();
   const { nodes, materials } = useGLTF('/baseball/scene-transformed.glb');
 
+
   return (
+    <Suspense fallback={null}>
     <group ref={group} {...props} dispose={null}>
       <group rotation={[Math.PI / 2, 0, 0]}>
-        <group rotation={[-Math.PI, 0, 0]} scale={0.03}>
+        {/* <group rotation={[-Math.PI, 0, 0]} scale={0.03}> */}
+        <group rotation={[-Math.PI, 0, 0]} scale={3}>
           <mesh
             geometry={nodes['BaseballBall-_BaseballBall_0'].geometry}
             material={materials.BaseballBall}
@@ -24,7 +27,9 @@ export default function Model({ ...props }) {
         </group>
       </group>
     </group>
+    </Suspense>
   );
 }
+useGLTF.preload('/baseball/scene.gltf');
 
-useGLTF.preload('/baseball/scene-transformed.glb');
+// useGLTF.preload('/baseball/scene-transformed.glb');

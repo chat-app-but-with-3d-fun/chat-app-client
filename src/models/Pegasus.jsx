@@ -46,8 +46,10 @@ export default function Pegasus({ ...props }) {
   return (
     <Suspense fallback={null}>
       <group ref={group} {...props} dispose={null}>
-        <group rotation={[-Math.PI / 2, 0, 0]} scale={1.15}>
-          <group rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
+        {/* <group rotation={[-Math.PI / 2, 0, 0]} scale={1.15}>
+          <group rotation={[Math.PI / 2, 0, 0]} scale={0.01}> */}
+          <group rotation={[-Math.PI / 2, 0, 0]} scale={1.15}>
+          <group rotation={[Math.PI / 2, 0, 0]} scale={0.15}>
             <group name='metarig' rotation={[-Math.PI / 2, 0, 0]} scale={54.16}>
               <primitive object={nodes._rootJoint} />
               <skinnedMesh

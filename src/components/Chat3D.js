@@ -1,13 +1,16 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
-import { default as Pegasus } from '../models/Pegasus';
+import { default as Pegasus } from '../models/Pegasus.jsx';
+import { default as Baseball } from '../models/Baseball.jsx';
+import { default as Robot } from '../models/Robot.jsx';
+
 
 const Chat3D = ({ location }) => {
   let usersModels = [
     { model: 'Pegasus' },
-    // { model: 'Pegasus' },
-    // { model: 'Pegasus' },
+    { model: 'Pegasus' },
+    { model: 'Pegasus' },
     // { model: 'Pegasus' },
   ];
   const[models, setModels] = useState();
@@ -15,9 +18,22 @@ const Chat3D = ({ location }) => {
   useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
     let findModels = usersModels.map((mod, index) => {
-      return (
-        <Pegasus key={index} position={[index/10, 0, 0]} />
-      )
+      if (index===0){
+        return (
+          <Robot key={index} position={[0.1, 0, -10]} />
+        )
+      }
+      if (index===1){
+        return (
+          <Pegasus key={index} position={[30, 0, 10]} />
+        )
+      }
+      if (index===2){
+        return (
+          <Baseball key={index} position={[-30, 0, 10]} />
+        )
+      }
+      
     });
 
     setModels(findModels);
@@ -32,7 +48,7 @@ const Chat3D = ({ location }) => {
     <div className='chat3d' style={{ width: '100%', height: '100%' }}>
       <Canvas
         style={{ width: '100%', height: '100%' }}
-        camera={{ fov: 75, near: 0.1, far: 1000, position: [3, 3, 5] }}
+        camera={{ fov: 75, near: 0.1, far: 1000, position: [-20, 30, 50] }}
       >
         <color attach='background' args={['black']} />
         <OrbitControls />
