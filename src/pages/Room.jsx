@@ -13,37 +13,41 @@ import Jitsi from '../components/Jitsi';
 import ScreenBox from '../components/ScreenBox';
 import { socket } from '../features/api/apiSlice';
 import { useGetRoomInfoMutation } from '../features/api/apiSlice';
-import {selectRoom} from '../features/room/roomSlice'
+import {selectRoom, selectRoomId} from '../features/room/roomSlice'
+import SmallSidebar from '../components/SmallSidebar.jsx';
+import {toggleDrawer, selectDrawer} from '../features/page/pageSlice';
+import {closeDrawer} from '../features/page/pageSlice';
 
 const Room = ({ location }) => {
-    //state from react-router-dom
     console.log('location ->', location)
-    // const { state: { roomId = 0, type = 'chat', roomName ='test', roomUsers = [] } } = location 
+    
     const roomObj       = useSelector(selectRoom)
+    const roomId        = useSelector(selectRoomId)
     const [tab, setTab] = useState('chat')
-    // const { data: messageList } = useGetMessagesQuery(roomObj.roomId, { refetchOnMountOrArgChange: true })
+    const [ roomInfo ]  = useGetRoomInfoMutation()
+    const drawerOpen    = useSelector(selectDrawer)
+    const dispatch      = useDispatch()
     
-    const [ roomInfo ] = useGetRoomInfoMutation()
-    
-
-    const dispatch = useDispatch()
-
-
-    const changeTab = (e, newTab) => {
+    const changeTab     = (e, newTab) => {
         setTab(newTab);
-    }
-
-
+        }
+    
+    
+    useEffect(() => {
+        dispatch(closeDrawer())
+      },[])
+    
     return(
-    <Grid container sx={{width: '100vw', height: '93vh', marginTop: 8}}>
+    <Grid container sx={{width: `${drawerOpen ? "87vw" : "100vw" }`, height: "100vh", marginTop: 0}}>
         
         <Grid item md="6" lg='8' sx={{
                 display: "flex",
                 alignItems: 'flex-start',
                 justifyContent: 'center',
                 backgroundColor: "lightgray"}}>
-             <Chat3D location={{ location }}></Chat3D>
-             {/* <Jitsi id={roomId} /> */}
+             <Chat3D />
+             <Jitsi id={roomId} />
+             {!drawerOpen && <SmallSidebar />}
         </Grid>
         
         <Grid item direction='column' md="6" lg='4'>
