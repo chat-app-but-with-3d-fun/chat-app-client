@@ -43,6 +43,16 @@ export default function Pegasus({ ...props }) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF('/pegasus/scene.gltf');
   const { actions } = useAnimations(animations, group);
+  
+  useEffect(() => {
+    actions["metarig|Fly"].play()
+          setTimeout(() => {
+          actions["metarig|Fly"].stop()
+        }, 3000)
+
+    }, [])
+
+  
   return (
     <Suspense fallback={null}>
       <group ref={group} {...props} dispose={null} onClick={() => console.log('I AM OUTSIDE OF PEGASUS')}>
