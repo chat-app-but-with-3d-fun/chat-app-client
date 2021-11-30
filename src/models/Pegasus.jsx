@@ -36,7 +36,7 @@
 //   );
 // };
 // export default Pegasus;
-import React, { useRef, Suspense } from 'react';
+import React, { useRef, Suspense, useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 
 export default function Pegasus({ ...props }) {

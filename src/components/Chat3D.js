@@ -15,17 +15,16 @@ const Chat3D = ({ location }) => {
   const activeUsers         = useSelector(selectActiveUsers)
   const room                = useSelector(selectRoom)
 
+  const ownUser = [
+      <Robot key={'ownAvatar'} position={[0.1, 0, -10]} />,
+      // <Pegasus key={index} position={[30, 0, 10]} />,
+      // <Baseball key={index} position={[-30, 0, 10]} />
+  ]
 
   useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
-    console.log('ACTIVE USERS', room)
-    let findModels = room.roomUsers?.map((mod, index) => {
+    let findModels = activeUsers?.map((mod, index) => {
       if (index===0){
-        return (
-          <Robot key={index} position={[0.1, 0, -10]} />
-        )
-      }
-      else if (index===1){
         return (
           <Pegasus key={index} position={[30, 0, 10]} />
         )
@@ -35,16 +34,14 @@ const Chat3D = ({ location }) => {
           <Baseball key={index} position={[-30, 0, 10]} />
         )
       }})
-    
-
     setModels(findModels);
-  }, [room]);
+  }, [activeUsers]);
 
   console.log('********** 3D  CHAT*************');
   console.log('Location', location);
   console.log('modelsToLoad', models);
   console.log('****************************');
-  console.log('ROOMID AND ROOM INFO: ', room)
+
   
   return (
     <div className='chat3d' style={{ width: '100%', height: '100%' }}>
@@ -57,7 +54,7 @@ const Chat3D = ({ location }) => {
         <Stars fade />
         <ambientLight intensity={1} />
         <spotLight position={[0, 0, 0]} />
-        <Suspense fallback={null}>{models}</Suspense>
+        <Suspense fallback={null}>{ownUser[0]}{models}</Suspense>
       </Canvas>
     </div>
   );
