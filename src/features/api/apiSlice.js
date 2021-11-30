@@ -144,13 +144,23 @@ export const apiSlice = createApi({
         }
       },
     }),
-    logoutUser: builder.query({
-      query: () => 'user/logout',
-      async onCacheEntryAdded(
-        args,
-        { cacheEntryRemoved }
-      ) {
-        await cacheEntryRemoved
+    logoutUser: builder.mutation({
+      query: () => ({
+        url: 'user/logout',
+        method: 'POST',
+      }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(
+            apiSlice.util.resetApiState()
+          )
+          dispatch(
+            userSlice.actions.userLogout()
+          )
+        } catch (error) {
+          console.log('[ERROR] trying to logout..', error)
+        }
       }
     }),
     findUser: builder.mutation({
@@ -279,7 +289,7 @@ export const {
   useSignupUserMutation,
   useLoginUserMutation,
   useAuthUserMutation,
-  useLogoutUserQuery,
+  useLogoutUserMutation,
   useFindUserMutation,
   useAddFriendMutation,
   useInviteFriendToRoomMutation,
