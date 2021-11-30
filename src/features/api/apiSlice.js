@@ -122,15 +122,12 @@ export const apiSlice = createApi({
               roomSlice.actions.userJoinRoom(payload)
             )
           })
-          
           socket.on('leftRoom', (payload) =>{
             console.log('USER left ROOM: ', payload)
             dispatch(
               roomSlice.actions.userLeftRoom(payload)
             )
           }) 
-
-
           socket.on('notification', (message) => {
             dispatch(
               notificationSlice.actions.setNotification(message)
@@ -207,49 +204,47 @@ export const apiSlice = createApi({
         url: `room/${roomId}/adduser/${friendId}`,
         method: 'POST'
       }),
-    async onQueryStarted({userId}, {dispatch, queryFulfilled}){
-      try{
-        const {data : newRoomUser} = await queryFulfilled
-          const {username, _id, updateRoom} = newRoomUser
-          console.log('INVITE FRIEND RETURNS FROM BACKEND', newRoomUser)
-          dispatch(
-            roomSlice.actions.addUser({username, _id})
-          )
-        socket.emit('changeStatus', {
-          "type": "inviteToRoom",
-          "friend": _id,
-          updateRoom
-        })
-      } catch(error) {
-        console.log('[ERROR]', error)
-      }
-    }
-  }),
-  getRoomInfo: builder.mutation({
-    query: ({id}) => ({
-      url: `room/getroom`,
-      method: 'POST',
-      body: {id}
-    }),
-    async onQueryStarted({userId}, { dispatch, queryFulfilled }) {
-      console.log('HEY DO WE ARRIVE HERE??')
-      try {
-        const { data: newRoom } = await queryFulfilled
-        console.log('WE TRY TO GET ROOM INFOS: ', newRoom)
-        const tmpObj = {
-          roomId: newRoom._id,
-          roomUsers: newRoom.users,
-          roomName: newRoom.roomName,
-          roomPrivate: newRoom.private
+      async onQueryStarted({userId}, {dispatch, queryFulfilled}){
+        try{
+          const {data : newRoomUser} = await queryFulfilled
+            const {username, _id, updateRoom} = newRoomUser
+            console.log('INVITE FRIEND RETURNS FROM BACKEND', newRoomUser)
+            dispatch(
+              roomSlice.actions.addUser({username, _id})
+            )
+          socket.emit('changeStatus', {
+            "type": "inviteToRoom",
+            "friend": _id,
+            updateRoom
+          })
+        } catch(error) {
+          console.log('[ERROR]', error)
         }
-        dispatch(
-          roomSlice.actions.setRoom(tmpObj)
-        )
-      } catch (error) {
-        console.log('[ERROR in getting RoOM INFO]', error)
       }
-    },
-  }),
+    }),
+    getRoomInfo: builder.mutation({
+      query: ({id}) => ({
+        url: `room/getroom`,
+        method: 'POST',
+        body: {id}
+      }),
+      async onQueryStarted({userId}, { dispatch, queryFulfilled }) {
+        try {
+          const { data: newRoom } = await queryFulfilled
+          const tmpObj = {
+            roomId: newRoom._id,
+            roomUsers: newRoom.users,
+            roomName: newRoom.roomName,
+            roomPrivate: newRoom.private
+          }
+          dispatch(
+            roomSlice.actions.setRoom(tmpObj)
+          )
+        } catch (error) {
+          console.log('[ERROR in getting RoOM INFO]', error)
+        }
+      },
+    }),
     // messages
     getMessages: builder.query({
       query: (roomId) => `msg/${roomId}`,
@@ -259,7 +254,6 @@ export const apiSlice = createApi({
       ) {
         await cacheDataLoaded
         const messageReceive = (message) => {
-          console.log('MESSAGE RECEIVED ', message)
           try {
             if (message) updateCachedData(
               (draft) => {
@@ -274,7 +268,6 @@ export const apiSlice = createApi({
           }
         }
         socket.on('newMsg', messageReceive)
-        
         // await cacheEntryRemoved
       },
     }),
@@ -292,5 +285,4 @@ export const {
   useCreateRoomMutation,
   useGetRoomInfoMutation,
   useGetMessagesQuery,
-  useSendMessageMutation
 } = apiSlice
