@@ -61,7 +61,7 @@ export default function Pegasus({ ...props }) {
           <group rotation={[-Math.PI / 2, 0, 0]} scale={1.15}>
           <group rotation={[Math.PI / 2, 0, 0]} scale={0.15}>
             <group name='metarig' rotation={[-Math.PI / 2, 0, 0]} scale={54.16}>
-              <primitive object={nodes._rootJoint} onClick={() => console.log('HEY IA M CLICKED')}/>
+              <primitive object={nodes._rootJoint} />
               <skinnedMesh
                 geometry={nodes.Object_9.geometry}
                 material={materials.Pegasus}
