@@ -45,7 +45,7 @@ export default function Jitsi(props) {
            useStunTurn: true,
         }, 
         useStunTurn: true, 
-        bosh: `https://meet.jit.si/http-bind?room=puck${id}`, 
+        bosh: `https://meet.jit.si/http-bind?room=puckSlackSwag${id}`, 
         websocket: 'wss://meet.jit.si/xmpp-websocket', 
         clientNode: 'http://jitsi.org/jitsimeet', 
     };
