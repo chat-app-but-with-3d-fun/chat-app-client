@@ -15,7 +15,8 @@ const Chat3D = ({ location }) => {
   useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
     let findModels = usersModels.map((mod, index) => {
-      return <Pegasus key={index} position={[index/10, 0, 0]} />;
+      return 
+      // <Pegasus key={index} position={[index/10, 0, 0]} />;
     });
 
     setModels(findModels);
