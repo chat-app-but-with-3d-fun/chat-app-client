@@ -68,7 +68,7 @@ const ChatBox = () => {
                 {room.roomPrivate ? `Direct chat with ${getName()}` : `Chatting in room ${room.roomName}`}
             </Typography>
             {/* create opacity effect on top of chat if there are more than 2 elements */}
-            <Box sx={{position: 'relative', height:"85vh"}}>
+            <Box sx={{position: 'relative', height:"91vh"}}>
             {messageList?.messages.length < 3 ? <></> : 
                 <Box sx={
                     {position: "absolute",
@@ -86,7 +86,7 @@ const ChatBox = () => {
                 autoHide
                 autoHideTimeout={1000}
                 autoHideDuration={200}
-                style={{height: '75vh', width:'100%'}}
+                style={{height: '80vh', width:'100%'}}
                 ref={scrollBar}>
            <Box sx={{display: 'flex', flexDirection: 'column'}}>
                 <List>

@@ -13,7 +13,7 @@ export default function AccordionComponent(props) {
 
 
   return (
-    <Accordion  expanded={expanded}>
+    <Accordion  expanded={expanded} sx={{color:'white', backgroundColor:'rgba(255,255,255,0.1)', width: '90%', borderRadius: '20%'}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon  />}
           aria-controls="panel1a-content"

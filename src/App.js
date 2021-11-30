@@ -14,12 +14,19 @@ import NewMsgNotification from "./components/NewMsgNotification";
 import PublicRoute from './routes/PublicRoute'; 
 import PrivateRoute from './routes/PrivateRoute'; 
 
+import SideBar2 from "./pages/SideBar2";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+
 const App = () => {
   const userId = useSelector(selectUserId)
   const [ authUser, { data, isSuccess } ] = useAuthUserMutation()
   const [access, setAccess] = useState(false)
 
   const dispatch = useDispatch()
+
+
+
 
   useEffect(() => {
     const auth = async () => {
@@ -46,22 +53,13 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        {/* <Switch>
-          <Route exact path="/sign-:form" component={Register} />
-          <Sidebar >
-            <Route exact path="/chat/:roomId" component={Room} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/jitsi" component={Jitsi} />
-          </Sidebar> */}
-          
-        {/* </Switch> */}
         <Switch>
         <PublicRoute
             restricted={true}
             component={Register}
             path="/sign-:form"
             exact />
-        <Sidebar >
+        <SideBar2 >
         <PrivateRoute
             component={Dashboard}
             path="/"
@@ -74,7 +72,7 @@ const App = () => {
             component={Room}
             path="/chat/:roomId"
             exact />
-        </Sidebar>
+        </SideBar2>
         </Switch> 
       </Router>
       <NewMsgNotification />

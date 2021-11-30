@@ -6,16 +6,18 @@ import { default as Pegasus } from '../models/Pegasus';
 const Chat3D = ({ location }) => {
   let usersModels = [
     { model: 'Pegasus' },
-    { model: 'Pegasus' },
-    { model: 'Pegasus' },
-    { model: 'Pegasus' },
+    // { model: 'Pegasus' },
+    // { model: 'Pegasus' },
+    // { model: 'Pegasus' },
   ];
-  let [models, setModels] = useState();
+  const[models, setModels] = useState();
 
   useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
     let findModels = usersModels.map((mod, index) => {
-      return <Pegasus key={index} position={[index/10, 0, 0]} />;
+      return (
+        <Pegasus key={index} position={[index/10, 0, 0]} />
+      )
     });
 
     setModels(findModels);
