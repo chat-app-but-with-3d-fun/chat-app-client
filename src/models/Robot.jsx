@@ -14,6 +14,15 @@ export default function Model({ ...props }) {
   const { nodes, materials, animations } = useGLTF('/robot/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
   
+
+  useEffect(() => {
+    actions['Take 001'].play()
+          setTimeout(() => {
+          actions['Take 001'].stop()
+        }, 6000)
+
+    }, [])
+
   console.log('ROBOT ', group)
   return (
     <Suspense fallback={null}>
