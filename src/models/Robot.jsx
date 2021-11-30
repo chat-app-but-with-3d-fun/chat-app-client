@@ -6,18 +6,31 @@ source: https://sketchfab.com/3d-models/robot-playground-59fc99d8dcb146f3a6c16db
 title: Robot Playground
 */
 
-import React, { useRef } from 'react'
+import React, { useRef, Suspense, useEffect } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 
 export default function Model({ ...props }) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF('/robot/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
+  
+
+  // useEffect(() => {
+  //   actions['Take 001'].play()
+  //         setTimeout(() => {
+  //         actions['Take 001'].stop()
+  //       }, 6000)
+
+  //   }, [])
+
+  console.log('ROBOT ', group)
   return (
+    <Suspense fallback={null}>
     <group ref={group} {...props} dispose={null} >
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
-          <group scale={1.88}>
+          {/* <group scale={1.88}> */}
+          <group scale={1}>
             <group position={[0.33, 0, -0.1]} rotation={[-Math.PI, -0.14, -Math.PI]} scale={0.99}>
               <group rotation={[0, 0.88, 0]}>
                 <group position={[-4.63, 14.29, 1.99]}>
@@ -161,6 +174,7 @@ export default function Model({ ...props }) {
                                     material={nodes.pCube1_holo1_0.material}
                                   />
                                 </group>
+                                {/* <group scale={4.92}> */}
                                 <group scale={4.92}>
                                   <mesh
                                     geometry={nodes.pCube2_holo1_0.geometry}
@@ -449,6 +463,7 @@ export default function Model({ ...props }) {
         </group>
       </group>
     </group>
+    </Suspense>
   )
 }
 
