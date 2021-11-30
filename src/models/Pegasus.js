@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Environment, OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei';
 // import { useSpring, animated } from '@react-spring/three'
 
-export default function Pegasus(props){
+export default function PegasusAnimation(props){
     const url = './pegasus/scene.gltf';
     const gltf = useLoader(GLTFLoader, url);
     const { nodes, materials, animations } = useGLTF(url)

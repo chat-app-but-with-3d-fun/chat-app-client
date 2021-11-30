@@ -4,14 +4,14 @@ import { OrbitControls, Stars } from '@react-three/drei';
 import { default as Pegasus } from '../models/Pegasus.jsx';
 import { default as Baseball } from '../models/Baseball.jsx';
 import { default as Robot } from '../models/Robot.jsx';
-
+import { default as Pear } from '../models/Pear.jsx';
 
 const Chat3D = ({ location }) => {
   let usersModels = [
     { model: 'Pegasus' },
     { model: 'Pegasus' },
     { model: 'Pegasus' },
-    // { model: 'Pegasus' },
+    { model: 'Pegasus' },
   ];
   const[models, setModels] = useState();
 
@@ -32,6 +32,9 @@ const Chat3D = ({ location }) => {
         return (
           <Baseball key={index} position={[-30, 0, 10]} />
         )
+      }
+      if(index===3){
+        <Pear key={index} position={[-60, 0, 20]} />
       }
       
     });

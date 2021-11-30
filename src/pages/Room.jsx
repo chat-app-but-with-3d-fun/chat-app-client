@@ -46,7 +46,7 @@ const Room = ({ location }) => {
                 justifyContent: 'center',
                 backgroundColor: "lightgray"}}>
              <Chat3D />
-             <Jitsi id={roomId} />
+             {/* <Jitsi id={roomId} /> */}
              {!drawerOpen && <SmallSidebar />}
         </Grid>
         
