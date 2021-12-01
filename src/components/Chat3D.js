@@ -11,7 +11,7 @@ const Chat3D = ({ location }) => {
     { model: 'Pegasus' },
     { model: 'Pegasus' },
     { model: 'Pegasus' },
-    { model: 'Pegasus' },
+    { model: 'Pegasus' }
   ];
   const[models, setModels] = useState();
 
@@ -33,7 +33,7 @@ const Chat3D = ({ location }) => {
           <Baseball key={index} position={[-30, 0, 10]} />
         )
       }
-      if(index===3){
+      if (index===3){
         <Pear key={index} position={[-60, 0, -10]} />
       }
       
