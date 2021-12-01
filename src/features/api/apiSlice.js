@@ -260,10 +260,11 @@ export const apiSlice = createApi({
         try {
           const { data: newRoom } = await queryFulfilled
           const tmpObj = {
-            roomId: newRoom._id,
-            roomUsers: newRoom.users,
-            roomName: newRoom.roomName,
-            roomPrivate: newRoom.private
+            roomId:       newRoom._id,
+            roomUsers:    newRoom.users,
+            roomName:     newRoom.roomName,
+            roomPrivate:  newRoom.private,
+            activeUsers:  []
           }
           dispatch(
             roomSlice.actions.setRoom(tmpObj)
