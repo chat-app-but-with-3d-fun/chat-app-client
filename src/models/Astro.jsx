@@ -6,14 +6,24 @@ source: https://sketchfab.com/3d-models/walking-astronaut-lets-go-b03facbc033c41
 title: Walking Astronaut - Let's Go!
 */
 
-import React, { useRef } from 'react'
+import React, { useRef, Suspense, useEffect } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 
 export default function Model({ ...props }) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF('/astro/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
+
+  useEffect(() => {
+    actions[Object.keys(actions)[0]].play()
+    setTimeout(() => {
+      actions[Object.keys(actions)[0]].stop();
+    }, 3000);
+  }, []);
+
+  console.log('ASTRO', group);
   return (
+    <Suspense fallback={null}>
     <group ref={group} {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
@@ -22,12 +32,14 @@ export default function Model({ ...props }) {
             geometry={nodes.cosmo1__0.geometry}
             material={materials['Scene_-_Root']}
             skeleton={nodes.cosmo1__0.skeleton}
-            onClick={(e) => actions[Object.keys(actions)[0]].play()}
+            // onClick={(e) => actions[Object.keys(actions)[0]].play()}
 
           />
         </group>
       </group>
     </group>
+    </Suspense>
+    
   )
 }
 

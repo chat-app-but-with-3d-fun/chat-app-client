@@ -45,12 +45,12 @@ export default function Pegasus({ ...props }) {
   const { nodes, materials, animations } = useGLTF('/pegasus/scene-transformed.glb');
   const { actions } = useAnimations(animations, group);
 
-  useEffect(() => {
-    actions['metarig|Fly'].play();
-    setTimeout(() => {
-      actions['metarig|Fly'].stop();
-    }, 3000);
-  }, []);
+  // useEffect(() => {
+  //   actions['metarig|Fly'].play();
+  //   setTimeout(() => {
+  //     actions['metarig|Fly'].stop();
+  //   }, 3000);
+  // }, []);
 
   return (
     <Suspense fallback={null}>
