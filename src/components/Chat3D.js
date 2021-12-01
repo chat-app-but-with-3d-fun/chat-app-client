@@ -22,7 +22,7 @@ const Chat3D = ({ location }) => {
       // <Baseball key={index} position={[-30, 0, 10]} />
   ]
 
-  useEffect(() => {
+  // useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
     // let findModels = activeUsers?.map((mod, index) => {
     //   if (index===0){
@@ -36,7 +36,7 @@ const Chat3D = ({ location }) => {
       //   )}
     // })
     // setModels(findModels);
-  }, [activeUsers]);
+  // }, [activeUsers]);
 
   console.log('********** 3D  CHAT*************');
   console.log('Location', location);
@@ -55,7 +55,7 @@ const Chat3D = ({ location }) => {
         <Stars fade />
         <ambientLight intensity={1} />
         <spotLight position={[0, 0, 0]} />
-        <Suspense fallback={null}>{ownUser[0]}{models}</Suspense> */}
+        <Suspense fallback={null}>{ownUser[0]}</Suspense> 
       </Canvas>
     </div>
   );
