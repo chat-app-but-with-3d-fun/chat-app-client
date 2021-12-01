@@ -17,10 +17,7 @@ export const roomSlice = createSlice({
       const oldRoom = state.roomId
       console.log('setting room... with following Stuff =>', payload)
       for (let key in payload) {
-        state[key] = payload[key]
-      }
-      // console.log('setting room... with id =>', payload)
-      // state.roomId = payload
+        state[key] = payload[key]}
       if (socket) {
         socket?.emit('setRoom', { 
           newRoom: `${payload.roomId ? payload.roomId : null}`,
@@ -33,12 +30,26 @@ export const roomSlice = createSlice({
       state.roomUsers.push(payload)   
     },
     userJoinRoom:  (state, {payload}) => {
-      console.log('ROOM SLICE USER JOIN: ', payload, state)
+      console.log('ROOM SLICE USER JOIN: ', payload, state.roomId)
       if (state.roomId === payload.room){
+        console.log('THE IF WORKS')
+        socket?.emit('sendListActiveUsers', {
+          user: payload.user,
+          roomId: state.roomId, 
+          activeUsers: state.activeUsers})
         state.activeUsers.push(payload.user)
       }
       console.log('User: ', payload.user, ' joined ROOM: ', payload.room) 
     },
+
+    updateActiveList: (state, {payload}) => {
+      console.log('The list of active users get updated ', payload, state.activeUsers)
+      if (state.roomId === payload.roomId){
+        state.activeUsers = state.activeUsers.concat(payload.activeUsers)
+      }
+      console.log('ACTIVE USERS UPDATED: ', state.activeUsers ) 
+    },
+
     userLeftRoom:  (state, {payload}) => {
       if (state.roomId === payload.room){
         const tmpUserArray = state.activeUsers.filter((element) => {
@@ -70,7 +81,7 @@ export const selectActiveUsers = state => state.room.activeUsers
 export const selectRoom       = state => state.room
 
 export const {
-  setRoom, addUser, userLeftRoom, userJoinRoom 
+  setRoom, addUser, userLeftRoom, userJoinRoom, updateActiveList 
 } = roomSlice.actions
 
 export default roomSlice.reducer
