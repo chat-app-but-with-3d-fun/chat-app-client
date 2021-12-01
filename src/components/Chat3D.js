@@ -8,6 +8,10 @@ import { default as Pegasus } from '../models/Pegasus.jsx';
 import { default as Baseball } from '../models/Baseball.jsx';
 import { default as Robot } from '../models/Robot.jsx';
 import { default as Astro } from '../models/Astro.jsx';
+import { default as BabyDino } from '../models/BabyDino.jsx';
+import { default as Blobby } from '../models/Blobby.jsx';
+import { default as Dino } from '../models/Dino.jsx';
+import { default as Rex } from '../models/Rex.jsx';
 
 const Chat3D = ({ location }) => {
   const [models, setModels] = useState();
@@ -15,7 +19,7 @@ const Chat3D = ({ location }) => {
   const room = useSelector(selectRoom);
 
   const ownUser = [
-    <Robot key={'ownAvatar'} position={[0, 0, 40]} rotation={[0, 180, 0]} />,
+    <Blobby key={'ownAvatar'} position={[0, 0, 40]} rotation={[0, 180, 0]} />,
   ];
 
   useEffect(() => {
@@ -35,6 +39,22 @@ const Chat3D = ({ location }) => {
         console.log('CHAT3D LOADS THE ASTRO');
         return <Astro key={index} position={[-40, 0, 0]} rotation={[0, 90, 0]} />;
       }
+      if (index === 3) {
+        console.log('CHAT3D LOADS THE BABYDINO');
+        return <BabyDino key={index} position={0,0,40} />
+      }
+      // if (index === 4) {
+      //   console.log('CHAT3D LOADS BLOBBY');
+      //   return <Blobby key={index} position={80, 0, 0 } />
+      // }
+      // if( index === 5) {
+      //   console.log('CHAT3D LOADS THE DINO');
+      //   return <Dino key={index} position={0, 0, -80} />
+      // }
+      // if (index === 6) {
+      //   console.log("CHAT3D LOADS REX");
+      //   return <Rex key={index} position={60, 0, 0} />
+      // }
     });
 
     setModels(findModels);
