@@ -72,7 +72,7 @@ export const apiSlice = createApi({
           })
           
           socket.on('updateActiveList', (payload) => {
-            console.log('YOU received an updated list of active users')
+            console.log('YOU received an updated list of active users', payload)
             dispatch(
               roomSlice.actions.updateActiveList(payload)
             )

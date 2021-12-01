@@ -43,9 +43,9 @@ export const roomSlice = createSlice({
     },
 
     updateActiveList: (state, {payload}) => {
-      console.log('The list of active users get updated ', payload, state)
+      console.log('The list of active users get updated ', payload, state.activeUsers)
       if (state.roomId === payload.roomId){
-        state.activeUsers = [...state.activeUsers, payload.activeUsers]
+        state.activeUsers = state.activeUsers.concat(payload.activeUsers)
       }
       console.log('ACTIVE USERS UPDATED: ', state.activeUsers ) 
     },
