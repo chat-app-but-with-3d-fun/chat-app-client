@@ -34,7 +34,7 @@ const Chat3D = ({ location }) => {
         )
       }
       if(index===3){
-        <Pear key={index} position={[-60, 0, 20]} />
+        <Pear key={index} position={[-60, 0, -10]} />
       }
       
     });

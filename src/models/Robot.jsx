@@ -28,8 +28,8 @@ export default function Rotot({ ...props }) {
     <group ref={group} {...props} dispose={null} >
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
-          {/* <group scale={1.88}> */}
-          <group scale={1}>
+          <group scale={1.88}>
+          {/* <group scale={1}> */}
             <group position={[0.33, 0, -0.1]} rotation={[-Math.PI, -0.14, -Math.PI]} scale={0.99}>
               <group rotation={[0, 0.88, 0]}>
                 <group position={[-4.63, 14.29, 1.99]}>

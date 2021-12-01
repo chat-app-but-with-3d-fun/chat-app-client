@@ -52,7 +52,7 @@ export default function Pegasus({ ...props }) {
         }, 3000)
 
     }, [])
-
+    console.log('PEGASUS', group)
   return (
     <Suspense fallback={null}>
       <group ref={group} {...props} dispose={null}     >
