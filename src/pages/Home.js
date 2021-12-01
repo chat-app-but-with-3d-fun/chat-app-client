@@ -1,15 +1,15 @@
 
-import React, { Suspense, useRef, useState, useEffect } from "react";
-import { Canvas,  useLoader, useFrame, primitive } from 'react-three-fiber';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { Environment, OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei';
+// import React, { Suspense, useRef, useState, useEffect } from "react";
+// import { Canvas,  useLoader, useFrame, primitive } from 'react-three-fiber';
+// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+// import { Environment, OrbitControls, Stars, useAnimations, useGLTF } from '@react-three/drei';
 // import { usePlane } from "@react-three/cannon"
-import { useSpring, animated } from '@react-spring/three'
+// import { useSpring, animated } from '@react-spring/three'
 // import Loader from 'loader.js';
-import Pegasus from "../components/Pegasus.js";
-import Robot from "../components/Robot.js";
-import Pear from "../models/Pear.js";
-import Plane from "../components/Plane.js";
+// import Pegasus from "../components/Pegasus.js";
+// import Robot from "../components/Robot.js";
+// import Pear from "../models/Pear.js";
+// import Plane from "../components/Plane.js";
 
 // function Plane(props){
 //   return(
@@ -108,33 +108,33 @@ import Plane from "../components/Plane.js";
 //   )
 // }
 
-export default function Home(props){
-  return (
-    <>
-    <div>
-      <h2>welcome to koko!</h2>
-    </div>
-    <Canvas 
-    style={{width: '300px' , height: '300px' }} camera={{ fov: 75, near: 0.1, far: 1000, position: [3, 3, 5 ] }} 
-    // camera={{ position: [0, 0, 0], near: 0.1, far: 1000 }}
-    {...props} sRGB={true}>      
-    <color attach='background' args={'black'}/>
-      <Suspense fallback={null}>
-        <OrbitControls />
-        <Stars fade />
-        <ambientLight intensity={1} />
-        <spotLight position={[0, 0, 0]} /> 
-        <Plane position={[0,0,0]} />
+// export default function Home(props){
+//   return (
+//     <>
+//     <div>
+//       <h2>welcome to koko!</h2>
+//     </div>
+//     <Canvas 
+//     style={{width: '300px' , height: '300px' }} camera={{ fov: 75, near: 0.1, far: 1000, position: [3, 3, 5 ] }} 
+//     // camera={{ position: [0, 0, 0], near: 0.1, far: 1000 }}
+//     {...props} sRGB={true}>      
+//     <color attach='background' args={'black'}/>
+//       <Suspense fallback={null}>
+//         <OrbitControls />
+//         <Stars fade />
+//         <ambientLight intensity={1} />
+//         <spotLight position={[0, 0, 0]} /> 
+//         <Plane position={[0,0,0]} />
 
-        <Pegasus position={[4,0,0]} />
-        <Pear position={[0,0,4]} scale={0.5}/>
+//         <Pegasus position={[4,0,0]} />
+//         <Pear position={[0,0,4]} scale={0.5}/>
 
-        {/* <Streetlight position={0,-4,0} scale={0.5}/> */}
-        <Robot position={2,2,0} scale={0.10}/>
+//         {/* <Streetlight position={0,-4,0} scale={0.5}/> */}
+//         <Robot position={2,2,0} scale={0.10}/>
         
-      </Suspense>
-    </Canvas>
-    </>
-  )
-}
+//       </Suspense>
+//     </Canvas>
+//     </>
+//   )
+// }
 
