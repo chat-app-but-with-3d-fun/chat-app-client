@@ -13,6 +13,7 @@ export default function BaseballBall({ ...props }) {
   const group = useRef();
   const { nodes, materials } = useGLTF('/baseball/scene-transformed.glb');
 
+  console.log('BASEBALL PROPS ', props)
 
   return (
     <Suspense fallback={null}>
@@ -30,6 +31,6 @@ export default function BaseballBall({ ...props }) {
     </Suspense>
   );
 }
-useGLTF.preload('/baseball/scene.gltf');
+useGLTF.preload('/baseball/scene-transformed.glb');
 
 // useGLTF.preload('/baseball/scene-transformed.glb');

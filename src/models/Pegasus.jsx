@@ -42,7 +42,7 @@ import { useLoader, primitive } from 'react-three-fiber';
 
 export default function Pegasus({ ...props }) {
   const group = useRef();
-  const { nodes, materials, animations } = useGLTF('/pegasus/scene.gltf');
+  const { nodes, materials, animations } = useGLTF('/pegasus/scene-transformed.glb');
   const { actions } = useAnimations(animations, group);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function Pegasus({ ...props }) {
         }, 3000)
 
     }, [])
-    console.log('PEGASUS', group)
+    console.log('PEGASUS PROPS', props)
   return (
     <Suspense fallback={null}>
       <group ref={group} {...props} dispose={null}     >
@@ -75,4 +75,4 @@ export default function Pegasus({ ...props }) {
   );
 }
 
-useGLTF.preload('/pegasus/scene.gltf');
+useGLTF.preload('/pegasus/scene-transformed.glb');

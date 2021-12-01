@@ -4,7 +4,7 @@ import { OrbitControls, Stars } from '@react-three/drei';
 import { default as Pegasus } from '../models/Pegasus.jsx';
 import { default as Baseball } from '../models/Baseball.jsx';
 import { default as Robot } from '../models/Robot.jsx';
-import { default as Pear } from '../models/Pear.jsx';
+import { default as Astro } from '../models/Astro.jsx';
 
 const Chat3D = ({ location }) => {
   let usersModels = [
@@ -13,30 +13,28 @@ const Chat3D = ({ location }) => {
     { model: 'Pegasus' },
     { model: 'Pegasus' },
   ];
-  const[models, setModels] = useState();
+  const [models, setModels] = useState();
 
   useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
     let findModels = usersModels.map((mod, index) => {
-      if (index===0){
-        return (
-          <Robot key={index} position={[0.1, 0, -10]} />
-        )
+      if (index === 0) {
+        console.log('CHAT3D LOADS THE ROBOT');
+        return <Robot key={index} position={[0, 0, 40]} />;
       }
-      if (index===1){
-        return (
-          <Pegasus key={index} position={[30, 0, 10]} />
-        )
+      if (index === 1) {
+        console.log('CHAT3D LOADS THE PEGASUS');
+        return <Pegasus key={index} position={[0, 0, -40]} />;
       }
-      if (index===2){
-        return (
-          <Baseball key={index} position={[-30, 0, 10]} />
-        )
+      if (index === 2) {
+        console.log('CHAT3D LOADS THE BASEBALL');
+        return <Baseball key={index} position={[40, 0, 0]} />;
       }
-      if(index===3){
-        <Pear key={index} position={[-60, 0, -10]} />
+
+      if (index === 3) {
+        console.log('CHAT3D LOADS THE ASTRO');
+        return <Astro key={index} position={[-40, 0, 0]} />;
       }
-      
     });
 
     setModels(findModels);

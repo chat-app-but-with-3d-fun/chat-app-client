@@ -11,7 +11,7 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 
 export default function Rotot({ ...props }) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/robot/scene.gltf')
+  const { nodes, materials, animations } = useGLTF('/robot/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
 
   useEffect(() => {
@@ -22,7 +22,8 @@ export default function Rotot({ ...props }) {
 
     }, [])
   
-  console.log('ROBOT ', group)
+  console.log('ROBOT PROPS', props)
+
   return (
     <Suspense fallback={null}>
     <group ref={group} {...props} dispose={null} >
