@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import {selectActiveUsers, selectRoom} from '../features/room/roomSlice'
 
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
+// import { OrbitControls, Stars } from '@react-three/drei';
 // import { default as Pegasus } from '../models/Pegasus.jsx';
 // import { default as Baseball } from '../models/Baseball.jsx';
 
@@ -51,10 +51,10 @@ const Chat3D = ({ location }) => {
         camera={{ fov: 75, near: 0.1, far: 1000, position: [-20, 30, 50] }}
       >
         <color attach='background' args={['black']} />
-        <OrbitControls />
+        {/* <OrbitControls />
         <Stars fade />
         <ambientLight intensity={1} />
-        <spotLight position={[0, 0, 0]} />
+        <spotLight position={[0, 0, 0]} /> */}
         {/* <Suspense fallback={null}>{ownUser[0]}</Suspense>  */}
       </Canvas>
     </div>
