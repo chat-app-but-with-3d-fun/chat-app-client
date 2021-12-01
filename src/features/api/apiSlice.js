@@ -263,7 +263,8 @@ export const apiSlice = createApi({
             roomId: newRoom._id,
             roomUsers: newRoom.users,
             roomName: newRoom.roomName,
-            roomPrivate: newRoom.private
+            roomPrivate: newRoom.private,
+            activeUsers:  []
           }
           dispatch(
             roomSlice.actions.setRoom(tmpObj)
