@@ -46,10 +46,10 @@ export default function Pegasus({ ...props }) {
   const { actions } = useAnimations(animations, group);
 
   // useEffect(() => {
-  //   actions['metarig|Fly'].play();
-  //   setTimeout(() => {
-  //     actions['metarig|Fly'].stop();
-  //   }, 3000);
+  //   actions[Object.keys(actions)[0]].play()
+  //   // setTimeout(() => {
+  //   //   actions['metarig|Fly'].stop();
+  //   // }, 3000);
   // }, []);
 
   return (

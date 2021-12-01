@@ -15,17 +15,21 @@ export default function Model({ ...props }) {
   const { actions } = useAnimations(animations, group);
 
   // useEffect(() => {
-  //   actions['Take 001'].play()
-  //         setTimeout(() => {
-  //         actions['Take 001'].stop()
-  //       }, 6000)
-
-  //   }, [])
+  //   actions[Object.keys(actions)[0]].play();
+  //   //   setTimeout(() => {
+  //   //   actions['Take 001'].stop()
+  //   // }, 6000)
+  // }, []);
 
   console.log('ROBOT ', group);
   return (
     <Suspense fallback={null}>
-      <group ref={group} {...props} dispose={null}>
+      <group
+        ref={group}
+        {...props}
+        dispose={null}
+        onClick={(e) => actions[Object.keys(actions)[0]].play()}
+      >
         <group rotation={[-Math.PI / 2, 0, 0]}>
           <group rotation={[Math.PI / 2, 0, 0]}>
             <group scale={1.88}>

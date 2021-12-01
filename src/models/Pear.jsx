@@ -54,6 +54,7 @@ export default function Model({ ...props }) {
             geometry={nodes.pear_low_poly_0.geometry}
             material={materials.Material}
             skeleton={nodes.pear_low_poly_0.skeleton}
+            onClick={(e) => actions[Object.keys(actions)[0]].play()}
           />
         </group>
       </group>

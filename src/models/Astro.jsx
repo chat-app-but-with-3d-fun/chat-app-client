@@ -14,12 +14,12 @@ export default function Model({ ...props }) {
   const { nodes, materials, animations } = useGLTF('/astro/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
 
-  useEffect(() => {
-    actions[Object.keys(actions)[0]].play()
-    setTimeout(() => {
-      actions[Object.keys(actions)[0]].stop();
-    }, 3000);
-  }, []);
+  // useEffect(() => {
+  //   actions[Object.keys(actions)[0]].play()
+  //   // setTimeout(() => {
+  //   //   actions[Object.keys(actions)[0]].stop();
+  //   // }, 3000);
+  // }, []);
 
   console.log('ASTRO', group);
   return (
@@ -32,8 +32,7 @@ export default function Model({ ...props }) {
             geometry={nodes.cosmo1__0.geometry}
             material={materials['Scene_-_Root']}
             skeleton={nodes.cosmo1__0.skeleton}
-            // onClick={(e) => actions[Object.keys(actions)[0]].play()}
-
+            onClick={(e) => actions[Object.keys(actions)[0]].play()}
           />
         </group>
       </group>
