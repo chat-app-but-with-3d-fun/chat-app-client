@@ -4,7 +4,7 @@ import {selectActiveUsers, selectRoom} from '../features/room/roomSlice'
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
-import { default as Pegasus } from '../models/Pegasus.jsx';
+// import { default as Pegasus } from '../models/Pegasus.jsx';
 import { default as Baseball } from '../models/Baseball.jsx';
 
 // import { default as Robot } from '../models/Robot.jsx';
@@ -17,25 +17,25 @@ const Chat3D = ({ location }) => {
   const room                = useSelector(selectRoom)
 
   const ownUser = [
-      <Pegasus key={'ownAvatar'} position={[0.1, 0, -10]} />,
+      <Baseball key={'ownAvatar'} position={[0.1, 0, -10]} />,
       // <Pegasus key={index} position={[30, 0, 10]} />,
       // <Baseball key={index} position={[-30, 0, 10]} />
   ]
 
   useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
-    let findModels = activeUsers?.map((mod, index) => {
-      if (index===0){
-        return (
-          <Baseball key={index} position={[30, 0, 10]} />
-        )
-      }
+    // let findModels = activeUsers?.map((mod, index) => {
+    //   if (index===0){
+    //     return (
+    //       <Baseball key={index} position={[30, 0, 10]} />
+    //     )
+    //   }
       // else{
       //   return (
       //     <Baseball key={index} position={[-30, 0, 10]} />
       //   )}
-    })
-    setModels(findModels);
+    // })
+    // setModels(findModels);
   }, [activeUsers]);
 
   console.log('********** 3D  CHAT*************');
@@ -55,7 +55,7 @@ const Chat3D = ({ location }) => {
         <Stars fade />
         <ambientLight intensity={1} />
         <spotLight position={[0, 0, 0]} />
-        <Suspense fallback={null}>{ownUser[0]}{models}</Suspense>
+        <Suspense fallback={null}>{ownUser[0]}{models}</Suspense> */}
       </Canvas>
     </div>
   );

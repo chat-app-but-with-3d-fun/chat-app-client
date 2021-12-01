@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-// import Chat3D from '../components/Chat3D.js';
+import Chat3D from '../components/Chat3D.js';
 
 import { Box, Paper, Grid } from '@mui/material'
 import ChatBox from '../components/ChatBox';
@@ -46,7 +46,7 @@ const Room = ({ location }) => {
                 alignItems: 'flex-start',
                 justifyContent: 'center',
                 backgroundColor: "lightgray"}}>
-             {/* <Chat3D /> */}
+             <Chat3D />
              {/* <Jitsi id={roomId} /> */}
              {!drawerOpen && <SmallSidebar />}
         </Grid>
