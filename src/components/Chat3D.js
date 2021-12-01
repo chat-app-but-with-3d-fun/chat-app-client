@@ -1,4 +1,7 @@
 import React, { useEffect, useState, Suspense } from 'react';
+import { useSelector } from 'react-redux';
+import {selectActiveUsers, selectRoom} from '../features/room/roomSlice'
+
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { default as Pegasus } from '../models/Pegasus.jsx';
@@ -7,17 +10,10 @@ import { default as Robot } from '../models/Robot.jsx';
 import { default as Astro } from '../models/Astro.jsx';
 
 const Chat3D = ({ location }) => {
-  let usersModels = [
-    { model: 'Pegasus' },
-    { model: 'Pegasus' },
-    { model: 'Pegasus' },
-    { model: 'Pegasus' },
-  ];
-  const [models, setModels] = useState();
 
   useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
-    let findModels = usersModels.map((mod, index) => {
+    let findModels = selectActiveUsers.map((mod, index) => {
       if (index === 0) {
         console.log('CHAT3D LOADS THE ROBOT');
         return <Robot key={index} position={[0, 0, 40]} rotation={[0, 180, 0]} />;
@@ -45,6 +41,7 @@ const Chat3D = ({ location }) => {
   console.log('modelsToLoad', models);
   console.log('****************************');
 
+  
   return (
     <div className='chat3d' style={{ width: '100%', height: '100%' }}>
       <Canvas
@@ -56,7 +53,7 @@ const Chat3D = ({ location }) => {
         <Stars fade />
         <ambientLight intensity={1} />
         <spotLight position={[0, 0, 0]} />
-        <Suspense fallback={null}>{models}</Suspense>
+        <Suspense fallback={null}>{ownUser[0]}{models}</Suspense>
       </Canvas>
     </div>
   );

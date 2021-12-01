@@ -9,20 +9,20 @@ title: Robot Playground
 import React, { useRef, Suspense, useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 
-export default function Rotot({ ...props }) {
+export default function Model({ ...props }) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF('/robot/scene-transformed.glb');
   const { actions } = useAnimations(animations, group);
 
-  useEffect(() => {
-    actions['Take 001'].play();
-    setTimeout(() => {
-      actions['Take 001'].stop();
-    }, 6000);
-  }, []);
+  // useEffect(() => {
+  //   actions['Take 001'].play()
+  //         setTimeout(() => {
+  //         actions['Take 001'].stop()
+  //       }, 6000)
 
-  console.log('ROBOT PROPS', props);
+  //   }, [])
 
+  console.log('ROBOT ', group);
   return (
     <Suspense fallback={null}>
       <group ref={group} {...props} dispose={null}>

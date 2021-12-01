@@ -55,12 +55,16 @@ export default function ScreenBox(props) {
       }, [roomUsers, userFriends])
 
       useEffect(() => {
+        console.log("ROMMUSERS ARE: ", roomUsers)
+        console.log('ACTIVE USERS ARRAY: ', activeUsers)
         const tmpArray = activeUsers.map((element) => {
            return roomUsers.find(user => user._id === element) 
         })
         setActiveUserData(() => tmpArray)
       }, [activeUsers])
 
+     
+      console.log('ACTIVE USER DATA UPDATED: ', activeUserData)
     return (
         <Paper
         elevation="10"
@@ -79,7 +83,7 @@ export default function ScreenBox(props) {
                         <Stack direction="row" spacing={1}> 
                         {activeUserData?.map((element, index) => {
                             return(
-                            <Chip label={`${element.username}`} variant="outlined" />
+                            <Chip label={`${element?.username}`} variant="outlined" />
                             )
                         })}
                         </Stack>
