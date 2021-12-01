@@ -6,7 +6,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { default as Pegasus } from '../models/Pegasus.jsx';
 import { default as Baseball } from '../models/Baseball.jsx';
-import { default as Robot } from '../models/Robot.jsx';
+// import { default as Robot } from '../models/Robot.jsx';
 
 
 const Chat3D = ({ location }) => {
@@ -16,7 +16,7 @@ const Chat3D = ({ location }) => {
   const room                = useSelector(selectRoom)
 
   const ownUser = [
-      <Robot key={'ownAvatar'} position={[0.1, 0, -10]} />,
+      <Pegasus key={'ownAvatar'} position={[0.1, 0, -10]} />,
       // <Pegasus key={index} position={[30, 0, 10]} />,
       // <Baseball key={index} position={[-30, 0, 10]} />
   ]
@@ -26,14 +26,14 @@ const Chat3D = ({ location }) => {
     let findModels = activeUsers?.map((mod, index) => {
       if (index===0){
         return (
-          <Pegasus key={index} position={[30, 0, 10]} />
+          <Baseball key={index} position={[30, 0, 10]} />
         )
       }
-      else{
-        return (
-          <Baseball key={index} position={[-30, 0, 10]} />
-        )
-      }})
+      // else{
+      //   return (
+      //     <Baseball key={index} position={[-30, 0, 10]} />
+      //   )}
+    })
     setModels(findModels);
   }, [activeUsers]);
 
