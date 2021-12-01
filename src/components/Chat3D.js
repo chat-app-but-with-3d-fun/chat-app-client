@@ -20,7 +20,7 @@ const Chat3D = ({ location }) => {
     let findModels = usersModels.map((mod, index) => {
       if (index === 0) {
         console.log('CHAT3D LOADS THE ROBOT');
-        return <Robot key={index} position={[0, 0, 40]} />;
+        return <Robot key={index} position={[0, 0, 40]} rotation={[0, 180, 0]} />;
       }
       if (index === 1) {
         console.log('CHAT3D LOADS THE PEGASUS');
@@ -33,7 +33,7 @@ const Chat3D = ({ location }) => {
 
       if (index === 3) {
         console.log('CHAT3D LOADS THE ASTRO');
-        return <Astro key={index} position={[-40, 0, 0]} />;
+        return <Astro key={index} position={[-40, 0, 0]} rotation={[0, 90, 0]}/>;
       }
     });
 

@@ -22,6 +22,8 @@ export default function Model({ ...props }) {
             geometry={nodes.cosmo1__0.geometry}
             material={materials['Scene_-_Root']}
             skeleton={nodes.cosmo1__0.skeleton}
+            onClick={(e) => actions[Object.keys(actions)[0]].play()}
+
           />
         </group>
       </group>
