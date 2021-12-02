@@ -6,6 +6,36 @@ import { default as Baseball } from '../models/Baseball.jsx';
 
 
 const Chat3D = ({ location }) => {
+  const[models, setModels]  = useState();
+  const activeUsers         = useSelector(selectActiveUsers)
+  const room                = useSelector(selectRoom)
+
+  const ownUser = [
+      <Robot key={'ownAvatar'} position={[0.1, 0, -10]} />,
+      // <Pegasus key={index} position={[30, 0, 10]} />,
+      // <Baseball key={index} position={[-30, 0, 10]} />
+  ]
+
+  useEffect(() => {
+    //  We check how many  users are there and we inititiate them and add them in the scenes
+    let findModels = activeUsers?.map((mod, index) => {
+      if (index===0){
+        return (
+          <Pegasus key={index} position={[30, 0, 10]} />
+        )
+      }
+      else{
+        return (
+          <Baseball key={index} position={[-30, 0, 10]} />
+        )
+      }})
+    setModels(findModels);
+  }, [activeUsers]);
+
+  console.log('********** 3D  CHAT*************');
+  console.log('Location', location);
+  console.log('modelsToLoad', models);
+  console.log('****************************');
 
   
   return (
