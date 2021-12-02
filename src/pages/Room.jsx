@@ -9,7 +9,7 @@ import NoteBox from '../components/NoteBox';
 import { useGetMessagesQuery } from "../features/api/apiSlice"
 import { useDispatch, useSelector } from 'react-redux';
 import { setRoom } from '../features/room/roomSlice';
-// import Jitsi from '../components/Jitsi';
+import Jitsi from '../components/Jitsi';
 import ScreenBox from '../components/ScreenBox';
 import { socket } from '../features/api/apiSlice';
 import { useGetRoomInfoMutation } from '../features/api/apiSlice';
