@@ -16,9 +16,9 @@ const Chat3D = ({ location }) => {
      >
        <color attach='background' args={['black']} />
        <OrbitControls />
-       <Stars fade />
-       <ambientLight intensity={1} />
-       <spotLight position={[0, 0, 0]} />
+        <Stars fade />
+        <ambientLight intensity={1} />
+        <spotLight position={[0, 0, 0]} />
       </Canvas>
     </div>
   );
