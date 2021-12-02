@@ -14,7 +14,7 @@ const Chat3D = ({ location }) => {
   const room                = useSelector(selectRoom)
 
   const ownUser = [
-      <Robot key={'ownAvatar'} position={[0.1, 0, -10]} />,
+      <Baseball key={'ownAvatar'} position={[0.1, 0, -10]} />,
       // <Pegasus key={index} position={[30, 0, 10]} />,
       // <Baseball key={index} position={[-30, 0, 10]} />
   ]
