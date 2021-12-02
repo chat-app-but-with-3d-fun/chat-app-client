@@ -53,6 +53,7 @@ const Chat3D = ({ location }) => {
         <Stars fade />
         <ambientLight intensity={1} />
         <spotLight position={[0, 0, 0]} />
+        <Suspense fallback={null}>{ownUser[0]}{models}</Suspense>
       </Canvas>
     </div>
   );
