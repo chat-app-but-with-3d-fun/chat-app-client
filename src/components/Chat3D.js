@@ -12,6 +12,7 @@ const Chat3D = ({ location }) => {
       <Canvas
        style={{ width: '100%', height: '100%' }}
        camera={{ fov: 75, near: 0.1, far: 1000, position: [-20, 30, 50] }}
+       mode="concurrent"
      >
        <color attach='background' args={['black']} />
        <OrbitControls />
