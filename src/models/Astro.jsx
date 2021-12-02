@@ -9,7 +9,7 @@ title: Walking Astronaut - Let's Go!
 import React, { useRef, Suspense, useEffect } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 
-export default function Model({ ...props }) {
+export default function Astro({ ...props }) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF('/astro/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)

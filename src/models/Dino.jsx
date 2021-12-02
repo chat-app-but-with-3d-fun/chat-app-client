@@ -9,9 +9,9 @@ title: Dinosaur
 import React, { useRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 
-export default function Model({ ...props }) {
+export default function Dino({ ...props }) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/scene-transformed.glb')
+  const { nodes, materials, animations } = useGLTF('/dino/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
   return (
     <group ref={group} {...props} dispose={null}>

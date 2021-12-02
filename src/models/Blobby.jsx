@@ -9,9 +9,9 @@ title: Alien Blobby
 import React, { useRef, Suspense, useEffect } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 
-export default function Model({ ...props }) {
+export default function Blobby({ ...props }) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/scene-transformed.glb')
+  const { nodes, materials, animations } = useGLTF('/blobby/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
   return (
     <Suspense fallback={null}>

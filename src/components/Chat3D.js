@@ -43,18 +43,18 @@ const Chat3D = ({ location }) => {
         console.log('CHAT3D LOADS THE BABYDINO');
         return <BabyDino key={index} position={0,0,40} />
       }
-      // if (index === 4) {
-      //   console.log('CHAT3D LOADS BLOBBY');
-      //   return <Blobby key={index} position={80, 0, 0 } />
-      // }
-      // if( index === 5) {
-      //   console.log('CHAT3D LOADS THE DINO');
-      //   return <Dino key={index} position={0, 0, -80} />
-      // }
-      // if (index === 6) {
-      //   console.log("CHAT3D LOADS REX");
-      //   return <Rex key={index} position={60, 0, 0} />
-      // }
+      if (index === 4) {
+        console.log('CHAT3D LOADS BLOBBY');
+        return <Blobby key={index} position={80, 0, 0 } />
+      }
+      if( index === 5) {
+        console.log('CHAT3D LOADS THE DINO');
+        return <Dino key={index} position={0, 0, -80} />
+      }
+      if (index === 6) {
+        console.log("CHAT3D LOADS REX");
+        return <Rex key={index} position={60, 0, 0} />
+      }
     });
 
     setModels(findModels);
