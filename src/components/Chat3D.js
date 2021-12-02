@@ -19,7 +19,7 @@ const Chat3D = ({ location }) => {
   const room = useSelector(selectRoom);
 
   const ownUser = [
-    <Blobby key={'ownAvatar'} position={[0, 0, 40]} rotation={[0, 180, 0]} />,
+    <BabyDino key={'ownAvatar'} position={[0, 0, 40]} rotation={[0, 180, 0]} />,
   ];
 
   useEffect(() => {
@@ -39,10 +39,10 @@ const Chat3D = ({ location }) => {
         console.log('CHAT3D LOADS THE ASTRO');
         return <Astro key={index} position={[-40, 0, 0]} rotation={[0, 90, 0]} />;
       }
-      if (index === 3) {
-        console.log('CHAT3D LOADS THE BABYDINO');
-        return <BabyDino key={index} position={0,0,40} />
-      }
+      // if (index === 3) {
+      //   console.log('CHAT3D LOADS THE BABYDINO');
+      //   return <BabyDino key={index} position={0,0,40} />
+      // }
       if (index === 4) {
         console.log('CHAT3D LOADS BLOBBY');
         return <Blobby key={index} position={80, 0, 0 } />

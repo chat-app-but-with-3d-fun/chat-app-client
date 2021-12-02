@@ -20,7 +20,7 @@ export default function Blobby({ ...props }) {
               <group position={[0, 2.89, -172.54]} rotation={[-Math.PI, 0, 0]}>
                 <group rotation={[-Math.PI, 0, 0]}>
                   <group position={[0, 3.36, 64.08]}>
-                    <primitive object={nodes._rootJoint} />
+                    <primitive object={nodes._rootJoint} scale={0.20}/>
                     <skinnedMesh
                       geometry={nodes.Alien_Alien_0.geometry}
                       material={materials.Alien}

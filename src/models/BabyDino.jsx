@@ -3,7 +3,7 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 
 export default function BabyDino({ ...props }) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/scene-transformed.glb')
+  const { nodes, materials, animations } = useGLTF('/babydino/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
   return (
     <Suspense fallback={null}>
@@ -14,7 +14,7 @@ export default function BabyDino({ ...props }) {
                   <group rotation={[Math.PI / 2, 0, 0]} />
                 </group>
                 <group name="Armature" rotation={[-Math.PI / 2, 0, 0]}>
-                  <primitive object={nodes._rootJoint} />
+                  <primitive object={nodes._rootJoint} scale={0.010} />
                   <skinnedMesh
                     geometry={nodes.Dino_M_Skin_0.geometry}
                     material={materials.M_Skin}
