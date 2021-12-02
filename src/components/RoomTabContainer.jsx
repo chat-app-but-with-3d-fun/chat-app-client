@@ -18,50 +18,48 @@ import {selectRoomId, selectRoomName, selectRoomUsers, selectRoom} from '../feat
 
 
 
-export default function RoomTabContainer() {
+const RoomTabContainer = () => {
    
-    const [tab, setTab] = useState('chat')
+  const [tab, setTab] = useState('chat')
     
-    
-    const sliceRoomId = useSelector(selectRoomId)
-    const sliceRoomName = useSelector(selectRoomName)
-    const sliceRoomUsers = useSelector(selectRoomUsers)
-   
-    const changeTab = (e, newTab) => {
-        setTab(newTab);
-    }
+  const sliceRoomId = useSelector(selectRoomId)
+  const sliceRoomName = useSelector(selectRoomName)
+  const sliceRoomUsers = useSelector(selectRoomUsers)
+  
+  const changeTab = (e, newTab) => {
+    setTab(newTab);
+  }
 
-    return (
-       <Paper elevation="10"  >
-            <Box>
-                <Tabs
-                    value={tab}
-                    onChange={changeTab}
-                    textColor="secondary"
-                    indicatorColor="secondary"
-                    aria-label="Tabs for changing msg window"
-                    >
-                    <Tab value="chat" label="Chat" />
-                    <Tab value="notes" label="Notes" />
-                    <Tab value="screen" label="Room" />
-                </Tabs>
-                
-            </Box>
-            {
-                tab === 'chat' &&
-                <ChatBox
-                    messageList={messageList}
-                    room={{roomId, roomName, type}}
-                />
-            }
-            {
-                tab === 'notes' &&
-                <NoteBox room={{roomId, roomName, type}} />
-            }
-            {
-                 tab === 'screen' &&
-                <ScreenBox users={roomUsers} id={roomId} />
-            }
-        </Paper> 
-    )
+  return (
+    <Box>
+      <Box>
+        <Tabs
+          value={tab}
+          onChange={changeTab}
+          textColor="secondary"
+          indicatorColor="secondary"
+          aria-label="Tabs for changing msg window"
+        >
+          <Tab value="chat" label="Chat" />
+          <Tab value="notes" label="Notes" />
+          <Tab value="screen" label="Room" />
+        </Tabs>     
+      </Box>
+      {
+        tab === 'chat' &&
+        <ChatBox
+          messageList={messageList}
+          room={{roomId, roomName, type}}
+        />
+      }
+      {
+        tab === 'notes' &&
+        <NoteBox room={{roomId, roomName, type}} />
+      }
+      {
+        tab === 'screen' &&
+        <ScreenBox users={roomUsers} id={roomId} />
+      }
+    </Box> 
+  )
 }

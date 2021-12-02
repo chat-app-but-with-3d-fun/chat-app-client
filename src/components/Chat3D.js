@@ -7,6 +7,7 @@ import { OrbitControls, Stars } from '@react-three/drei';
 import { default as Pegasus } from '../models/Pegasus.jsx';
 import { default as Baseball } from '../models/Baseball.jsx';
 import { default as Robot } from '../models/Robot.jsx';
+import { selectUserId } from '../features/user/userSlice';
 
 
 const Chat3D = ({ location }) => {
@@ -14,6 +15,16 @@ const Chat3D = ({ location }) => {
   const[models, setModels]  = useState();
   const activeUsers         = useSelector(selectActiveUsers)
   const room                = useSelector(selectRoom)
+  const userId              = useSelector(selectUserId)
+
+  const getName = () => {
+    const friendId = room.roomName
+      .split('-')
+      .filter(element =>(element != userId) && (element != 'privatChat')) 
+      .join()
+    const friendName = room.roomUsers?.find(element => element._id === friendId)
+    return friendName?.username
+}
 
   const ownUser = [
       <Robot key={'ownAvatar'} position={[0.1, 0, -10]} />,
@@ -46,7 +57,7 @@ const Chat3D = ({ location }) => {
   return (
     <div className='chat3d' style={{ width: '100%', height: '100%' }}>
       <Canvas
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100vw', height: '100vh' }}
         camera={{ fov: 75, near: 0.1, far: 1000, position: [-20, 30, 50] }}
       >
         <color attach='background' args={['black']} />

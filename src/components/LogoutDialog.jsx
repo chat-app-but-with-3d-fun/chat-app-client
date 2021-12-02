@@ -24,24 +24,21 @@ const LogoutDialog = ({open, handleClose}) => {
 
   return (
     <div>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button> */}
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" sx={{ background: 'linear-gradient(180deg, rgba(207,60,178,1) 0%, rgba(88,2,71,1) 90%)', color: 'white' }}>
+        <DialogTitle id="alert-dialog-title" sx={{ background: 'linear-gradient(180deg, rgba(207,60,178,1) 0%, rgba(88,2,71,1) 100%)', color: 'white' }}>
           Hey, {username}!
         </DialogTitle>
-        <DialogContent sx={{ background: 'linear-gradient(180deg, rgba(88,2,71,1) 10%, rgba(0,0,0,1) 60%, rgba(10,24,145,1) 100%)', color: 'white' }}>
+        <DialogContent sx={{ background: 'linear-gradient(180deg, rgba(88,2,71,1) 0%, rgba(0,0,0,1) 40%, rgba(10,24,145,1) 100%)', color: 'white' }}>
           <DialogContentText id="alert-dialog-description" sx={{ color: 'white' }} >
             Are you sure you want to disconnect? We will miss you...
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{ background: 'linear-gradient(180deg, rgba(10,24,145,1) 0%, rgba(55,76,255,1) 100%)' }}>
+        <DialogActions sx={{ background: 'linear-gradient(180deg, rgba(10,24,145,1) 10%, rgba(55,76,255,1) 100%)' }}>
           <Button sx={{ color: 'white' }} onClick={handleClose}>Cancel</Button>
           <Button sx={{ color: 'white' }} onClick={handleLogout}>Accept</Button>
         </DialogActions>
