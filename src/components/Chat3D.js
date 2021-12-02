@@ -1,4 +1,7 @@
 import React, { useEffect, useState, Suspense } from 'react';
+import { useSelector } from 'react-redux';
+import {selectActiveUsers, selectRoom} from '../features/room/roomSlice'
+
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { default as Pegasus } from '../models/Pegasus.jsx';
