@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Dashboard from './pages/Dashboard';
 import Register from "./pages/Register";
 import "./sass/main.scss";
-import Sidebar from "./pages/Sidebar";
 import Room from "./pages/Room";
 import {socket, useAuthUserMutation } from "./features/api/apiSlice";
 import {  selectUserId, setUser, updateFriendStatus } from "./features/user/userSlice";
