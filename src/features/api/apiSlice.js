@@ -9,7 +9,7 @@ export let socket;
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://mysterious-basin-77886.herokuapp.com/',
+    baseUrl: 'https://koko3dapi.herokuapp.com/',
     prepareHeaders(headers) {
       return headers;
     },
@@ -33,7 +33,7 @@ export const apiSlice = createApi({
       async onQueryStarted(userData, { dispatch, queryFulfilled }) {
         try {
           const { data: userData } = await queryFulfilled
-          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
+          socket = new socketIOClient('https://koko3dapi.herokuapp.com/', )
           console.log(`new connection with userId => `, userData._id)
           
           socket.on('register', (friendId) => {
@@ -95,7 +95,8 @@ export const apiSlice = createApi({
       async onQueryStarted(userData, { dispatch, queryFulfilled, getState }) {
         try {
           const { data: userData } = await queryFulfilled
-          socket = new socketIOClient('https://mysterious-basin-77886.herokuapp.com/', {query: `userId=${userData._id}`})
+          // socket = new socketIOClient('https://koko3dapi.herokuapp.com/', {query: `userId=${userData._id}`})
+          socket = new socketIOClient('https://koko3dapi.herokuapp.com/')
           console.log(`new connection with userId => `, userData)
           
           socket.on('register', (friendId) => {
