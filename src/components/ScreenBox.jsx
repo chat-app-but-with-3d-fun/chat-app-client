@@ -27,44 +27,41 @@ export default function ScreenBox(props) {
     
 
     const handleChange = (event) => {
-        setNewUser(event.target.value);
-    };
+      setNewUser(event.target.value);
+  };
 
+  useEffect(() => {
+    if (newUser) {
+      inviteFriendToRoom({
+        friendId: newUser,
+        roomId
+      })
+    }
+    setNewUser(() => null)
+  }, [newUser, roomId])
 
-      useEffect(() => {
-          if (newUser) {
-            inviteFriendToRoom(
-                {friendId: newUser,
-                roomId})}
-            setNewUser(() => null)
-      }, [newUser, roomId])
+  useEffect(() => {
+    if (roomUsers) {
+      const tmpArr = userFriends.filter(friend =>
+        !roomUsers.find(usersInside => usersInside._id === friend._id) 
+      )
 
-      useEffect(() => {
-        if (roomUsers){
-            const tmpArr = userFriends.filter(friend => {
-                return !roomUsers.find(usersInside => usersInside._id === friend._id) 
-            })
-            if (tmpArr.length > 0) {
-                setFilterUser(() => tmpArr)
-            } else {
-                console.log('FILTER USER SHOULD BE ZERO')
-                setFilterUser(() => null)
-            }
-            
-        }
-      }, [roomUsers, userFriends])
+      if (tmpArr.length > 0) {
+        setFilterUser(() => tmpArr)
+      } else {
+        console.log('FILTER USER SHOULD BE ZERO')
+        setFilterUser(() => null)
+      }   
+    }
+  }, [roomUsers, userFriends])
 
-      useEffect(() => {
-        console.log("ROMMUSERS ARE: ", roomUsers)
-        console.log('ACTIVE USERS ARRAY: ', activeUsers)
-        const tmpArray = activeUsers.map((element) => {
-           return roomUsers.find(user => user._id === element) 
-        })
-        setActiveUserData(() => tmpArray)
-      }, [activeUsers])
+  useEffect(() => {
+    const tmpArray = activeUsers.map((element) =>
+      roomUsers.find(user => user._id === element) 
+    )
+    setActiveUserData(() => tmpArray)
+  }, [activeUsers])
 
-     
-      console.log('ACTIVE USER DATA UPDATED: ', activeUserData)
     return (
       <Paper
       elevation="10"
