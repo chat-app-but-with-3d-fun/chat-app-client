@@ -18,6 +18,7 @@ const Chat3D = ({ location }) => {
   const activeUsers = useSelector(selectActiveUsers);
   const room = useSelector(selectRoom);
 
+
   const ownUser = [
     <BabyDino key={'ownAvatar'} position={[0, 0, 40]} rotation={[0, 180, 0]} />,
   ];
@@ -68,7 +69,7 @@ const Chat3D = ({ location }) => {
   return (
     <div className='chat3d' style={{ width: '100%', height: '100%' }}>
       <Canvas
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100vw', height: '100vh' }}
         camera={{ fov: 75, near: 0.1, far: 1000, position: [-20, 30, 50] }}
       >
         <color attach='background' args={['black']} />

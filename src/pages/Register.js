@@ -6,6 +6,7 @@ import LoginForm from '../components/LoginForm'
 import {Stack, Container, Box, ButtonGroup, Button,Snackbar} from '@mui/material';
 import MuiAlert from '@mui/material/Alert'
 import { selectUserId } from '../features/user/userSlice'
+import Logo from '../assets/KOKO.jpg'
 
 const Registration = () => {
   const [formType, setFormType] = useState('signup')
@@ -50,54 +51,42 @@ const Registration = () => {
     : setFormType('signin')
   }, [])
 
-    return (
-      <>
-        <Container component="main" maxWidth='xs'>
-          <Box
-            sx={{
-              marginTop: 12,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
+  return (
+    <Container component="main" maxWidth='xs' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <Box sx={{ mb: 2 }}>
+        <img src={Logo} alt="Logo" style={{ width: '420px'}} />
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <ButtonGroup sx={{ display: 'flex', justifyContent: 'space-between'}} fullWidth disableElevation>
+          <Button
+            fullWidth
+            variant={`${formType === 'signup' ? 'contained' : 'outlined'}`}
+            onClick={setSignupForm}
           >
-            <ButtonGroup sx={{ display: 'flex', justifyContent: 'space-between'}} fullWidth disableElevation>
-              <Button
-                fullWidth
-                variant={`${formType === 'signup' ? 'contained' : 'outlined'}`}
-                onClick={setSignupForm}
-              >
-                Sign up
-              </Button>
-              <Button
-                fullWidth
-                variant={`${formType === 'signup' ? 'outlined' : 'contained'}`}
-                onClick={setLoginForm}
-              >
-                Sign In
-              </Button>
-            </ButtonGroup>
-            {
-              formType === 'signup'
-              ? <SignupForm />
-              : <LoginForm />
-            }
-          </Box>
-        </Container>
-        {/* <Snackbar
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-          open={alert.isOpen}
-          key={{vertical: 'top', horizontal: 'right'}}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          message={alert.msg}
-        /> */}
-      </>
-    )
-  // }
+            Sign up
+          </Button>
+          <Button
+            fullWidth
+            variant={`${formType === 'signup' ? 'outlined' : 'contained'}`}
+            onClick={setLoginForm}
+          >
+            Sign In
+          </Button>
+        </ButtonGroup>
+        {
+          formType === 'signup'
+          ? <SignupForm />
+          : <LoginForm />
+        }
+      </Box>
+    </Container>
+  )
 }
 
 export default Registration

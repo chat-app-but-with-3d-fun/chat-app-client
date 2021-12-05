@@ -1,34 +1,37 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useRef } from 'react';
 import { Redirect, useHistory } from 'react-router';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import AccordionComponent from '../components/accordion';
-import RoomList from '../components/RoomList';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-   selectPublicRooms,
-   selectPrivateRooms,
-   selectUnreadPrivate,
-   selectUnreadPublic,
+  Box,
+  Drawer,
+  CssBaseline,
+  Toolbar,
+  Typography,
+  Divider,
+  Fab
+} from '@mui/material';
+import MuiAppBar from '@mui/material/AppBar'
+import AccordionComponent from '../components/accordion'
+import { styled, useTheme } from '@mui/material/styles';
+import RoomList from '../components/RoomList';
+import {
+  selectPublicRooms,
+  selectPrivateRooms,
+  selectUnreadPrivate,
+  selectUnreadPublic,
 } from '../features/user/userSlice';
 import NewRoomForm from '../components/NewRoomForm';
 import {selectDrawer} from '../features/page/pageSlice'
 import AddNewFriend from '../components/AddNewFriend';
-
-import { styled, useTheme } from '@mui/material/styles';
-import logo from '../assets/KOKO-black.png'
-import pageSlice from '../features/page/pageSlice'
-import {toggleDrawer} from '../features/page/pageSlice';
+import logo from '../assets/KOKO.png'
+import pageSlice, {toggleDrawer} from '../features/page/pageSlice';
 import CloseIcon from '@mui/icons-material/Close';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useLogoutUserQuery } from '../features/api/apiSlice';
+import { selectRoomId } from '../features/room/roomSlice';
 import LogoutDialog from '../components/LogoutDialog';
+import { Scrollbars } from "rc-scrollbars";
 
 const drawerWidth = 240;
 
@@ -80,10 +83,10 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 
 
 export default function Sidebar({children}) {
-
-  const theme = useTheme();
   const [ open, setOpen ] = useState(true);
   const [ openDialog, setOpenDialog ] = useState(false);
+  const scrollBar = useRef();
+  const theme = useTheme();
 
   const dispatch = useDispatch()
   let history = useHistory()
@@ -93,10 +96,11 @@ export default function Sidebar({children}) {
   const unreadPrivate = useSelector(selectUnreadPrivate)
   const unreadPublic = useSelector(selectUnreadPublic)
   const drawerOpen = useSelector(selectDrawer)
+  const roomId = useSelector(selectRoomId)
 
   const handleDrawerOpen = () => {
     dispatch(
-      pageSlice.actions.toggleDrawer()
+      toggleDrawer()
     )
   };
 
@@ -118,128 +122,180 @@ export default function Sidebar({children}) {
 
   return (
     <>
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      {/* <AppBar
-        position="fixed"
-        open={open}
-        
-      >
-       
-        <Toolbar sx={{backgroundColor: 'grey',}} >
-          <button onClick={handleDrawerOpen} sx={{ mr: 2, ...(open && { display: 'none' }) }}>Open</button>
-        </Toolbar>
-      </AppBar> */}
-      <Drawer
+      <Box
         sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          width: 'fit-content'
         }}
-        PaperProps={{
-          sx: {
-            backgroundColor: "black",
-            color: "white",
-          }
-        }}
-        variant="persistent"
-        anchor="left"
-        open={drawerOpen}
       >
-        <DrawerHeader >
-          <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            {/* <CloseIcon onClick={handleDrawerClose} sx={{ alignSelf: 
-            'end', mt: 1}} /> */}
-            <img src={logo} alt="LOGO" style={{ width: '240px' }} />
-            <div className='sidebar__functional_buttons' style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <LogoutIcon onClick={handleDialogOpen} sx={{ mx: 3 }} />
-                <small style={{ fontSize: '10px'}}>Log out</small>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <DashboardIcon onClick={() => history.push('/dashboard')} sx={{ mx: 3 }} />
-                <small style={{ fontSize: '10px'}}>Dashboard</small>
-              </div>
-            </div>
-          </Box>
-        </DrawerHeader>
-        <Toolbar />
-        <Divider />
-        <Box sx={{display: 'flex', justifyContent: 'center', marginBottom: '20px', mt: '-30px'}}>
-          <AccordionComponent 
-            expanded={true} 
-            headline={
-              <Box sx={{display: 'flex', justifyContent: 'space-between', width: "100%"}}>
-                <Typography 
-                  fontWeight='bold'
-                  fontFamily='courier'
-                >
-                  ROOMS
-                </Typography>
-                <Typography
+        <Drawer
+          className='sidebar'
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+            },
+            backgroundColor: "transparent",
+            marginY: '50px',
+          }}
+          PaperProps={{
+            sx: {
+              backgroundColor: "transparent",
+              color: "white",
+              px: 1
+            }
+          }}
+          variant="persistent"
+          anchor="left"
+          open={drawerOpen}
+        >
+          <DrawerHeader sx={{ mb: 3, backgroundColor: 'transparent' }}>
+            <Box className='sidebar__header'
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                my: 2, mb: 3
+              }}
+            >
+              {
+                roomId &&
+                <Fab
+                  className='sidebar__header__close-button'
+                  color="secondary"
+                  aria-label="add"
+                  size='small'
+                  onClick={handleDrawerClose}
                   sx={{
-                    background: 'lightgrey',
-                    color: 'black',
-                    paddingLeft: '6px',
-                    paddingRight: '6px',
-                    borderRadius: '20%',
-                    marginRight: '10px'
+                    position: 'absolute',
+                    top: '3px',
+                    right: '3px'
                   }}
                 >
-                  {unreadPublic}
-                </Typography>
-              </Box>
-            }
-            body={
-              <>
-                <NewRoomForm />
-                <RoomList rooms={publicRooms}/>
-              </>
-            }
-          />
-        </Box>
-        <Box sx={{display: 'flex', justifyContent: 'center', marginBottom: '20px'}}>
-          <AccordionComponent 
-            expanded={false} 
-            headline={
-              <Box sx={{display: 'flex', justifyContent: 'space-between', width: "100%"}}>
-                <Typography 
-                  fontWeight='bold'
-                >
-                  FRIENDS
-                </Typography> 
-                <Typography
-                  sx={{
-                    background: 'lightgrey',
-                    color: 'black',
-                    paddingLeft: '6px',
-                    paddingRight: '6px',
-                    borderRadius: '20%',
-                    marginRight: '10px'
-                  }}
-                >
-                  {unreadPrivate}
-                </Typography>
-              </Box>
-            }
-            body={
-              <>
-                <AddNewFriend />
-                <RoomList rooms={privateRooms} />
-              </>
-            }
-          />
-        </Box>
-      </Drawer>
-      <Main open={drawerOpen}>
-        <DrawerHeader sx={{display: 'none'}} />
-        {children}
-      </Main>
-    </Box>
-    <LogoutDialog open={openDialog} handleClose={handleDialogClose} />
+                  <CloseIcon/>
+                </Fab>
+              }
+              <img src={logo} alt="LOGO"/>
+              <div className='sidebar__header__functional-buttons'>
+                <div className='sidebar__header__functional-buttons__button-container'>
+                  <LogoutIcon onClick={handleDialogOpen} />
+                  <small>Log out</small>
+                </div>
+                <div className='sidebar__header__functional-buttons__button-container'>
+                  <DashboardIcon onClick={() => history.push('/dashboard')}/>
+                  <small>Dashboard</small>
+                </div>
+              </div>
+            </Box>
+          </DrawerHeader>
+          <Scrollbars
+            autoHide
+            autoHideTimeout={1000}
+            autoHideDuration={200}
+            sx={{ width: "100%" }}
+            ref={scrollBar}
+          >
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginY: '10px',
+            }}>
+              <AccordionComponent
+                expanded={true}
+                headline={
+                  <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: "100%"
+                  }}>
+                    <Typography
+                      fontWeight='bold'
+                      fontFamily='courier'
+                    >
+                      ROOMS
+                    </Typography>
+                    <Typography
+                      sx={{
+                        backgroundColor: 'lightgrey',
+                        color: 'black',
+                        fontWeight: 'bold',
+                        paddingLeft: '6px',
+                        paddingRight: '6px',
+                        borderRadius: '20%',
+                        marginRight: '10px'
+                      }}
+                    >
+                      {unreadPublic}
+                    </Typography>
+                  </Box>
+                }
+                body={
+                  <>
+                    <NewRoomForm />
+                    <RoomList rooms={publicRooms}/>
+                  </>
+                }
+                sx={{
+                  backgroundColor: 'red'
+                }}
+              />
+            </Box>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '20px'
+            }}>
+              <AccordionComponent
+                expanded={false}
+                headline={
+                  <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: "100%"
+                  }}>
+                    <Typography
+                      fontWeight='bold'
+                    >
+                      FRIENDS
+                    </Typography>
+                    <Typography
+                      sx={{
+                        background: 'lightgrey',
+                        color: 'black',
+                        fontWeight: 'bold',
+                        paddingLeft: '6px',
+                        paddingRight: '6px',
+                        borderRadius: '20%',
+                        marginRight: '10px'
+                      }}
+                    >
+                      {unreadPrivate}
+                    </Typography>
+                  </Box>
+                }
+                body={
+                  <>
+                    <AddNewFriend />
+                    <RoomList rooms={privateRooms} />
+                  </>
+                }
+              />
+            </Box>
+          </Scrollbars>
+        </Drawer>
+        <Main open={drawerOpen}>
+          <DrawerHeader sx={{display: 'none'}} />
+          {children}
+        </Main>
+        <LogoutDialog
+          open={openDialog}
+          handleClose={handleDialogClose}
+        />
+      </Box>
     </>
   )
 }

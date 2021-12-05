@@ -12,23 +12,23 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 
-export default function ScreenBox(props) {
-    const userFriends = useSelector(selectUserFriends)
-    const roomUsers = useSelector(selectRoomUsers)
-    const activeUsers = useSelector(selectActiveUsers)
-    const roomId    = useSelector(selectRoomId)
-    const room      = useSelector(selectRoom)
-    const ownId     = useSelector(selectUserId)
+const ScreenBox = (props) => {
+  const userFriends = useSelector(selectUserFriends)
+  const roomUsers = useSelector(selectRoomUsers)
+  const activeUsers = useSelector(selectActiveUsers)
+  const roomId    = useSelector(selectRoomId)
+  const room      = useSelector(selectRoom)
+  const ownId     = useSelector(selectUserId)
 
-    const [newUser, setNewUser] = useState('')
-    const [filterUser, setFilterUser] = useState(null)
-    const [activeUserData, setActiveUserData] = useState(null)
-    const [ inviteFriendToRoom, { isLoading: inviteFriend } ] = useInviteFriendToRoomMutation()
-    
-
-    const handleChange = (event) => {
+  const [newUser, setNewUser] = useState('')
+  const [filterUser, setFilterUser] = useState(null)
+  const [activeUserData, setActiveUserData] = useState(null)
+  const [ inviteFriendToRoom, { isLoading: inviteFriend } ] = useInviteFriendToRoomMutation()
+  
+  const handleChange = (event) => {
       setNewUser(event.target.value);
   };
+
 
   useEffect(() => {
     if (newUser) {
@@ -55,12 +55,14 @@ export default function ScreenBox(props) {
     }
   }, [roomUsers, userFriends])
 
+
   useEffect(() => {
     const tmpArray = activeUsers.map((element) =>
       roomUsers.find(user => user._id === element) 
     )
     setActiveUserData(() => tmpArray)
   }, [activeUsers])
+
 
     return (
       <Paper
@@ -154,5 +156,7 @@ export default function ScreenBox(props) {
           </Box>
       </Grid>
     </Paper>
-    )
+  )
 }
+
+export default ScreenBox
