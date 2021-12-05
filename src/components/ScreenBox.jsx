@@ -66,65 +66,96 @@ export default function ScreenBox(props) {
      
       console.log('ACTIVE USER DATA UPDATED: ', activeUserData)
     return (
-        <Paper
-        elevation="10"
-        sx={{display: 'flex',
-            flexDirection: 'column'}}
-        >
-            <Grid item xs={12}
+      <Paper
+      elevation="10"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+    >
+      <Grid item
+        xs={12}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: 'grey'
+        }}
+      >
+        <Typography variant='h5' align='center' sx={{marginTop: '20px'}}>Room Settings</Typography>
+          <Box sx={{height: '85vh', display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <Box sx={{width: "80%"}}>
+              <Typography
+                variant='h6'
                 sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
+                  marginTop: '20px',
+                  marginBottom: '10px'
                 }}>
-                <Typography variant='h5' align='center' sx={{marginTop: '20px'}}>Room Settings</Typography>
-                <Box sx={{height: '85vh', display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <Box sx={{width: "80%"}}>
-                        <Typography variant='h6' sx={{marginTop: '20px', marginBottom: '10px'}}>Who else is here?</Typography>
-                        <Stack direction="row" spacing={1}> 
-                        {activeUserData?.map((element, index) => {
-                            return(
-                            <Chip label={`${element?.username}`} variant="outlined" />
-                            )
-                        })}
-                        </Stack>
-                        
-                        <Typography variant='h6' sx={{marginTop: '20px', marginBottom: '10px'}}>Who can attend this room?</Typography>
-                        <Stack direction="row" spacing={1}> 
-                        {roomUsers?.map((element, index) => {
-                            if (element._id === ownId){
-                               return (<Chip label={`me`} variant="filled" />  )
-                            }
-                            return(
-                            <Chip label={`${element.username}`} variant="outlined" />
-                            )
-                        })}
-                        </Stack>
-                        {filterUser ? 
-                         <FormControl fullWidth sx={{margin: '20px'}}>
-                            <InputLabel id="demo-simple-select-label">Add a friend</InputLabel>
-                            <Select
-                                labelId="friend-select-label"
-                                id="friend-select"
-                                value={newUser}
-                                label="Add User"
-                                onChange={handleChange}
-                            >
-                            {filterUser.map((element,index) => {
-                               return(
-                                   <MenuItem value={element._id}>{element.username}</MenuItem>
-                               )
-                            })}
-                            </Select>
-                        </FormControl> :
-                       <Alert sx={{marginTop: '10px'}}severity="success">All your friends are in this room</Alert>
-                    }
-                        
-                    </Box>
-                </Box>
-
-
-            </Grid>
-
-        </Paper>
+                  Who else is here?
+                </Typography>
+              <Stack
+                direction="row"
+                spacing={1}
+              > 
+                {
+                  activeUserData?.map((element, index) =>
+                    <Chip label={`${element.username}`} variant="outlined" />
+                  )
+                }
+              </Stack>
+              <Typography
+                variant='h6'
+                sx={{
+                  marginTop: '20px',
+                  marginBottom: '10px'
+                }}
+              >
+                Who can attend this room?
+              </Typography>
+                <Stack direction="row" spacing={1}> 
+                  {
+                    roomUsers?.map((element, index) => {
+                      if (element._id === ownId){
+                        return (<Chip label={`me`} variant="filled" />  )
+                      }
+                      return (
+                        <Chip label={`${element.username}`} variant="outlined" />
+                      )
+                    })
+                  }
+                </Stack>
+                {
+                  filterUser ? 
+                  <FormControl fullWidth sx={{margin: '20px'}}>
+                    <InputLabel id="demo-simple-select-label">
+                      Add a friend
+                    </InputLabel>
+                    <Select
+                      labelId="friend-select-label"
+                      id="friend-select"
+                      value={newUser}
+                      label="Add User"
+                      onChange={handleChange}
+                    >
+                      {
+                        filterUser.map((element,index) =>
+                          <MenuItem value={element._id}>{element.username}</MenuItem>
+                        )
+                      }
+                    </Select>
+                  </FormControl> :
+                  <Alert
+                    sx={{
+                      marginTop: '10px'
+                    }}
+                    severity="success"
+                  >
+                    All your friends are in this room
+                  </Alert>
+                }
+                  
+            </Box>
+          </Box>
+      </Grid>
+    </Paper>
     )
 }
