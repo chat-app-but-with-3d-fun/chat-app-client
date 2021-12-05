@@ -38,7 +38,6 @@
 // export default Pegasus;
 import React, { useRef, Suspense, useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import { useLoader, primitive } from 'react-three-fiber';
 
 export default function Pegasus({ ...props }) {
   const group = useRef();
