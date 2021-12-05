@@ -9,14 +9,15 @@ title: Base Ball Ball
 import React, { useRef, Suspense, useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 
-export default function Model({ ...props }) {
+export default function BaseballBall({ ...props }) {
   const group = useRef();
   const { nodes, materials } = useGLTF('/baseball/scene-transformed.glb');
 
+  console.log('BASEBALL PROPS ', props)
 
   return (
     <Suspense fallback={null}>
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null} >
       <group rotation={[Math.PI / 2, 0, 0]}>
         {/* <group rotation={[-Math.PI, 0, 0]} scale={0.03}> */}
         <group rotation={[-Math.PI, 0, 0]} scale={3}>
@@ -30,6 +31,6 @@ export default function Model({ ...props }) {
     </Suspense>
   );
 }
-useGLTF.preload('/baseball/scene.gltf');
+useGLTF.preload('/baseball/scene-transformed.glb');
 
 // useGLTF.preload('/baseball/scene-transformed.glb');

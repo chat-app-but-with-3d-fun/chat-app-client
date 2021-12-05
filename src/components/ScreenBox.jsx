@@ -29,6 +29,7 @@ const ScreenBox = (props) => {
       setNewUser(event.target.value);
   };
 
+
   useEffect(() => {
     if (newUser) {
       inviteFriendToRoom({
@@ -54,6 +55,7 @@ const ScreenBox = (props) => {
     }
   }, [roomUsers, userFriends])
 
+
   useEffect(() => {
     const tmpArray = activeUsers.map((element) =>
       roomUsers.find(user => user._id === element) 
@@ -61,8 +63,9 @@ const ScreenBox = (props) => {
     setActiveUserData(() => tmpArray)
   }, [activeUsers])
 
-  return (
-    <Paper
+
+    return (
+      <Paper
       elevation="10"
       sx={{
         display: 'flex',
