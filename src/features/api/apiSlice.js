@@ -3,7 +3,7 @@ import socketIOClient from 'socket.io-client'
 import { userSlice } from '../user/userSlice'
 import { roomSlice, updateActiveList } from '../room/roomSlice'
 import { notificationSlice } from '../notifications/notificationSlice'
-
+ 
 export let socket;
 
 export const apiSlice = createApi({
