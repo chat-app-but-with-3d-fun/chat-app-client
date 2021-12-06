@@ -113,10 +113,14 @@ const ScreenBox = (props) => {
             {
               activeUserData?.map((user) =>
                 <Chip
+                  key={user._id}
                   label={`${user.username}`}
                   variant="outlined"
-                  sx={{ color: 'white', margin: '5px' }}
                   color='secondary'
+                  sx={{
+                    color: 'white',
+                    margin: '5px'
+                  }}
                 />
               )
             }
@@ -142,6 +146,7 @@ const ScreenBox = (props) => {
                 if (user._id === ownId) {
                   return (
                     <Chip
+                      key={user._id}
                       label={`me`}
                       variant="filled"
                       sx={{ color: 'white', margin: '5px' }}
@@ -151,6 +156,7 @@ const ScreenBox = (props) => {
                 }
                 return (
                   <Chip
+                    key={user._id}
                     label={`${user.username}`}
                     variant="outlined"
                     sx={{ color: 'white', margin: '5px' }}
@@ -161,56 +167,58 @@ const ScreenBox = (props) => {
             }
           </Box>
           {
-            filterUser
-            ? <FormControl
-                fullWidth
+            filterUser ?
+            <FormControl
+              fullWidth
+              sx={{
+                marginY: '20px'
+              }}
+            >
+              <InputLabel
+                id="friend-select-label"
                 sx={{
-                  marginY: '20px'
-                }}
-              >
-                <InputLabel
-                  id="demo-simple-select-label"
-                  color={'white'}
-                >
-                  Add a friend
-                </InputLabel>
-                <Select
-                  labelId="friend-select-label"
-                  id="friend-select"
-                  value={newUser}
-                  label="Add User"
-                  onChange={handleChange}
-                  color='secondary'
-                  autoFocus={true}
-                  sx={{
-                    backgroundColor: 'grey',
-                    color: 'white',
-                    boxShadow: '0 0 7.5px white',
-                  }}
-                >
-                  {
-                    filterUser.map((user) =>
-                      <MenuItem
-                        value={user._id}
-                      >
-                        {user.username}
-                      </MenuItem>
-                    )
-                  }
-                </Select>
-              </FormControl>
-            : <Alert
-                severity="success"
-                sx={{
-                  marginTop: '20px',
-                  backgroundColor: 'transparent',
-                  fontWeight: 'bold',
-                  padding: 0,
                   color: 'white'
                 }}
               >
-                All your friends are in this room
-              </Alert>
+                Add a friend
+              </InputLabel>
+              <Select
+                labelId="friend-select-label"
+                id="friend-select"
+                value={newUser}
+                onChange={handleChange}
+                color='secondary'
+                sx={{
+                  backgroundColor: 'grey',
+                  color: 'white',
+                  boxShadow: '0 0 7.5px white',
+                  borderRadius: '5px'
+                }}
+              >
+                {
+                  filterUser.map((user) =>
+                    (<MenuItem
+                      key={user._id}
+                      value={user._id}
+                    >
+                      {user.username}
+                    </MenuItem>)
+                  )
+                }
+              </Select>
+            </FormControl> :
+            <Alert
+              severity="success"
+              sx={{
+                marginTop: '20px',
+                backgroundColor: 'transparent',
+                fontWeight: 'bold',
+                padding: 0,
+                color: 'white'
+              }}
+            >
+              All your friends are in this room
+            </Alert>
           }
         </Box>
       </Box>
