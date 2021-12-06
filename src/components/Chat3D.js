@@ -1,60 +1,62 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useSelector } from 'react-redux';
-import {selectActiveUsers, selectRoom} from '../features/room/roomSlice'
+import { selectActiveUsers, selectRoom } from '../features/room/roomSlice';
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { default as Pegasus } from '../models/Pegasus.jsx';
 import { default as Baseball } from '../models/Baseball.jsx';
 import { default as Robot } from '../models/Robot.jsx';
-
+import { default as Astro } from '../models/Astro.jsx';
+import { default as BabyDino } from '../models/BabyDino.jsx';
+import { default as Blobby } from '../models/Blobby.jsx';
+import { default as Dino } from '../models/Dino.jsx';
+import { default as Rex } from '../models/Rex.jsx';
 
 const Chat3D = ({ location }) => {
-<<<<<<< HEAD
-  let usersModels = [
-    { model: 'Pegasus' }
-    // { model: 'Pegasus' },
-    // { model: 'Pegasus' },
-    // { model: 'Pegasus' },
-  ];
-  const[models, setModels] = useState();
-
-  useEffect(() => {
-    //  We check how many  users are there and we inititiate them and add them in the scenes
-    let findModels = usersModels.map((mod, index) => {
-      
-      return 
-      // (
-        // <Pegasus key={index} position={[index/10, 0, 0]} />
-      // )
-    });
-
-=======
-
-  const[models, setModels]  = useState();
-  const activeUsers         = useSelector(selectActiveUsers)
-  const room                = useSelector(selectRoom)
+  const [models, setModels] = useState();
+  const activeUsers = useSelector(selectActiveUsers);
+  const room = useSelector(selectRoom);
 
   const ownUser = [
-      <Robot key={'ownAvatar'} position={[0.1, 0, -10]} />,
-      // <Pegasus key={index} position={[30, 0, 10]} />,
-      // <Baseball key={index} position={[-30, 0, 10]} />
-  ]
+    <Blobby key={'ownAvatar'} position={[0, 0, 40]} rotation={[0, 180, 0]} />,
+  ];
 
   useEffect(() => {
     //  We check how many  users are there and we inititiate them and add them in the scenes
-    let findModels = activeUsers?.map((mod, index) => {
-      if (index===0){
-        return (
-          <Pegasus key={index} position={[30, 0, 10]} />
-        )
+    console.log('This room has active users', activeUsers)
+    let findModels = activeUsers.map((mod, index) => {
+      if (index === 0) {
+        console.log('CHAT3D LOADS THE PEGASUS');
+        return <Pegasus key={index} position={[0, 0, -40]} />;
       }
-      else{
-        return (
-          <Baseball key={index} position={[-30, 0, 10]} />
-        )
-      }})
->>>>>>> ac0a4ea2020755ca29b5cf095d88e4de7c412682
+      if (index === 1) {
+        console.log('CHAT3D LOADS THE BASEBALL');
+        return <Baseball key={index} position={[40, 0, 0]} />;
+      }
+
+      if (index === 2) {
+        console.log('CHAT3D LOADS THE ASTRO');
+        return <Astro key={index} position={[-40, 0, 0]} rotation={[0, 90, 0]} />;
+      }
+      if (index === 3) {
+        console.log('CHAT3D LOADS THE BABYDINO');
+        return <BabyDino key={index} position={0,0,40} />
+      }
+      if (index === 4) {
+        console.log('CHAT3D LOADS BLOBBY');
+        return <Blobby key={index} position={80, 0, 0 } />
+      }
+      if( index === 5) {
+        console.log('CHAT3D LOADS THE DINO');
+        return <Dino key={index} position={0, 0, -80} />
+      }
+      if (index === 6) {
+        console.log("CHAT3D LOADS REX");
+        return <Rex key={index} position={60, 0, 0} />
+      }
+    });
+
     setModels(findModels);
   }, [activeUsers]);
 
@@ -63,7 +65,6 @@ const Chat3D = ({ location }) => {
   console.log('modelsToLoad', models);
   console.log('****************************');
 
-  
   return (
     <div className='chat3d' style={{ width: '100%', height: '100%' }}>
       <Canvas
@@ -75,7 +76,10 @@ const Chat3D = ({ location }) => {
         <Stars fade />
         <ambientLight intensity={1} />
         <spotLight position={[0, 0, 0]} />
-        <Suspense fallback={null}>{ownUser[0]}{models}</Suspense>
+        <Suspense fallback={null}>
+          {ownUser[0]}
+          {models}
+        </Suspense>
       </Canvas>
     </div>
   );
