@@ -59,9 +59,11 @@ const NoteBox = () => {
 
   const displayNote = (msgObj) => {
     if (msgObj) {
-      const json = convertFromRaw(JSON.parse(msgObj.message))
-      const newEditorThing = EditorState.createWithContent(json)
-      setEditorState(() => newEditorThing)
+      if (!msgObj.room || room.roomId === msgObj.room){
+        const json = convertFromRaw(JSON.parse(msgObj.message))
+        const newEditorThing = EditorState.createWithContent(json)
+        setEditorState(() => newEditorThing)
+      }
     }
   }
 
@@ -78,6 +80,7 @@ const NoteBox = () => {
     socket.on('noteChange',displayNote)
   }, [])
 
+ 
   return (
     <Grid item
       xs={12}
