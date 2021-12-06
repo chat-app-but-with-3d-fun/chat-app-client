@@ -20,7 +20,7 @@ export const roomSlice = createSlice({
         state[key] = payload[key]}
       if (socket) {
         socket?.emit('setRoom', { 
-          newRoom: `${payload.roomId ? payload.roomId : null}`,
+          newRoom: payload.roomId ? payload.roomId : null,
           oldRoom
         })
       } 
