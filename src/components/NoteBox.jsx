@@ -78,12 +78,13 @@ const NoteBox = () => {
         flexDirection: 'column',
       }}
     >
-      <Typography variant='h4' align='center'  sx={{marginTop: '20px', color: 'white'}}>
+      <Typography variant='h5' align='center'  sx={{marginY: '15px',color: 'white', zIndex: '9999'}}>
         Notes
       </Typography>
       <Box sx={{height: '84vh', marginTop: '20px'}}>
         <ButtonGroup 
-          variant="outlined" 
+          variant="outlined"
+          color='secondary'
           aria-label="outlined button group" 
           sx={{
             justifyContent: 'center',
@@ -132,8 +133,15 @@ const NoteBox = () => {
             alignItems: 'center',
             justifyContent: 'flex-start'
           }}>
-            <Button onClick={handleSave} sx={{ color: 'white'}}>
-              <SaveIcon sx={{marginRight: '10px'}}/>
+            <Button
+              onClick={handleSave}
+              sx={{ color: 'white' }}
+            >
+              <SaveIcon
+                sx={{
+                  marginRight: '10px'
+                }}
+              />
               SAVE
             </Button>
           </Box>

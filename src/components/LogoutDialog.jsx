@@ -23,27 +23,26 @@ const LogoutDialog = ({open, handleClose}) => {
   }
 
   return (
-    <div>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        sx={{ borderRadius: '10px'}}
       >
-        <DialogTitle id="alert-dialog-title" sx={{ background: 'linear-gradient(180deg, rgba(207,60,178,1) 0%, rgba(88,2,71,1) 100%)', color: 'white' }}>
-          Hey, {username}!
-        </DialogTitle>
-        <DialogContent sx={{ background: 'linear-gradient(180deg, rgba(88,2,71,1) 0%, rgba(0,0,0,1) 40%, rgba(10,24,145,1) 100%)', color: 'white' }}>
-          <DialogContentText id="alert-dialog-description" sx={{ color: 'white' }} >
-            Are you sure you want to disconnect? We will miss you...
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={{ background: 'linear-gradient(180deg, rgba(10,24,145,1) 10%, rgba(55,76,255,1) 100%)' }}>
-          <Button sx={{ color: 'white' }} onClick={handleClose}>Cancel</Button>
-          <Button sx={{ color: 'white' }} onClick={handleLogout}>Accept</Button>
-        </DialogActions>
+        <div className='logout-container'>
+          <h3>Hey, {username.toUpperCase()}!</h3>
+          <p>Are you sure you want to disconnect? We will miss you...</p>
+          <div className='logout-container__buttons'>
+            <Button sx={{ fontWeight: 'bold'}} color='error' onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button sx={{ fontWeight: 'bold'}} color='success' onClick={handleLogout}>
+              Accept
+            </Button>
+          </div>
+        </div>
       </Dialog>
-    </div>
   )
 }
 

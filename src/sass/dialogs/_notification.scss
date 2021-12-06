@@ -1,0 +1,33 @@
+.msg-notification {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__first-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h4 {
+      font-weight: normal;
+      // border-bottom: 0.5px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  p {
+    margin: 10px 0;
+  }
+
+  form {
+
+    input {
+      padding: 6px 8px;
+      width: 100%;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.4);
+      color: white;
+      font-size: 14px;
+    }
+  }
+}
