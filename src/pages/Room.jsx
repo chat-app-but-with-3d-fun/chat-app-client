@@ -72,7 +72,7 @@ const Room = ({ location }) => {
         {!drawerOpen && <SmallSidebar />}
       </Grid>
         
-      <Grid item direction='column' md="5" lg='4' sx={{ padding: '0 20px'}} >
+      <Grid item direction='column' md="5" lg='4' sx={{ pl: '60px' }} >
         <Box>
           <Tabs
             sx={{

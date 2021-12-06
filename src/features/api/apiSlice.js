@@ -289,6 +289,11 @@ export const apiSlice = createApi({
                 const roomId = getState().room.roomId
                 if (roomId === message.room) {
                   draft.messages.push(message)
+                  dispatch(
+                    notificationSlice.actions.setNotification(
+                      (message)
+                    )
+                  )
                 }
               }
             )

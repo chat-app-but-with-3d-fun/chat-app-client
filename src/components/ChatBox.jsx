@@ -9,6 +9,7 @@ import {
   ListItemText,
   Avatar,
   Fab,
+  Button
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { blue, deepPurple } from "@mui/material/colors";
@@ -39,7 +40,11 @@ const ChatBox = () => {
   };
 
   const inputHandler = (e) => {
-    setMessage(e.target.value);
+    if (e.key === 'Enter' && e.shiftKey) {
+      setMessage(...message + '\\n')
+    } else {
+      setMessage(e.target.value);
+    }
   };
 
   const sendMessageHandler = () => {
@@ -50,7 +55,15 @@ const ChatBox = () => {
       message: message,
     });
     setMessage("");
-  };
+  }
+
+  const handleUserKeyPress = e => {
+    console.log('e ->', e.key)
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      sendMessageHandler()
+    }
+  }
 
   const getName = () => {
     const friendId = room.roomName
@@ -95,14 +108,14 @@ const ChatBox = () => {
                 height: "150px",
                 width: "100%",
                 backgroundImage: "linear-gradient(to bottom, rgba(0, 0, 0, 1) 10%, rgba(20, 20, 20, 0) 100%)",
-                zIndex: "9999",
+                zIndex: "10",
               }}
             >
             </Box>
         }
         <Box
           sx={{
-            position: "absolute",
+            position: "relative",
             bottom: "0",
             width: "100%",
             height: "100%",
@@ -113,7 +126,7 @@ const ChatBox = () => {
             autoHide
             autoHideTimeout={1000}
             autoHideDuration={200}
-            style={{ height: "79vh", width: "100%" }}
+            style={{ height: "81vh", width: "100%" }}
             ref={scrollBar}
           >
             <Box
@@ -126,7 +139,6 @@ const ChatBox = () => {
               <List sx={{ padding: '30px 0 0' }}>
                 {
                   messageList?.messages?.map((message, i) => {
-                    const msgDate = message.createdAt.split(".");
                     return (
                       <ListItem key={i}>
                         <Grid container
@@ -139,7 +151,7 @@ const ChatBox = () => {
                             <Grid item>
                               <Avatar
                                 sx={{
-                                  boxShadow: "0px 1px 5px white",
+                                  boxShadow: "0px 0px 7.5px white",
                                   bgcolor:
                                   blue[700],
                                 }}
@@ -153,13 +165,12 @@ const ChatBox = () => {
                             sx={{ maxWidth: "80%" }}
                           >
                             <Paper
-                              elevation="10"
                               sx={{
                                 borderRadius: "10px",
                                 padding: "8px 8px 2px",
                                 background: "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(10, 10, 10, 0) 100%)",
                                 color: "white",
-                                boxShadow: "0px 1px 7.5px #ffffff",
+                                boxShadow: "0px 0px 7.5px #ffffff",
                               }}
                             >
                               <Grid item>
@@ -173,7 +184,7 @@ const ChatBox = () => {
                                 <ListItemText
                                   sx={{ color: "#a161b0" }}
                                 >
-                                  <small style={{fontSize:"12.5px"}}>
+                                  <small>
                                     <i>{moment(message.createdAt).calendar()}</i>
                                   </small>
                                 </ListItemText>
@@ -185,7 +196,7 @@ const ChatBox = () => {
                             <Grid item>
                               <Avatar
                                 sx={{
-                                  boxShadow: "0px 1px 5px white",
+                                  boxShadow: "0px 0px 7.5px white",
                                   bgcolor: '#8155A1',
                                 }}
                               >
@@ -201,6 +212,10 @@ const ChatBox = () => {
               </List>
             </Box>
           </Scrollbars>
+          <div
+            className='chatbox__blur-container'
+          >
+          </div>
           <Box
             sx={{
               width: "100%",
@@ -210,24 +225,32 @@ const ChatBox = () => {
               marginY: 4
             }}
           >
-            <textarea
-              type="text"
-              placeholder="Type a message..."
-              value={message}
-              onChange={inputHandler}
-            />
-            <Fab
-              sx={{
-                boxShadow: "0px 1px 7.5px white",
-                padding: 1
-              }}
-              size="medium"
-              color="primary"
-              aria-label="add"
-              onClick={sendMessageHandler}
-            >
-              <SendIcon />
-            </Fab>
+            <div className='chatbox__type-message-box'>
+              {/* <Grid container sx={{ width: '100%', alignItems: 'center' }}>
+                <Grid item xs={9}> */}
+                  <textarea type="text" placeholder="Type a message..." value={message} onChange={inputHandler} onKeyPress={handleUserKeyPress} />
+                {/* </Grid> */}
+                
+                {/* <Grid item xs={3}> */}
+                  <Fab
+                    color="primary"
+                    sx={{
+                      ml: 4,
+                      boxShadow: "0px 0px 7.5px white",
+                      padding: 1,
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}
+                    size="medium"
+                    variant='contained'
+                    aria-label="add"
+                    onClick={sendMessageHandler}
+                  >
+                    <SendIcon />
+                  </Fab>
+                {/* </Grid> */}
+              {/* </Grid> */}
+            </div>
           </Box>
         </Box>
       </Box>

@@ -17,26 +17,29 @@ export default function SmallSidebar() {
         )
     }
     
-    return (
-        // <Box onClick={handleClick} sx={{
-        //     width: '150px',
-        //     height: '70px', 
-        //     backgroundColor: "black",
-        //     position: 'absolute',
-        //     top: '35px',
-        //     left: '35px',
-
-        //     }}>
-        //     <img src={logo} alt="LOGO" style={{width: '100%'}} />
-        // </Box>
-        <Fab onClick={handleClick}
-                 variant="extended"
-                 color="secondary"
-                 sx={{
-                    position: 'absolute',
-                    top: '35px',
-                    left: '35px'}}>
-                <MenuOpenIcon />
-            </Fab>
-    )
+  return (
+    // <Box onClick={handleClick} sx={{
+    //     width: '150px',
+    //     height: '70px', 
+    //     backgroundColor: "black",
+    //     position: 'absolute',
+    //     top: '35px',
+    //     left: '35px'
+    //     }}>
+    //     <img src={logo} alt="LOGO" style={{width'100%'}} />
+    // </Box>
+    <Fab
+      onClick={handleClick}
+      variant="extended"
+      color="secondary"
+      sx={{
+        position: 'absolute',
+        top: '35px',
+        left: '35px',
+        boxShadow: '0 0 7.5px white'
+      }}
+    >
+      <MenuOpenIcon />
+    </Fab>
+  )
 }

@@ -63,99 +63,158 @@ const ScreenBox = (props) => {
     setActiveUserData(() => tmpArray)
   }, [activeUsers])
 
-
-    return (
-      <Paper
-      elevation="10"
+  return (
+    <Grid item
+      xs={12}
       sx={{
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        color: 'white',
       }}
     >
-      <Grid item
-        xs={12}
+      <Typography
+        variant='h5'
+        align='center'
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          backgroundColor: 'grey'
+          marginY: '15px',
+          zIndex: '9999'
         }}
       >
-        <Typography variant='h5' align='center' sx={{marginTop: '20px'}}>Room Settings</Typography>
-          <Box sx={{height: '85vh', display: "flex", flexDirection: "column", alignItems: "center"}}>
-            <Box sx={{width: "80%"}}>
-              <Typography
-                variant='h6'
-                sx={{
-                  marginTop: '20px',
-                  marginBottom: '10px'
-                }}>
-                  Who else is here?
-                </Typography>
-              <Stack
-                direction="row"
-                spacing={1}
-              > 
-                {
-                  activeUserData?.map((element, index) =>
-                    <Chip label={`${element.username}`} variant="outlined" />
+        Room Settings
+      </Typography>
+      <Box
+        sx={{
+          height: '85vh',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          zIndex: '999'
+        }}
+      >
+        <Box 
+          sx={{
+            width: "80%"
+          }}
+        >
+          <Typography
+            sx={{
+              marginY: '15px',
+            }}
+          >
+            Who else is here?
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexFlow: 'row wrap'
+            }}
+          >
+            {
+              activeUserData?.map((user) =>
+                <Chip
+                  label={`${user.username}`}
+                  variant="outlined"
+                  sx={{ color: 'white', margin: '5px' }}
+                  color='secondary'
+                />
+              )
+            }
+          </Box>
+          <Typography
+            variant='h6'
+            sx={{
+              marginTop: '20px',
+              marginBottom: '10px',
+            }}
+          >
+            Who can attend this room?
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexFlow: 'row wrap'
+            }}
+          > 
+            {
+              roomUsers?.map((user) => {
+                if (user._id === ownId) {
+                  return (
+                    <Chip
+                      label={`me`}
+                      variant="filled"
+                      sx={{ color: 'white', margin: '5px' }}
+                      color='secondary'
+                    />
                   )
                 }
-              </Stack>
-              <Typography
-                variant='h6'
+                return (
+                  <Chip
+                    label={`${user.username}`}
+                    variant="outlined"
+                    sx={{ color: 'white', margin: '5px' }}
+                    color='secondary'
+                  />
+                )
+              })
+            }
+          </Box>
+          {
+            filterUser
+            ? <FormControl
+                fullWidth
                 sx={{
-                  marginTop: '20px',
-                  marginBottom: '10px'
+                  marginY: '20px'
                 }}
               >
-                Who can attend this room?
-              </Typography>
-                <Stack direction="row" spacing={1}> 
+                <InputLabel
+                  id="demo-simple-select-label"
+                  color={'white'}
+                >
+                  Add a friend
+                </InputLabel>
+                <Select
+                  labelId="friend-select-label"
+                  id="friend-select"
+                  value={newUser}
+                  label="Add User"
+                  onChange={handleChange}
+                  color='secondary'
+                  autoFocus={true}
+                  sx={{
+                    backgroundColor: 'grey',
+                    color: 'white',
+                    boxShadow: '0 0 7.5px white',
+                  }}
+                >
                   {
-                    roomUsers?.map((element, index) => {
-                      if (element._id === ownId){
-                        return (<Chip label={`me`} variant="filled" />  )
-                      }
-                      return (
-                        <Chip label={`${element.username}`} variant="outlined" />
-                      )
-                    })
+                    filterUser.map((user) =>
+                      <MenuItem
+                        value={user._id}
+                      >
+                        {user.username}
+                      </MenuItem>
+                    )
                   }
-                </Stack>
-                {
-                  filterUser ? 
-                  <FormControl fullWidth sx={{margin: '20px'}}>
-                    <InputLabel id="demo-simple-select-label">
-                      Add a friend
-                    </InputLabel>
-                    <Select
-                      labelId="friend-select-label"
-                      id="friend-select"
-                      value={newUser}
-                      label="Add User"
-                      onChange={handleChange}
-                    >
-                      {
-                        filterUser.map((element,index) =>
-                          <MenuItem value={element._id}>{element.username}</MenuItem>
-                        )
-                      }
-                    </Select>
-                  </FormControl> :
-                  <Alert
-                    sx={{
-                      marginTop: '10px'
-                    }}
-                    severity="success"
-                  >
-                    All your friends are in this room
-                  </Alert>
-                }
-                  
-            </Box>
-          </Box>
-      </Grid>
-    </Paper>
+                </Select>
+              </FormControl>
+            : <Alert
+                severity="success"
+                sx={{
+                  marginTop: '20px',
+                  backgroundColor: 'transparent',
+                  fontWeight: 'bold',
+                  padding: 0,
+                  color: 'white'
+                }}
+              >
+                All your friends are in this room
+              </Alert>
+          }
+        </Box>
+      </Box>
+    </Grid>
   )
 }
 
