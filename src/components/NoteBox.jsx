@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import { Container, Button, ButtonGroup, Box, Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from '@mui/material'
 import {Editor, EditorState, RichUtils, convertToRaw, convertFromRaw} from 'draft-js';
+import 'draft-js/dist/Draft.css'
 import { socket } from '../features/api/apiSlice';
 import { Scrollbars } from 'rc-scrollbars';
 import SaveIcon from '@mui/icons-material/Save';
@@ -12,7 +13,7 @@ const NoteBox = () => {
   const blockType = [
     {run: 'ordered-list-item', btn: 'ol'},
     {run: 'unordered-list-item', btn: 'ul'},
-    {run: 'blockquote', btn: 'block'},
+    // {run: 'blockquote', btn: 'block'},
     {run : 'header-one', btn: 'h1'},
     {run: 'header-two', btn: 'h2'},
     {run: 'header-three', btn: 'h3'},
@@ -61,6 +62,13 @@ const NoteBox = () => {
       const json = convertFromRaw(JSON.parse(msgObj.message))
       const newEditorThing = EditorState.createWithContent(json)
       setEditorState(() => newEditorThing)
+    }
+  }
+
+  function myBlockStyleFn(contentBlock) {
+    const type = contentBlock.getType();
+    if (type === 'blockquote') {
+      return 'superFancyBlockquote';
     }
   }
 
@@ -146,7 +154,7 @@ const NoteBox = () => {
             </Button>
           </Box>
                 
-          <Paper sx={{width: "90%", padding:'20px'}} elevation="10">
+          <Box sx={{width: "90%", padding:'20px'}}>
             <Scrollbars 
               autoHide
               autoHideTimeout={1000}
@@ -156,9 +164,10 @@ const NoteBox = () => {
               <Editor
                 editorState={editorState}
                 onChange={onChange}
+                blockStyleFn={myBlockStyleFn}
               />
             </Scrollbars>
-          </Paper>    
+          </Box>    
         </Box>
       </Box>
     </Grid>

@@ -34,7 +34,10 @@ export const userSlice = createSlice({
       const index = state.friends.findIndex(
         item => item._id === payload
       )
-      state.friends[index].online = !state.friends[index].online
+      if (index !== -1){
+        state.friends[index].online = !state.friends[index].online
+      }
+      
     },
     updateRoomStatus: (state, { payload }) => {
       console.log('UPDATE ROOM', payload)
@@ -76,9 +79,13 @@ export const selectPublicRooms = state => state.user.rooms.filter(el =>  !el.roo
 export const selectUnreadPrivate = state => state.user.rooms.filter(el => el.room.private).reduce((acc, cur) => {
   return acc + cur.unread}, 0
   )
-export const selectUnreadPublic = state => state.user.rooms.filter(el => el.room.public).reduce((acc, cur) => {
+export const selectUnreadPublic = state => state.user.rooms.filter(el => !el.room.private).reduce((acc, cur) => {
     return acc + cur.unread}, 0
     )
+export const selectLastUpdate = state => {
+      const update = state.user.updatedAt
+      return update
+  }
 
 
 
@@ -90,7 +97,8 @@ export const {
   updateRoomStatus,
   resetMessages,
   incrMessages,
-  userLogout
+  userLogout,
+  lastUpdate
 } = userSlice.actions
 
 export default userSlice.reducer
