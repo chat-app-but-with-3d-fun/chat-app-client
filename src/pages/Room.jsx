@@ -37,6 +37,7 @@ const Room = ({ location }) => {
         dispatch(closeDrawer())
       },[])
     
+      console.log('ROOMID AND ROOM INFO: ', roomObj)
     return(
     <Grid container sx={{width: `${drawerOpen ? "87vw" : "100vw" }`, height: "100vh", marginTop: 0}}>
         
@@ -46,7 +47,7 @@ const Room = ({ location }) => {
                 justifyContent: 'center',
                 backgroundColor: "lightgray"}}>
              <Chat3D />
-             <Jitsi id={roomId} />
+             {/* <Jitsi id={roomId} /> */}
              {!drawerOpen && <SmallSidebar />}
         </Grid>
         
