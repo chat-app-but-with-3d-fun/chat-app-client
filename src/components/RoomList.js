@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useRef } from 'react';
 import { Link as RouterLink, Redirect, useHistory } from 'react-router-dom'
 import { Box } from '@mui/system';
 import { Chip } from '@mui/material';
@@ -19,8 +19,6 @@ import {
 } from '../features/user/userSlice';
 import { useGetRoomInfoMutation } from '../features/api/apiSlice';
 
-
-
 const RoomList = ({rooms}) => {
 
   const dispatch      = useDispatch()
@@ -28,8 +26,6 @@ const RoomList = ({rooms}) => {
   const userId        = useSelector(selectUserId)
   const [ roomInfo ]  = useGetRoomInfoMutation()
   let history         = useHistory()
-  
-
 
   const getName = (room) => {
     const friendId = room.roomName
@@ -66,21 +62,20 @@ const RoomList = ({rooms}) => {
   }
 
   return (
-    <>
-    <List>
-      {
-        rooms.map((element) => {
-          const { room } = element
-          return (
-            <Box sx={{
-              display: 'flex',
-              justifyContent: `${element.unread > 0 ? "space-between" : "flex-start"}`,
-              alignItems: 'center',
-              width: "100%"
-            }} 
-              key={room._id}
-            >
-              <ListItem button onClick={(e) => handleLinkClick(e, room)}>
+      <List>
+        {
+          rooms.map((element) => {
+            const { room } = element
+            return (
+              <Box sx={{
+                display: 'flex',
+                justifyContent: `${element.unread > 0 ? "space-between" : "flex-start"}`,
+                alignItems: 'center',
+                width: "100%"
+              }} 
+                key={room._id}
+              >
+                <ListItem button onClick={(e) => handleLinkClick(e, room)}>
                   <ListItemText
                     primary={
                       room.private ? getFriendStatus(room) : room.roomName
@@ -88,23 +83,22 @@ const RoomList = ({rooms}) => {
                   />
                 </ListItem>
                 {
-                element.unread > 0 && 
-                <Chip
-                  label={element.unread}
-                  size="small"
-                  color="success"
-                  sx={{
-                    paddingLeft: "10px",
-                    paddingRight: "10px"
-                  }}
-                />
-              }
-            </Box>
-          )
-        })
-      }
-    </List>
-    </>
+                  element.unread > 0 && 
+                  <Chip
+                    label={element.unread}
+                    size="small"
+                    color="success"
+                    sx={{
+                      paddingLeft: "10px",
+                      paddingRight: "10px"
+                    }}
+                  />
+                }
+              </Box>
+            )
+          })
+        }
+      </List>
   )
 }
 

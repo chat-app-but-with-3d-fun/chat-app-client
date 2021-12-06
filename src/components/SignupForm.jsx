@@ -41,48 +41,55 @@ const SignupForm = () => {
   }
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
-      <Grid container spacing={2}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
+      <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
+            sx={{ backgroundColor: '#eaf2ff', borderRadius: '4px'}}
             required
             fullWidth
-            variant='outlined'
+            variant='filled'
             name="username"
             label='Username'
             size='small'
             onChange={handleInput}
+            autoComplete='off'
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
+            sx={{ backgroundColor: '#eaf2ff', borderRadius: '4px'}}
             required
             fullWidth
-            variant='outlined'
+            variant='filled'
+            color='secondary'
             name="email"
             label='Email'
             size='small'
             onChange={handleInput}
+            autoComplete='off'
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
+            sx={{ backgroundColor: '#eaf2ff', borderRadius: '4px'}}
             required
             fullWidth
-            variant='outlined'
+            variant='filled'
             size='small'
             type='password'
             label='Password'
             name="password"
             onChange={handleInput}
+            autoComplete='off'
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{ mt: 2 }}>
           <Button
             type='submit'
             fullWidth
             variant="contained"
-            color='success'
+            color='secondary'
           >
             {isLoading ? <CircularProgress size={25} thickness={6} disableShrink /> : 'CREATE ACCOUNT'}
           </Button>
