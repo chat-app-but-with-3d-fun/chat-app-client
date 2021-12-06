@@ -20,46 +20,46 @@ const Chat3D = ({ location }) => {
 
 
   const ownUser = [
-    <BabyDino key={'ownAvatar'} position={[0, 0, 40]} rotation={[0, 180, 0]} />,
+    <BabyDino key={'ownAvatar'} position={80, 0, -80} scale={5} rotation={[0, 180, 0]} />,
   ];
 
-  // useEffect(() => {
-    //  We check how many  users are there and we inititiate them and add them in the scenes
-    // console.log('This room has active users', activeUsers)
-    // let findModels = activeUsers.map((mod, index) => {
-    //   if (index === 0) {
-    //     console.log('CHAT3D LOADS THE PEGASUS');
-    //     return <Pegasus key={index} position={[0, 0, -40]} />;
-    //   }
-    //   if (index === 1) {
-    //     console.log('CHAT3D LOADS THE BASEBALL');
-    //     return <Baseball key={index} position={[40, 0, 0]} />;
-    //   }
+  useEffect(() => {
+  //  We check how many  users are there and we inititiate them and add them in the scenes
+    console.log('This room has active users', activeUsers)
+    let findModels = activeUsers.map((mod, index) => {
+      if (index === 0) {
+        console.log('CHAT3D LOADS THE PEGASUS');
+        return <Pegasus key={index} position={[-40, 0, -60]} />;
+      }
+      if (index === 1) {
+        console.log('CHAT3D LOADS THE BASEBALL');
+        return <Baseball key={index} position={[40, 0, -20]} />;
+      }
 
-    //   if (index === 2) {
-    //     console.log('CHAT3D LOADS THE ASTRO');
-    //     return <Astro key={index} position={[-40, 0, 0]} rotation={[0, 90, 0]} />;
-    //   }
-    //   // if (index === 3) {
-    //   //   console.log('CHAT3D LOADS THE BABYDINO');
-    //   //   return <BabyDino key={index} position={0,0,40} />
-    //   // }
-    //   if (index === 4) {
-    //     console.log('CHAT3D LOADS BLOBBY');
-    //     return <Blobby key={index} position={80, 0, 0 } />
-    //   }
-    //   if( index === 5) {
-    //     console.log('CHAT3D LOADS THE DINO');
-    //     return <Dino key={index} position={0, 0, -80} />
-    //   }
-    //   if (index === 6) {
-    //     console.log("CHAT3D LOADS REX");
-    //     return <Rex key={index} position={60, 0, 0} />
-    //   }
-    // });
+      if (index === 2) {
+        console.log('CHAT3D LOADS THE ASTRO');
+        return <Astro key={index} position={[-40, 0, 30]} rotation={[0, 90, 0]} />;
+      }
+      if (index === 3) {
+        console.log('CHAT3D LOADS THE BABYDINO');
+        return <BabyDino key={index} position={80, 0, -80} scale={2.5} />
+      }
+      if (index === 4) {
+        console.log('CHAT3D LOADS BLOBBY');
+        return <Blobby key={index} position={-50, 0, 30 } />
+      }
+      if( index === 5) {
+        console.log('CHAT3D LOADS THE DINO');
+        return <Dino key={index} position={0, 0, -80} />
+      }
+      if (index === 6) {
+        console.log("CHAT3D LOADS REX");
+        return <Rex key={index} position={50, 0, -28} scale={0.15} />
+      }
+    });
 
-  //   setModels(findModels);
-  // }, [activeUsers]);
+    setModels(findModels);
+  }, [activeUsers]);
 
   console.log('********** 3D  CHAT*************');
   console.log('Location', location);
@@ -78,17 +78,8 @@ const Chat3D = ({ location }) => {
         <ambientLight intensity={1} />
         <spotLight position={[0, 0, 0]} />
         <Suspense fallback={null}>
-          {/* {ownUser[0]}
-          {models} */}
-          <Pegasus  position={[-40, 0, -60]} />
-          <Baseball  position={[40, 0, -20]} />
-          <Astro  position={[-40, 0, 30]} rotation={[0, 90, 0]} />
-
-          <BabyDino  position={80, 0, -80} scale={2.5}/>
-          <Dino  position={-30, 0, -5} scale={0.04} />
-          <Blobby  position={-50, 0, 30 } />
-          
-          <Rex  position={50, 0, -28} scale={0.15}/>
+          {ownUser[0]}
+          {models}
 
         </Suspense>
       </Canvas>
