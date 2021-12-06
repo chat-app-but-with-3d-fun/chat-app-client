@@ -175,6 +175,7 @@ export const apiSlice = createApi({
           dispatch(
             userSlice.actions.userLogout()
           )
+          socket.disconnect()
         } catch (error) {
           console.log('[ERROR] trying to logout..', error)
         }
