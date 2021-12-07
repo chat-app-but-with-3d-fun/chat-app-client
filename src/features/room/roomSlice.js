@@ -45,9 +45,11 @@ export const roomSlice = createSlice({
     updateActiveList: (state, {payload}) => {
       console.log('The list of active users get updated ', payload, state.activeUsers)
       if (state.roomId === payload.roomId){
-        state.activeUsers = state.activeUsers.concat(payload.activeUsers)
+        if (state.activeUsers?.length < 1){
+          state.activeUsers = state.activeUsers.concat(payload.activeUsers)
+          console.log('ACTIVE USER LIST UPDATED: ', state.activeUsers)
+        } 
       }
-      console.log('ACTIVE USERS UPDATED: ', state.activeUsers ) 
     },
 
     userLeftRoom:  (state, {payload}) => {
@@ -61,6 +63,12 @@ export const roomSlice = createSlice({
       console.log('User: ', payload.user, ' not anymore in ROOM: ', payload.room) 
     },
     
+    userLoggedOut: (state, {payload}) => {
+      const tmpUserArray = state.activeUsers.filter((element) => {
+        return element != payload.user
+      })
+      state.activeUsers = Array.from(tmpUserArray)
+    }
 
     // setMessages: (state, action) => {
     //   console.log('action', action)
@@ -81,7 +89,7 @@ export const selectActiveUsers = state => state.room.activeUsers
 export const selectRoom       = state => state.room
 
 export const {
-  setRoom, addUser, userLeftRoom, userJoinRoom, updateActiveList 
+  setRoom, addUser, userLeftRoom, userJoinRoom, updateActiveList, userLoggedOut
 } = roomSlice.actions
 
 export default roomSlice.reducer
