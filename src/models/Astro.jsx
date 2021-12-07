@@ -32,7 +32,12 @@ export default function Astro({ ...props }) {
             geometry={nodes.cosmo1__0.geometry}
             material={materials['Scene_-_Root']}
             skeleton={nodes.cosmo1__0.skeleton}
-            // onClick={(e) => actions[Object.keys(actions)[0]].play()}
+            onClick={(e) => {
+              actions[Object.keys(actions)[0]].play();
+              setTimeout(() => {
+                actions[Object.keys(actions)[0]].stop();
+              }, 3000);
+            }}
 
           />
         </group>

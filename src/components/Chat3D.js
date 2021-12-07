@@ -20,7 +20,7 @@ const Chat3D = ({ location }) => {
 
 
   const ownUser = [
-    <BabyDino key={'ownAvatar'} position={80, 0, -80} scale={5} rotation={[0, 180, 0]} />,
+    <BabyDino key={'ownAvatar'} position={-80, 0, 0} scale={2} rotation={[0, 180, 0]} />,
   ];
 
   useEffect(() => {
@@ -29,35 +29,34 @@ const Chat3D = ({ location }) => {
     let findModels = activeUsers.map((mod, index) => {
       if (index === 0) {
         console.log('CHAT3D LOADS THE PEGASUS');
-        return <Pegasus key={index} position={[-40, 0, -60]} />;
+        return <Pegasus key={index} position={[50, 0, -40]} />;
       }
       if (index === 1) {
-        console.log('CHAT3D LOADS THE BASEBALL');
-        return <Baseball key={index} position={[40, 0, -20]} />;
-      }
-
-      if (index === 2) {
         console.log('CHAT3D LOADS THE ASTRO');
         return <Astro key={index} position={[-40, 0, 30]} rotation={[0, 90, 0]} />;
       }
-      if (index === 3) {
+      if (index === 2) {
         console.log('CHAT3D LOADS THE BABYDINO');
         return <BabyDino key={index} position={80, 0, -80} scale={2.5} />
       }
-      if (index === 4) {
-        console.log('CHAT3D LOADS BLOBBY');
-        return <Blobby key={index} position={-50, 0, 30 } />
-      }
-      if( index === 5) {
+      if( index === 3) {
         console.log('CHAT3D LOADS THE DINO');
-        return <Dino key={index} position={0, 0, -80} />
+        return <Dino key={index} position={5, 0, -80} scale={0.09} />
       }
-      if (index === 6) {
+      if (index === 4) {
         console.log("CHAT3D LOADS REX");
         return <Rex key={index} position={50, 0, -28} scale={0.15} />
       }
-    });
 
+      if (index === 5) {
+        console.log('CHAT3D LOADS THE BASEBALL');
+        return <Baseball key={index} position={[-5, 0, -20]} />;
+      }
+      if (index === 6) {
+        console.log('CHAT3D LOADS BLOBBY');
+        return <Blobby key={index} position={-10, 0, 0 } />
+      }
+    });
     setModels(findModels);
   }, [activeUsers]);
 
@@ -80,7 +79,6 @@ const Chat3D = ({ location }) => {
         <Suspense fallback={null}>
           {ownUser[0]}
           {models}
-
         </Suspense>
       </Canvas>
     </div>
