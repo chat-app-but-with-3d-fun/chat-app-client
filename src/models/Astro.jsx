@@ -15,9 +15,9 @@ export default function Astro({ ...props }) {
   const { actions } = useAnimations(animations, group)
 
   useEffect(() => {
-    actions[Object.keys(actions)[0]].play()
+    actions[Object.keys(actions)[0]]?.play()
     setTimeout(() => {
-      actions[Object.keys(actions)[0]].stop();
+      actions[Object.keys(actions)[0]]?.stop();
     }, 3000);
   }, []);
 

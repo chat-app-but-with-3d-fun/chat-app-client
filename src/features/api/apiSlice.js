@@ -78,6 +78,14 @@ export const apiSlice = createApi({
             )
           })
 
+
+          socket.on('notification', (message) => {
+            dispatch(
+              notificationSlice.actions.setNotification(message))
+            dispatch(
+              userSlice.actions.incrMessages({room: message.room}))
+          })
+
           dispatch(
             userSlice.actions.setUser(userData)
           )
@@ -108,6 +116,9 @@ export const apiSlice = createApi({
           socket.on('unRegister', (friendId) => {
             dispatch(
               userSlice.actions.updateFriendStatus(friendId)
+              )
+            dispatch(
+              roomSlice.actions.userLoggedOut({user:friendId})
             )
           })
 
