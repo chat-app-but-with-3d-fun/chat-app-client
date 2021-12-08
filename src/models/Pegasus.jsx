@@ -44,12 +44,12 @@ export default function Pegasus({ ...props }) {
   const { nodes, materials, animations } = useGLTF('/pegasus/scene-transformed.glb');
   const { actions } = useAnimations(animations, group);
 
-  // useEffect(() => {
-  //   actions['metarig|Fly'].play();
-  //   setTimeout(() => {
-  //     actions['metarig|Fly'].stop();
-  //   }, 3000);
-  // }, []);
+  useEffect(() => {
+    actions['metarig|Fly'].play();
+    setTimeout(() => {
+      actions['metarig|Fly'].stop();
+    }, 3000);
+  }, []);
 
   return (
     <Suspense fallback={null}>
@@ -66,7 +66,12 @@ export default function Pegasus({ ...props }) {
             <group name='metarig' rotation={[-Math.PI / 2, 0, 0]} scale={54.16}>
               <primitive object={nodes._rootJoint} />
               <skinnedMesh
-                onClick={(e) => actions[Object.keys(actions)[0]].play()}
+                onClick={(e) => {
+                  actions[Object.keys(actions)[0]].play();
+                  setTimeout(() => {
+                    actions[Object.keys(actions)[0]].stop();
+                  }, 3000);
+                }}
                 geometry={nodes.Object_9.geometry}
                 material={materials.Pegasus}
                 skeleton={nodes.Object_9.skeleton}

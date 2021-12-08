@@ -13,6 +13,14 @@ export default function Blobby({ ...props }) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF('/blobby/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
+
+  useEffect(() => {
+    actions[Object.keys(actions)[0]].play()
+    setTimeout(() => {
+      actions[Object.keys(actions)[0]].stop();
+    }, 3000);
+  }, []);
+  
   return (
     <Suspense fallback={null}>
       <group ref={group} {...props} dispose={null}>
@@ -25,7 +33,12 @@ export default function Blobby({ ...props }) {
                       geometry={nodes.Alien_Alien_0.geometry}
                       material={materials.Alien}
                       skeleton={nodes.Alien_Alien_0.skeleton}
-                      onClick={(e) => actions[Object.keys(actions)[0]].play()}
+                      onClick={(e) => {
+                        actions[Object.keys(actions)[0]].play();
+                        setTimeout(() => {
+                          actions[Object.keys(actions)[0]].stop();
+                        }, 3000);
+                      }}
                     />
                   </group>
                 </group>

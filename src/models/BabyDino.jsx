@@ -5,6 +5,14 @@ export default function BabyDino({ ...props }) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF('/babydino/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
+
+  useEffect(() => {
+    actions[Object.keys(actions)[0]].play()
+    setTimeout(() => {
+      actions[Object.keys(actions)[0]].stop();
+    }, 3000);
+  }, []);
+
   return (
     <Suspense fallback={null}>
       <group ref={group} {...props} dispose={null}>
@@ -24,7 +32,12 @@ export default function BabyDino({ ...props }) {
                     geometry={nodes.Dino_M_Eye_0.geometry}
                     material={materials.M_Eye}
                     skeleton={nodes.Dino_M_Eye_0.skeleton}
-                    onClick={(e) => actions[Object.keys(actions)[0]].play()}
+                    onClick={(e) => {
+                      actions[Object.keys(actions)[0]].play();
+                      setTimeout(() => {
+                        actions[Object.keys(actions)[0]].stop();
+                      }, 3000);
+                    }}
                   />
                 </group>
               </group>

@@ -13,6 +13,14 @@ export default function Rex({ ...props }) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF('/rex/scene-transformed.glb')
   const { actions } = useAnimations(animations, group)
+
+  useEffect(() => {
+    actions[Object.keys(actions)[0]].play()
+    setTimeout(() => {
+      actions[Object.keys(actions)[0]].stop();
+    }, 3000);
+  }, []);
+  
   return (
     <group ref={group} {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
@@ -43,7 +51,12 @@ export default function Rex({ ...props }) {
               geometry={nodes.Object_151.geometry}
               material={nodes.Object_151.material}
               skeleton={nodes.Object_151.skeleton}
-              onClick={(e) => actions[Object.keys(actions)[0]].play()}
+              onClick={(e) => {
+                actions[Object.keys(actions)[0]].play();
+                setTimeout(() => {
+                  actions[Object.keys(actions)[0]].stop();
+                }, 3000);
+              }}
             />
           </group>
         </group>
